@@ -1,0 +1,10 @@
+{
+    "manifest_version": 3,
+    "name": "Interize",
+    "description": "Change font to Inter",
+    "version": "1.0",
+    "action": {
+        "default_popup": "index.html",
+        "default_icon": "./res/Interize.png"
+    }
+}
