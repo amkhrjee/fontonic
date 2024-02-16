@@ -1,14 +1,3 @@
-// chrome.runtime.onMessage.addListener((req, sender, res) => {
-//   console.log(
-//     sender.tab
-//       ? "from a content script:" + sender.tab.url
-//       : "from the extension"
-//   );
-//   res("Message received!");
-//   if (req.action === "applyFont") {
-//   }
-// });
-
 const logFontFamily = (node, sansSerif, serif, monospace) => {
   if (node.nodeType === 1) {
     const computedStyle = window.getComputedStyle(node);
@@ -32,9 +21,16 @@ const logFontFamily = (node, sansSerif, serif, monospace) => {
   }
 };
 
-logFontFamily(
-  document.body,
-  "Comic Sans MS",
-  "Comic Sans MS",
-  "Code New Roman"
-);
+let serif, sans_serif, monospace;
+
+chrome.runtime.onMessage.addListener((req, sender, res) => {
+  if (req.type === "apply_font") {
+    serif = req.data.serif;
+    sans_serif = req.data.sans_serif;
+    monospace = req.data.monospace;
+    console.log("Serif: ", serif);
+    console.log("Sans-Serif: ", sans_serif);
+    console.log("Monospace: ", monospace);
+    logFontFamily(document.body, serif, sans_serif, monospace);
+  }
+});

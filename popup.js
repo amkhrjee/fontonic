@@ -1,7 +1,7 @@
-// const fontSelectionForm = document.forms["main"];
-// const sansSerifValue = fontSelectionForm.elements["sans-serif"].value;
-// const serifValue = fontSelectionForm.elements["serif"].value;
-// const monospaceValue = fontSelectionForm.elements["serif"].value;
+// Form
+const fontSelectionForm = document.forms["fonts"];
+
+// UI Elements
 const applyButton = document.querySelector(".apply");
 const supportPage = document.querySelector(".support-slide");
 const mainPage = document.querySelector(".main");
@@ -10,8 +10,8 @@ const supportButtonIcon = document.querySelector(".material-symbols-outlined");
 const supportButtonText = document.querySelector(".support-btn-text");
 const paymentButtons = document.querySelectorAll(".support-slide>button");
 
-let isSupportPageOpen = false;
 // Show Support Page
+let isSupportPageOpen = false;
 supportButton.addEventListener("click", () => {
   if (!isSupportPageOpen) {
     supportButtonIcon.innerHTML = "arrow_back";
@@ -32,6 +32,26 @@ supportButton.addEventListener("click", () => {
     }, 200);
     isSupportPageOpen = !isSupportPageOpen;
   }
+});
+
+fontSelectionForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const serifValue = fontSelectionForm.elements["serif"].value;
+  const sansSerifValue = fontSelectionForm.elements["sans-serif"].value;
+  const monospaceValue = fontSelectionForm.elements["monospace"].value;
+  applyButton.innerHTML = "✔ Applied";
+
+  chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+    let message = {
+      type: "apply_font",
+      data: {
+        serif: serifValue,
+        sans_serif: sansSerifValue,
+        monospace: monospaceValue,
+      },
+    };
+    chrome.tabs.sendMessage(tabs[0].id, message);
+  });
 });
 
 // TODO: Redirections must be done by messaging content.js!

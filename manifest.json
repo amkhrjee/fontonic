@@ -12,11 +12,19 @@
         "default_title": "This is a tooltip!",
         "default_popup": "./popup.html"
     },
-    "background": {
-        "service_worker": "./background.js"
-    },
     "permissions": [
         "activeTab",
         "scripting"
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "https://*/*",
+                "http://*/*"
+            ],
+            "js": [
+                "./content.js"
+            ]
+        }
     ]
 }

@@ -104,6 +104,7 @@
         .apply {
             margin-top: 0.8rem;
             margin-bottom: 0;
+            grid-column: span 2;
         }
 
         .support-slide {
@@ -154,14 +155,14 @@
                 <a href="https://fonts.google.com">Google Fonts</a> or any other font repository of your choice.
             </p>
             <form name="fonts">
-                <label for="sans-serif">Sans-serif font</label>
-                <input spellcheck="false" id="sans-serif" name="sans-serif" type="text">
-                <label for="serif">Serif font</label>
-                <input spellcheck="false" id="serif" name="serif" type="text">
-                <label for="monospace">Monospace font</label>
-                <input spellcheck="false" id="monospace" name="monospace" type="text">
+                <label for="serif">Serif</label>
+                <input placeholder="Default" spellcheck="false" id="serif" name="serif" type="text">
+                <label for="sans-serif">Sans-serif</label>
+                <input placeholder="Default" spellcheck="false" id="sans-serif" name="sans-serif" type="text">
+                <label for="monospace">Monospace</label>
+                <input placeholder="Default" spellcheck="false" id="monospace" name="monospace" type="text">
+                <button type="submit" class="apply">Apply Selection</button>
             </form>
-            <button class="apply">Apply Selection</button>
         </div>
 
         <div class="support-slide">
@@ -169,7 +170,6 @@
             <button href="https://www.buymeacoffee.com/amkhrjee">Support via BuyMeACoffee</button>
             <button>Write a Review on WebStore</button>
         </div>
-
     </div>
 
 
