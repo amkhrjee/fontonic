@@ -57,8 +57,6 @@ fontSelectionForm.addEventListener("submit", async (e) => {
   });
 });
 
-// TODO: Redirections must be done by messaging content.js!
-
 paymentButtons[0].addEventListener("click", () => {
   chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
     chrome.tabs.sendMessage(tabs[0].id, {

@@ -1,4 +1,4 @@
-const logFontFamily = (node, sansSerif, serif, monospace) => {
+const changeFontFamily = (node, serif, sansSerif, monospace) => {
   if (node.nodeType === 1) {
     const computedStyle = window.getComputedStyle(node);
     const fontFamily = computedStyle.getPropertyValue("font-family");
@@ -16,7 +16,7 @@ const logFontFamily = (node, sansSerif, serif, monospace) => {
 
   // Recursively process child nodes
   for (const childNode of node.childNodes) {
-    logFontFamily(childNode, sansSerif, serif, monospace);
+    changeFontFamily(childNode, serif, sansSerif, monospace);
   }
 };
 
@@ -30,7 +30,7 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
     console.log("Serif: ", serif);
     console.log("Sans-Serif: ", sans_serif);
     console.log("Monospace: ", monospace);
-    logFontFamily(document.body, serif, sans_serif, monospace);
+    changeFontFamily(document.body, serif, sans_serif, monospace);
   } else if (req.type === "redirect") {
     console.log("here url: ", req.data.redirect_url);
     window.open(req.data.redirect_url, "_blank");
