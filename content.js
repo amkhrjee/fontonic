@@ -32,5 +32,8 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
     console.log("Sans-Serif: ", sans_serif);
     console.log("Monospace: ", monospace);
     logFontFamily(document.body, serif, sans_serif, monospace);
+  } else if (req.type === "redirect") {
+    console.log("here url: ", req.data.redirect_url);
+    window.open(req.data.redirect_url, "_blank");
   }
 });

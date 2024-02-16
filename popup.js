@@ -56,18 +56,24 @@ fontSelectionForm.addEventListener("submit", async (e) => {
 
 // TODO: Redirections must be done by messaging content.js!
 
-// paymentButtons[0].addEventListener("click", () => {
-//   // supportPage.innerHTML = window.location.toString();
-//   // window.location.href ="https://paypal.me/amkhrjee?country.x=IN&locale.x=en_GB"; //prettier-ignore
-// });
+paymentButtons[0].addEventListener("click", () => {
+  chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+    chrome.tabs.sendMessage(tabs[0].id, {
+      type: "redirect",
+      data: {
+        redirect_url: "https://paypal.me/amkhrjee?country.x=IN&locale.x=en_GB",
+      },
+    });
+  });
+});
 
-// applyButton.addEventListener("click", () => {
-//   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-//     chrome.tabs.sendMessage(tabs[0].id, {
-//       action: "applyFont",
-//       sansSerif: sansSerifValue,
-//       serif: serifValue,
-//       monospace: monospaceValue,
-//     });
-//   });
-// });
+paymentButtons[1].addEventListener("click", () => {
+  chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+    chrome.tabs.sendMessage(tabs[0].id, {
+      type: "redirect",
+      data: {
+        redirect_url: "https://www.buymeacoffee.com/amkhrjee",
+      },
+    });
+  });
+});
