@@ -1,0 +1,32 @@
+{
+  "name": "interize",
+  "version": "1.0.0",
+  "description": "Change font to Inter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amkhrjee/interize.git"
+  },
+  "keywords": [
+    "inter",
+    "browser",
+    "extension",
+    "ui",
+    "customization"
+  ],
+  "author": "amkhrjee",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/amkhrjee/interize/issues"
+  },
+  "homepage": "https://github.com/amkhrjee/interize#readme",
+  "dependencies": {
+    "chrome-types": "^0.1.266"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5"
+  }
+}

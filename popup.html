@@ -1,0 +1,166 @@
+<html>
+
+<head>
+    <title>Fontonic</title>
+    <meta charset='UTF-8' />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap');
+
+        body {
+            background-color: #1f221b;
+            color: #9cd57b;
+            min-width: 18rem;
+            font-family: 'Bricolage Grotesque', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        .wrapper {
+            padding-inline: 0.2rem;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: 60% 40%;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        input {
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        label {
+            font-size: 1rem;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        .head {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .title {
+            display: flex;
+            align-items: center;
+            color: #ff914c;
+        }
+
+        .title>img {
+            height: 32px;
+        }
+
+        .support>button {
+            color: #174700;
+            background-color: #92ca71;
+            display: flex;
+            align-items: center;
+            border-radius: 24px;
+            padding: 0.5rem;
+            cursor: pointer;
+        }
+
+        p {
+            font-size: 0.8rem;
+        }
+
+        a {
+            color: #bccbaf;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 24px;
+            background-color: #48553f;
+            color: #bccbaf;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+        }
+
+        .apply {
+            margin-top: 0.8rem;
+            margin-bottom: 0;
+        }
+
+        .support-slide {
+            padding-inline: 0.5rem;
+            left: 0;
+            top: 6rem;
+            position: absolute;
+            transform: translateX(18rem);
+            transition: transform 0.5s ease;
+            visibility: hidden;
+        }
+
+        .apply:hover {
+            color: #9cd57b;
+        }
+
+        .support-slide>button:hover {
+            color: #9cd57b;
+        }
+
+        .support-slide>button {
+            margin-top: 0.5rem;
+            padding: 1rem;
+        }
+
+        .main {
+            transition: opacity 0.5s ease;
+        }
+    </style>
+    <script defer src="./popup.js"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="head">
+            <div class="title">
+                <img src="./res/icons/favicon-96x96.png">
+                <h2>Fontonic</h2>
+            </div>
+            <div class="support">
+                <button><span class="material-symbols-outlined">
+                        favorite
+                    </span><span class="support-btn-text">Support</span></button>
+            </div>
+        </div>
+        <div class="main">
+            <p>Only applies fonts from the ones that are already available on your system. To download more fonts visit
+                <a href="https://fonts.google.com">Google Fonts</a> or any other font repository of your choice.
+            </p>
+            <form name="fonts">
+                <label for="sans-serif">Sans-serif font</label>
+                <input id="sans-serif" name="sans-serif" type="text">
+                <label for="serif">Serif font</label>
+                <input id="serif" name="serif" type="text">
+                <label for="monospace">Monospace font</label>
+                <input id="monospace" name="monospace" type="text">
+            </form>
+            <button class="apply">Apply Selection</button>
+        </div>
+
+        <div class="support-slide">
+            <button>Support via PayPal</button>
+            <button href="https://www.buymeacoffee.com/amkhrjee">Support via BuyMeACoffee</button>
+            <button>Write a Review on WebStore</button>
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>

@@ -1,10 +1,22 @@
 {
     "manifest_version": 3,
-    "name": "Interize",
-    "description": "Change font to Inter",
+    "name": "Fontonic",
+    "description": "Change fonts to your liking!",
     "version": "1.0",
     "action": {
-        "default_popup": "index.html",
-        "default_icon": "./res/Interize.png"
-    }
+        "default_icon": {
+            "16": "./res/icons/favicon-16x16.png",
+            "32": "./res/icons/favicon-32x32.png",
+            "96": "./res/icons/favicon-96x96.png"
+        },
+        "default_title": "This is a tooltip!",
+        "default_popup": "./popup.html"
+    },
+    "background": {
+        "service_worker": "./background.js"
+    },
+    "permissions": [
+        "activeTab",
+        "scripting"
+    ]
 }
