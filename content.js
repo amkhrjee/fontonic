@@ -5,12 +5,11 @@ const logFontFamily = (node, sansSerif, serif, monospace) => {
 
     if (fontFamily) {
       if (fontFamily.includes("sans-serif")) {
-        node.style.fontFamily = `'${sansSerif}', system-ui`;
-        // console.log(`${sansSerif}, system-ui`);
+        node.style.fontFamily = `'${sansSerif}', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif`;
       } else if (fontFamily.includes("serif")) {
-        node.style.fontFamily = `'${serif}', system-ui`;
+        node.style.fontFamily = `'${serif}', 'Times New Roman', Times, serif`;
       } else if (fontFamily.includes("monospace")) {
-        node.style.fontFamily = `'${monospace}', Consolas, system-ui`;
+        node.style.fontFamily = `'${monospace}', 'Cascadia Code', 'Consolas', 'Courier New', Courier, monospace`;
       }
     }
   }

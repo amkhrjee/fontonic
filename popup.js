@@ -40,6 +40,9 @@ fontSelectionForm.addEventListener("submit", async (e) => {
   const sansSerifValue = fontSelectionForm.elements["sans-serif"].value;
   const monospaceValue = fontSelectionForm.elements["monospace"].value;
   applyButton.innerHTML = "✔ Applied";
+  setTimeout(() => {
+    applyButton.innerHTML = "Apply Selection";
+  }, 2000);
 
   chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
     let message = {
