@@ -25,14 +25,26 @@
 
         form {
             display: grid;
-            grid-template-columns: 60% 40%;
+            grid-template-columns: 50% 50%;
             justify-content: space-between;
             align-items: center;
+            row-gap: 0.5rem;
         }
 
         input {
             font-family: inherit;
             font-size: 1rem;
+            background-color: #1e4d4d;
+            border-radius: 4px;
+            border: none;
+            outline: none;
+            padding: 0.2rem;
+            color: #9fcfd0;
+            width: 100%;
+        }
+
+        input:focus {
+            border: none;
         }
 
         label {
@@ -143,11 +155,11 @@
             </p>
             <form name="fonts">
                 <label for="sans-serif">Sans-serif font</label>
-                <input id="sans-serif" name="sans-serif" type="text">
+                <input spellcheck="false" id="sans-serif" name="sans-serif" type="text">
                 <label for="serif">Serif font</label>
-                <input id="serif" name="serif" type="text">
+                <input spellcheck="false" id="serif" name="serif" type="text">
                 <label for="monospace">Monospace font</label>
-                <input id="monospace" name="monospace" type="text">
+                <input spellcheck="false" id="monospace" name="monospace" type="text">
             </form>
             <button class="apply">Apply Selection</button>
         </div>

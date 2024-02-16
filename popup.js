@@ -34,10 +34,12 @@ supportButton.addEventListener("click", () => {
   }
 });
 
-paymentButtons[0].addEventListener("click", () => {
-  window.location.href =
-    "https://paypal.me/amkhrjee?country.x=IN&locale.x=en_GB";
-});
+// TODO: Redirections must be done by messaging content.js!
+
+// paymentButtons[0].addEventListener("click", () => {
+//   // supportPage.innerHTML = window.location.toString();
+//   // window.location.href ="https://paypal.me/amkhrjee?country.x=IN&locale.x=en_GB"; //prettier-ignore
+// });
 
 // applyButton.addEventListener("click", () => {
 //   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
