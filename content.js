@@ -7,21 +7,21 @@ const changeFontFamily = (node, serif, sansSerif, monospace, doRestore) => {
 
     if (fontFamily) {
       if (fontFamily.includes("sans-serif")) {
-        if (!doRestore) {
+        if (!doRestore || sansSerif != "Default") {
           originalSansSerif = fontFamily;
           node.style.fontFamily = `'${sansSerif}', ${originalSansSerif}`;
         } else {
           node.style.fontFamily = `${originalSansSerif}`;
         }
       } else if (fontFamily.includes("serif")) {
-        if (!doRestore) {
+        if (!doRestore || serif != "Default") {
           originalSerif = fontFamily;
           node.style.fontFamily = `'${serif}', ${originalSerif}`;
         } else {
           node.style.fontFamily = `${originalSerif}`;
         }
       } else if (fontFamily.includes("monospace")) {
-        if (!doRestore) {
+        if (!doRestore || monospace != "Default") {
           originalMonospace = fontFamily;
           node.style.fontFamily = `'${monospace}', ${originalMonospace}`;
         } else {

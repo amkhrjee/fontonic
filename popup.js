@@ -78,6 +78,7 @@ restoreButton.addEventListener("click", async () => {
       monospace: "",
     }
   );
+  document.querySelector(".help").style.display = "block";
 });
 // Pause Button
 let isPaused = false;
@@ -137,15 +138,25 @@ supportButton.addEventListener("click", () => {
 
 fontSelectionForm.addEventListener("submit", async (e) => {
   e.preventDefault();
+  document.querySelector(".help").style.display = "none";
   const serifValue = serifSelect.value;
   const sansSerifValue = sansSerifSelect.value;
-  const monospaceValue = sansSerifSelect.value;
-  control.style.display = "flex";
-  applyButton.innerHTML = "✔ Applied";
-  setTimeout(() => {
-    applyButton.innerHTML = "Apply Selection";
-  }, 2000);
+  const monospaceValue = monospaceSelect.value;
 
+  if (!serifValue.length && !sansSerifValue.length && !monospaceValue.length) {
+    applyButton.innerHTML = "No Changes Made";
+    applyButton.style.color = "#ffb6ad";
+    setTimeout(() => {
+      applyButton.innerHTML = "Apply Selection";
+      applyButton.style.color = "#bccbaf";
+    }, 1000);
+  } else {
+    applyButton.innerHTML = "✔ Applied";
+    setTimeout(() => {
+      applyButton.innerHTML = "Apply Selection";
+    }, 2000);
+  }
+  console.log("MonoSpace Value", monospaceValue);
   chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
     console.log("Popup.js -- tabs data", tabs);
     if (tabs) {
@@ -153,9 +164,9 @@ fontSelectionForm.addEventListener("submit", async (e) => {
         type: "apply_font",
         url: tabs[0].url,
         data: {
-          serif: serifValue,
-          sans_serif: sansSerifValue,
-          monospace: monospaceValue,
+          serif: serifValue.length ? serifValue : "Default",
+          sans_serif: sansSerifValue.length ? sansSerifValue : "Default",
+          monospace: monospaceValue.length ? monospaceValue : "Default",
         },
       };
       chrome.tabs.sendMessage(tabs[0].id, message);
@@ -168,11 +179,14 @@ fontSelectionForm.addEventListener("submit", async (e) => {
         monospace: message.data.monospace,
       };
       console.log("Popup.js -- Saving font data into Sync Storage...");
-      chrome.storage.sync.set({ [domain]: fontData }).then(() => {
-        if (chrome.runtime.lastError)
-          console.log("Error in storing value to Sync Storage");
-        console.log("Stored in Sync Storage!");
-      });
+      if (serifValue.length || sansSerifValue.length || monospaceValue.length) {
+        control.style.display = "flex";
+        chrome.storage.sync.set({ [domain]: fontData }).then(() => {
+          if (chrome.runtime.lastError)
+            console.log("Error in storing value to Sync Storage");
+          console.log("Stored in Sync Storage!");
+        });
+      }
     }
   });
 });
