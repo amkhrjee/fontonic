@@ -16,7 +16,8 @@
         "activeTab",
         "scripting",
         "webNavigation",
-        "storage"
+        "storage",
+        "tabs"
     ],
     "content_scripts": [
         {
@@ -28,5 +29,8 @@
                 "./content.js"
             ]
         }
-    ]
+    ],
+    "background": {
+        "service_worker": "./background.js"
+    }
 }

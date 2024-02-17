@@ -11,17 +11,21 @@ const supportButtonText = document.querySelector(".support-btn-text");
 const paymentButtons = document.querySelectorAll(".support-slide>button");
 
 // Populating placeholder values
-
 chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-  const domain = [new URL(tabs[0].url).hostname];
+  const domain = new URL(tabs[0].url).hostname;
+  console.log("From the popup: ", domain);
   chrome.storage.sync.get([domain]).then((result) => {
     if (chrome.runtime.lastError)
       console.log("Error in getting data from Sync Storage");
 
     const fontData = result[domain];
-    fontSelectionForm.elements["serif"].placeholder = "Test";
-    fontSelectionForm.elements["sans-serif"].placeholder = "Test 2";
-    fontSelectionForm.elements["monospace"].placeholder = "test 3";
+    console.log(fontData);
+    if (fontData) {
+      fontSelectionForm.elements["serif"].placeholder = fontData.serif;
+      fontSelectionForm.elements["sans-serif"].placeholder =
+        fontData.sans_serif;
+      fontSelectionForm.elements["monospace"].placeholder = fontData.monospace;
+    }
   });
 });
 
@@ -59,27 +63,34 @@ fontSelectionForm.addEventListener("submit", async (e) => {
     applyButton.innerHTML = "Apply Selection";
   }, 2000);
 
-  // // Keep the values
-  // fontSelectionForm.elements["serif"].value = serifValue;
-  // fontSelectionForm.elements["sans-serif"].value = sansSerifValue;
-  // fontSelectionForm.elements["monospace"].value = monospaceValue;
-
-  // // Update placeholder
-  // fontSelectionForm.elements["serif"].placeholder = serifValue;
-  // fontSelectionForm.elements["sans-serif"].placeholder = sansSerifValue;
-  // fontSelectionForm.elements["monospace"].placeholder = monospaceValue;
-
   chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-    let message = {
-      type: "apply_font",
-      url: tabs[0].url,
-      data: {
-        serif: serifValue,
-        sans_serif: sansSerifValue,
-        monospace: monospaceValue,
-      },
-    };
-    chrome.tabs.sendMessage(tabs[0].id, message);
+    console.log("Popup.js -- tabs data", tabs);
+    if (tabs) {
+      let message = {
+        type: "apply_font",
+        url: tabs[0].url,
+        data: {
+          serif: serifValue,
+          sans_serif: sansSerifValue,
+          monospace: monospaceValue,
+        },
+      };
+      chrome.tabs.sendMessage(tabs[0].id, message);
+
+      // Saving in the Sync Storage
+      const domain = new URL(tabs[0].url).hostname;
+      const fontData = {
+        serif: message.data.serif,
+        sans_serif: message.data.sans_serif,
+        monospace: message.data.monospace,
+      };
+      console.log("Popup.js -- Saving font data into Sync Storage...");
+      chrome.storage.sync.set({ [domain]: fontData }).then(() => {
+        if (chrome.runtime.lastError)
+          console.log("Error in storing value to Sync Storage");
+        console.log("Stored in Sync Storage!");
+      });
+    }
   });
 });
 
@@ -103,20 +114,4 @@ paymentButtons[1].addEventListener("click", () => {
       },
     });
   });
-});
-
-chrome.runtime.onMessage.addListener((message, sender, res) => {
-  if (message.type === "value_set") {
-    const fontData = {
-      serif: message.data.serif,
-      sans_serif: message.data.sans_serif,
-      monospace: message.data.monospace,
-    };
-    const domain = message.data.domain;
-    chrome.storage.sync.set({ domain: fontData }).then(() => {
-      if (chrome.runtime.lastError)
-        console.log("Error in storing value to Sync Storage");
-      console.log("Stored in Sync Storage!");
-    });
-  }
 });

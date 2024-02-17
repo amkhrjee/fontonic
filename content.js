@@ -25,17 +25,18 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
     const serif = req.data.serif;
     const sans_serif = req.data.sans_serif;
     const monospace = req.data.monospace;
-    const domain = new URL(req.url).hostname;
     changeFontFamily(document.body, serif, sans_serif, monospace);
-    chrome.runtime.sendMessage({
-      type: "value_set",
-      data: {
-        domain,
-        serif,
-        sans_serif,
-        monospace,
-      },
-    });
+    // const domain = new URL(req.url).hostname;
+
+    // chrome.runtime.sendMessage({
+    //   type: "value_set",
+    //   data: {
+    //     domain,
+    //     serif,
+    //     sans_serif,
+    //     monospace,
+    //   },
+    // });
   } else if (req.type === "redirect") {
     console.log("here url: ", req.data.redirect_url);
     window.open(req.data.redirect_url, "_blank");
@@ -44,14 +45,16 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
 
 chrome.storage.sync.get([window.location.hostname]).then((result) => {
   const fontData = result[window.location.hostname];
-  console.log(fontData);
-  if (Object.keys(fontData).length) {
-    console.log("Applying fonts!");
-    changeFontFamily(
-      document.body,
-      fontData.serif,
-      fontData.sans_serif,
-      fontData.monospace
-    );
+  console.log("Content.js -- Font data: ", fontData);
+  if (fontData) {
+    if (Object.keys(fontData).length) {
+      console.log("Applying fonts!");
+      changeFontFamily(
+        document.body,
+        fontData.serif,
+        fontData.sans_serif,
+        fontData.monospace
+      );
+    }
   }
 });
