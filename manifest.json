@@ -17,7 +17,8 @@
         "scripting",
         "webNavigation",
         "storage",
-        "tabs"
+        "tabs",
+        "fontSettings"
     ],
     "content_scripts": [
         {

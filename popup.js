@@ -1,5 +1,23 @@
-// Form
 const fontSelectionForm = document.forms["fonts"];
+// Experiment
+const serifSelect = fontSelectionForm.elements["serif"];
+const sansSerifSelect = fontSelectionForm.elements["sans_serif"];
+const monospaceSelect = fontSelectionForm.elements["monospace"];
+// load locally installed fonts
+const populateFonts = (element) => {
+  chrome.fontSettings.getFontList((fonts) => {
+    fonts.forEach((font) => {
+      const option = document.createElement("option");
+      option.value = font.displayName;
+      option.textContent = font.displayName;
+      element.appendChild(option);
+    });
+  });
+};
+
+populateFonts(serifSelect);
+populateFonts(sansSerifSelect);
+populateFonts(monospaceSelect);
 
 // UI Elements
 const applyButton = document.querySelector(".apply");
@@ -9,6 +27,31 @@ const supportButton = document.querySelector(".support>button");
 const supportButtonIcon = document.querySelector(".material-symbols-outlined");
 const supportButtonText = document.querySelector(".support-btn-text");
 const paymentButtons = document.querySelectorAll(".support-slide>button");
+const pauseButton = document.querySelector("#pause-btn");
+const control = document.querySelector(".control");
+const serifPlaceholder = document.querySelector("#serif_placeholder");
+const sansSerifPlaceholder = document.querySelector("#sans_serif_placeholder");
+const monospacePlaceholder = document.querySelector("#monospace_placeholder");
+const restoreButton = document.querySelector("#restore-btn");
+
+/* Restore Button
+  - delete the domain from sync storage
+  - apply the original fonts
+*/
+// Pause Button
+let isPaused = false;
+pauseButton.addEventListener("click", () => {
+  if (!isPaused) {
+    document.querySelector("#pause-btn>.material-symbols-outlined").innerHTML =
+      "play_arrow";
+    document.querySelector("#pause-btn>.btn-text").innerHTML = "Resume";
+  } else {
+    document.querySelector("#pause-btn>.material-symbols-outlined").innerHTML =
+      "pause";
+    document.querySelector("#pause-btn>.btn-text").innerHTML = "Pause";
+  }
+  isPaused = !isPaused;
+});
 
 // Populating placeholder values
 chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
@@ -21,10 +64,15 @@ chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
     const fontData = result[domain];
     console.log(fontData);
     if (fontData) {
-      fontSelectionForm.elements["serif"].placeholder = fontData.serif;
-      fontSelectionForm.elements["sans-serif"].placeholder =
-        fontData.sans_serif;
-      fontSelectionForm.elements["monospace"].placeholder = fontData.monospace;
+      // Placeholder text content
+      serifPlaceholder.innerHTML = fontData.serif;
+      sansSerifPlaceholder.innerHTML = fontData.sans_serif;
+      monospacePlaceholder.innerHTML = fontData.monospace;
+
+      // Placeholder value
+      serifPlaceholder.value = fontData.serif;
+      sansSerifPlaceholder.value = fontData.sans_serif;
+      monospacePlaceholder.value = fontData.monospace;
     }
   });
 });
@@ -55,9 +103,10 @@ supportButton.addEventListener("click", () => {
 
 fontSelectionForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-  const serifValue = fontSelectionForm.elements["serif"].value;
-  const sansSerifValue = fontSelectionForm.elements["sans-serif"].value;
-  const monospaceValue = fontSelectionForm.elements["monospace"].value;
+  const serifValue = serifSelect.value;
+  const sansSerifValue = sansSerifSelect.value;
+  const monospaceValue = sansSerifSelect.value;
+  control.style.display = "block";
   applyButton.innerHTML = "✔ Applied";
   setTimeout(() => {
     applyButton.innerHTML = "Apply Selection";

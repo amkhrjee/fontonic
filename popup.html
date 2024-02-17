@@ -134,6 +134,42 @@
         .main {
             transition: opacity 0.5s ease;
         }
+
+        .control {
+            display: none;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .icon-btn {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+            gap: 0.2rem;
+        }
+
+        .icon-btn:hover {
+            color: #9cd57b;
+        }
+
+        select {
+            font-family: inherit;
+            font-size: 1rem;
+            background-color: #1e4d4d;
+            border-radius: 4px;
+            border: none;
+            outline: none;
+            padding: 0.2rem;
+            color: #9fcfd0;
+            width: 100%;
+        }
+
+        .material-symbols-outlined {
+            font-size: 1rem;
+        }
     </style>
     <script defer src="./popup.js"></script>
 </head>
@@ -146,24 +182,40 @@
                 <h2>Fontonic</h2>
             </div>
             <div class="support">
-                <button><span class="material-symbols-outlined">
+                <button><span style="font-size: 1.2rem;margin-right: 0.2rem;" class="material-symbols-outlined">
                         favorite
                     </span><span class="support-btn-text">Support</span></button>
             </div>
         </div>
         <div class="main">
-            <p>Only applies fonts from the ones that are already available on your system. To download more fonts visit
-                <a href="https://fonts.google.com">Google Fonts</a> or any other font repository of your choice.
+            <p>Fontonic only supports locally installed fonts as of now. If you want support for online font
+                repositories (like <a>Google Fonts</a>) then please let me know in the WebStore reviews.
             </p>
             <form name="fonts">
                 <label for="serif">Serif</label>
-                <input placeholder="Default" spellcheck="false" id="serif" name="serif" type="text">
-                <label for="sans-serif">Sans-serif</label>
-                <input placeholder="Default" spellcheck="false" id="sans-serif" name="sans-serif" type="text">
+                <select id="serif" name="serif">
+                    <option id="serif_placeholder" value="">Default</option>
+                </select>
+                <label for="sans_serif">Sans-serif</label>
+                <select id="sans_serif" name="sans_serif">
+                    <option id="sans_serif_placeholder" value="">Default</option>
+                </select>
                 <label for="monospace">Monospace</label>
-                <input placeholder="Default" spellcheck="false" id="monospace" name="monospace" type="text">
+                <select id="monospace" name="monospace">
+                    <option id="monospace_placeholder" value="">Default</option>
+                </select>
                 <button type="submit" class="apply">Apply Selection</button>
             </form>
+            <div class="control">
+                <button id="pause-btn" class="icon-btn">
+                    <span class="material-symbols-outlined">pause</span>
+                    <span class="btn-text">Pause</span>
+                </button>
+                <button class="icon-btn">
+                    <span class="material-symbols-outlined">history</span>
+                    <span id="restore-btn" class="btn-text">Restore</span>
+                </button>
+            </div>
         </div>
         <div class="support-slide">
             <button>Support via PayPal</button>
