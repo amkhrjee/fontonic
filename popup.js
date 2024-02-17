@@ -46,12 +46,6 @@ const updatePlaceholders = (innerText, value) => {
   monospacePlaceholder.value = value.monospace;
 };
 
-/* Restore Button
-  - delete the domain from sync storage
-  - apply the original fonts
-  - hide the pause and restore buttons
-*/
-
 restoreButton.addEventListener("click", async () => {
   // Restoring the original fonts
   let [tab] = await chrome.tabs.query({
@@ -204,10 +198,3 @@ paymentButtons[1].addEventListener("click", () => {
     });
   });
 });
-
-// chrome.runtime.onMessage.addListener((msg, sender, res) => {
-//   if (msg.type === "show_control") {
-//     console.log("Holaaaa");
-//     control.style.display = "flex";
-//   }
-// });

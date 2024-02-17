@@ -1,8 +1,3 @@
-// const isPopupOpen = () => {
-//   const popupViews = chrome.extension.getViews({ type: "popup" });
-//   return popupViews && popupViews.length > 0;
-// };
-
 const updateFonts = (tab) => {
   const domain = new URL(tab.url).hostname;
   chrome.storage.sync
@@ -51,17 +46,3 @@ chrome.tabs.onUpdated.addListener((tab_id, change_info, tab) => {
   console.log("Service Worker -- Tab Updated: ", tab_id);
   updateFonts(tab);
 });
-
-// if (isPopupOpen()) {
-//   chrome.tabs
-//     .sendMessage(tab.id, { type: "show_control" })
-//     .then(() => {
-//       console.log("Service Worker -- Message sent for showing Controls");
-//     })
-//     .catch((error) => {
-//       console.error(
-//         "SW -- Message for applying fonts could not be sent due to ",
-//         error
-//       );
-//     });
-// }
