@@ -1,22 +1,39 @@
-const changeFontFamily = (node, serif, sansSerif, monospace) => {
+let originalSerif, originalSansSerif, originalMonospace;
+
+const changeFontFamily = (node, serif, sansSerif, monospace, doRestore) => {
   if (node.nodeType === 1) {
     const computedStyle = window.getComputedStyle(node);
     const fontFamily = computedStyle.getPropertyValue("font-family");
 
     if (fontFamily) {
       if (fontFamily.includes("sans-serif")) {
-        node.style.fontFamily = `'${sansSerif}', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif`;
+        if (!doRestore) {
+          originalSansSerif = fontFamily;
+          node.style.fontFamily = `'${sansSerif}', ${originalSansSerif}`;
+        } else {
+          node.style.fontFamily = `${originalSansSerif}`;
+        }
       } else if (fontFamily.includes("serif")) {
-        node.style.fontFamily = `'${serif}', 'Times New Roman', Times, serif`;
+        if (!doRestore) {
+          originalSerif = fontFamily;
+          node.style.fontFamily = `'${serif}', ${originalSerif}`;
+        } else {
+          node.style.fontFamily = `${originalSerif}`;
+        }
       } else if (fontFamily.includes("monospace")) {
-        node.style.fontFamily = `'${monospace}', 'Cascadia Code', 'Consolas', 'Courier New', Courier, monospace`;
+        if (!doRestore) {
+          originalMonospace = fontFamily;
+          node.style.fontFamily = `'${monospace}', ${originalMonospace}`;
+        } else {
+          node.style.fontFamily = `${originalMonospace}`;
+        }
       }
     }
   }
 
   // Recursively process child nodes
   for (const childNode of node.childNodes) {
-    changeFontFamily(childNode, serif, sansSerif, monospace);
+    changeFontFamily(childNode, serif, sansSerif, monospace, doRestore);
   }
 };
 
@@ -25,9 +42,11 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
     const serif = req.data.serif;
     const sans_serif = req.data.sans_serif;
     const monospace = req.data.monospace;
-    changeFontFamily(document.body, serif, sans_serif, monospace);
+    changeFontFamily(document.body, serif, sans_serif, monospace, false);
   } else if (req.type === "redirect") {
     console.log("here url: ", req.data.redirect_url);
     window.open(req.data.redirect_url, "_blank");
+  } else if (req.type === "restore") {
+    changeFontFamily(document.body, "", "", "", true);
   }
 });

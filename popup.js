@@ -34,10 +34,57 @@ const sansSerifPlaceholder = document.querySelector("#sans_serif_placeholder");
 const monospacePlaceholder = document.querySelector("#monospace_placeholder");
 const restoreButton = document.querySelector("#restore-btn");
 
+const updatePlaceholders = (innerText, value) => {
+  // Placeholder text content
+  serifPlaceholder.innerHTML = innerText.serif;
+  sansSerifPlaceholder.innerHTML = innerText.sans_serif;
+  monospacePlaceholder.innerHTML = innerText.monospace;
+
+  // Placeholder value
+  serifPlaceholder.value = value.serif;
+  sansSerifPlaceholder.value = value.sans_serif;
+  monospacePlaceholder.value = value.monospace;
+};
+
 /* Restore Button
   - delete the domain from sync storage
   - apply the original fonts
+  - hide the pause and restore buttons
 */
+
+restoreButton.addEventListener("click", async () => {
+  // Restoring the original fonts
+  let [tab] = await chrome.tabs.query({
+    active: true,
+    lastFocusedWindow: true,
+  });
+  if (tab) {
+    let message = {
+      type: "restore",
+    };
+    chrome.tabs.sendMessage(tab.id, message);
+  }
+  // Delete the font from Sync Storage
+  const domain = new URL(tab.url).hostname;
+  chrome.storage.sync.remove(domain, () => {
+    console.log("Successfully removed entries for domain: ");
+  });
+  // Hide the Pause and Restore Buttons
+  control.style.display = "none";
+  // Revert the placeholders to default
+  updatePlaceholders(
+    {
+      serif: "Default",
+      sans_serif: "Default",
+      monospace: "Default",
+    },
+    {
+      serif: "",
+      sans_serif: "",
+      monospace: "",
+    }
+  );
+});
 // Pause Button
 let isPaused = false;
 pauseButton.addEventListener("click", () => {
@@ -64,15 +111,8 @@ chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
     const fontData = result[domain];
     console.log(fontData);
     if (fontData) {
-      // Placeholder text content
-      serifPlaceholder.innerHTML = fontData.serif;
-      sansSerifPlaceholder.innerHTML = fontData.sans_serif;
-      monospacePlaceholder.innerHTML = fontData.monospace;
-
-      // Placeholder value
-      serifPlaceholder.value = fontData.serif;
-      sansSerifPlaceholder.value = fontData.sans_serif;
-      monospacePlaceholder.value = fontData.monospace;
+      updatePlaceholders(fontData, fontData);
+      control.style.display = "flex";
     }
   });
 });
@@ -90,7 +130,7 @@ supportButton.addEventListener("click", () => {
     isSupportPageOpen = !isSupportPageOpen;
   } else {
     supportButtonIcon.innerHTML = "favorite";
-    supportButtonText.innerHTML = "Support";
+    supportButtonText.innerHTML = "Sponsor";
     supportPage.style.transform = "translateX(18rem)";
     setTimeout(() => {
       supportPage.style.visibility = "hidden";
@@ -106,7 +146,7 @@ fontSelectionForm.addEventListener("submit", async (e) => {
   const serifValue = serifSelect.value;
   const sansSerifValue = sansSerifSelect.value;
   const monospaceValue = sansSerifSelect.value;
-  control.style.display = "block";
+  control.style.display = "flex";
   applyButton.innerHTML = "✔ Applied";
   setTimeout(() => {
     applyButton.innerHTML = "Apply Selection";
@@ -164,3 +204,10 @@ paymentButtons[1].addEventListener("click", () => {
     });
   });
 });
+
+// chrome.runtime.onMessage.addListener((msg, sender, res) => {
+//   if (msg.type === "show_control") {
+//     console.log("Holaaaa");
+//     control.style.display = "flex";
+//   }
+// });
