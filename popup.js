@@ -10,6 +10,7 @@ const populateFonts = (element) => {
       const option = document.createElement("option");
       option.value = font.displayName;
       option.textContent = font.displayName;
+      option.style.fontFamily = font.displayName;
       element.appendChild(option);
     });
   });
@@ -82,15 +83,57 @@ restoreButton.addEventListener("click", async () => {
 });
 // Pause Button
 let isPaused = false;
-pauseButton.addEventListener("click", () => {
+pauseButton.addEventListener("click", async () => {
+  let [tab] = await chrome.tabs.query({
+    active: true,
+    lastFocusedWindow: true,
+  });
+  console.log(tab);
   if (!isPaused) {
+    // Popup UI Change
     document.querySelector("#pause-btn>.material-symbols-outlined").innerHTML =
       "play_arrow";
     document.querySelector("#pause-btn>.btn-text").innerHTML = "Resume";
+    // Restore the defaults without deleting the font data
+    if (tab) {
+      let message = {
+        type: "restore",
+      };
+      console.log("Sending message from Pop");
+      chrome.tabs.sendMessage(tab.id, message);
+    }
   } else {
+    // Popup UI Change
     document.querySelector("#pause-btn>.material-symbols-outlined").innerHTML =
       "pause";
     document.querySelector("#pause-btn>.btn-text").innerHTML = "Pause";
+    // Apply the fonts in the Sync Storage
+    if (tab) {
+      const domain = new URL(tab.url).hostname;
+      chrome.storage.sync
+        .get([domain])
+        .then((result) => {
+          if (chrome.runtime.lastError)
+            console.log("Error in getting data from Sync Storage");
+
+          const fontData = result[domain];
+          console.log("Service Worker -- Font Data", fontData);
+          if (fontData) {
+            // Applying the font
+            let message = {
+              type: "apply_font",
+              data: {
+                serif: fontData.serif,
+                sans_serif: fontData.sans_serif,
+                monospace: fontData.monospace,
+              },
+            };
+          }
+        })
+        .catch(() => {
+          console.error("Popup -- Could not get key from storage");
+        });
+    }
   }
   isPaused = !isPaused;
 });
