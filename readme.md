@@ -1,3 +1,3 @@
-# Interize
+# Fontonic
 
-A browser extension for changing font to Inter for any website.
+A browser extension for changing fonts!
