@@ -10,7 +10,6 @@ const updateFonts = (tab) => {
       // Applying the font
       let message = {
         type: "apply_font",
-        url: tab.url,
         data: {
           serif: fontData.serif,
           sans_serif: fontData.sans_serif,
