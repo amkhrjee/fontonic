@@ -1,11 +1,3 @@
-<html>
-
-<head>
-    <title>Fontonic</title>
-    <meta charset='UTF-8' />
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
-    <style>
         @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap');
 
         body {
@@ -175,64 +167,3 @@
             text-align: center;
             font-size: 1.8rem;
         }
-    </style>
-    <script defer src="./js/popup.js"></script>
-</head>
-
-<body>
-    <div class="wrapper">
-        <div class="head">
-            <div class="title">
-                <img src="./res/icons/favicon-96x96.png">
-                <h2>Fontonic</h2>
-            </div>
-            <div class="support">
-                <button><span style="font-size: 1.2rem;margin-right: 0.2rem;" class="material-symbols-outlined">
-                        favorite
-                    </span><span class="support-btn-text">Sponsor</span></button>
-            </div>
-        </div>
-        <div class="main">
-            <p>Fontonic only supports locally installed fonts as of now. Support for online font
-                repositories (like <a>Google Fonts</a>) is coming soon.
-            </p>
-            <p>Tip: Refresh if you don't see the changes.</p>
-            <form name="fonts">
-                <label for="serif">Serif</label>
-                <select id="serif" name="serif">
-                    <option id="serif_placeholder" value="">Default</option>
-                </select>
-                <label for="sans_serif">Sans-serif</label>
-                <select id="sans_serif" name="sans_serif">
-                    <option id="sans_serif_placeholder" value="">Default</option>
-                </select>
-                <label for="monospace">Monospace</label>
-                <select id="monospace" name="monospace">
-                    <option id="monospace_placeholder" value="">Default</option>
-                </select>
-                <button type="submit" class="apply">Apply Selection</button>
-            </form>
-            <div class="control">
-                <button id="pause-btn" class="icon-btn">
-                    <span class="material-symbols-outlined">pause</span>
-                    <span class="btn-text">Pause</span>
-                </button>
-                <button class="icon-btn">
-                    <span class="material-symbols-outlined">history</span>
-                    <span id="restore-btn" class="btn-text">Restore</span>
-                </button>
-            </div>
-            <div class="help">
-                <p>Refresh to see changes</p>
-            </div>
-        </div>
-        <div class="support-slide">
-            <button>Support via PayPal</button>
-            <button>Support via BuyMeACoffee</button>
-            <button>Write a Review on WebStore</button>
-            <button>Contact Me</button>
-        </div>
-    </div>
-</body>
-
-</html>

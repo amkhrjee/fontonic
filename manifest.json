@@ -10,7 +10,7 @@
             "96": "./res/icons/favicon-96x96.png"
         },
         "default_title": "This is a tooltip!",
-        "default_popup": "./popup.html"
+        "default_popup": "./popup/popup.html"
     },
     "permissions": [
         "activeTab",
