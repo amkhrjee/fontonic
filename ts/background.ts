@@ -1,51 +1,32 @@
-let globalState = {
-  isPaused: false,
-};
-
-// let doRestore = false;
-
-const updateFonts = (tab: chrome.tabs.Tab) => {
-  const domain = new URL(tab.url!).hostname;
-  chrome.storage.sync
-    .get([domain])
-    .then((result) => {
-      const fontData = result[domain];
-      console.log("Service Worker -- Font Data", fontData);
-      if (fontData) {
-        // Applying the font
-        let message = {
-          type: "apply_font",
-          data: {
-            serif: fontData.serif,
-            sans_serif: fontData.sans_serif,
-            monospace: fontData.monospace,
-          },
-        };
-        chrome.tabs
-          .sendMessage(tab.id!, message)
-          .then(() => {
-            console.log("Service Worker -- Message sent for applying fonts");
-          })
-          .catch((error) => {
-            console.error(
-              "SW -- Message for applying fonts could not be sent due to ",
-              error
-            );
+chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+  if (message.action === "on-page-load") {
+    /*
+      Checks on page load whether the font for the domain already exists in the storage
+      If it does, then gets the font and applies it to the page
+    */
+    chrome.storage.sync
+      .get([message.domain])
+      .then((result) => {
+        const fontData = result[message.domain];
+        if (fontData) {
+          console.log("Font Found!");
+          sendResponse({
+            type: "apply_font",
+            data: {
+              serif: fontData.serif,
+              sans_serif: fontData.sans_serif,
+              monospace: fontData.monospace,
+            },
           });
-      }
-    })
-    .catch(() => {
-      console.error("SW -- Could not get key from storage");
-    });
-};
-
-// Appy fonts if already set for the domain
-chrome.tabs.onCreated.addListener((tab) => {
-  console.log("Service Worker -- Tab Created: ", tab.id);
-  updateFonts(tab);
-});
-
-chrome.tabs.onUpdated.addListener((tab_id, _change_info, tab) => {
-  console.log("Service Worker -- Tab Updated: ", tab_id);
-  updateFonts(tab);
+        } else {
+          console.error("Font Not Found");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+  // This must be returning true to keep listening
+  // read more: https://stackoverflow.com/a/56483156/12404524
+  return true;
 });

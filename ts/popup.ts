@@ -172,14 +172,14 @@ fontSelectionForm.addEventListener("submit", async (e) => {
     if (tabs) {
       let message = {
         type: "apply_font",
-        url: tabs[0].url,
         data: {
           serif: serifValue.length ? serifValue : "Default",
           sans_serif: sansSerifValue.length ? sansSerifValue : "Default",
           monospace: monospaceValue.length ? monospaceValue : "Default",
         },
       };
-      chrome.tabs.sendMessage(tabs[0].id!, message);
+      const port = chrome.tabs.connect(tabs[0].id);
+      port.postMessage(message);
 
       // Saving in the Sync Storage
       const domain = new URL(tabs[0].url!).hostname;

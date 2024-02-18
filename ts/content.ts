@@ -46,18 +46,36 @@ const changeFontFamily = (
   }
 };
 
-chrome.runtime.onMessage.addListener((req, _sender, _res) => {
-  if (req.type === "apply_font") {
-    const serif = req.data.serif;
-    const sans_serif = req.data.sans_serif;
-    const monospace = req.data.monospace;
+let message = {
+  action: "on-page-load",
+  domain: window.location.hostname,
+};
+
+chrome.runtime.sendMessage(message, undefined, (response) => {
+  console.log("Received response from service worker: ", response);
+  if (response.type === "apply_font") {
+    const serif = response.data.serif;
+    const sans_serif = response.data.sans_serif;
+    const monospace = response.data.monospace;
     changeFontFamily(document.body, serif, sans_serif, monospace, false);
-  } else if (req.type === "redirect") {
-    console.log("here url: ", req.data.redirect_url);
-    window.open(req.data.redirect_url, "_blank");
-  } else if (req.type === "restore") {
+  } else if (response.type === "redirect") {
+    console.log("here url: ", response.data.redirect_url);
+    window.open(response.data.redirect_url, "_blank");
+  } else if (response.type === "restore") {
     console.log("Message received for restoring fonts...");
     changeFontFamily(document.body, "", "", "", true);
   }
-  return true;
+});
+
+chrome.runtime.onConnect.addListener((port) => {
+  port.onMessage.addListener((message) => {
+    {
+      if (message.type === "apply_font") {
+        const serif = message.data.serif;
+        const sans_serif = message.data.sans_serif;
+        const monospace = message.data.monospace;
+        changeFontFamily(document.body, serif, sans_serif, monospace, false);
+      }
+    }
+  });
 });
