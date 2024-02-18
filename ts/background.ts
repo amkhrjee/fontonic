@@ -19,6 +19,9 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
             },
           });
         } else {
+          sendResponse({
+            type: "none",
+          });
           console.log("Font Not Found");
         }
       })

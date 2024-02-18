@@ -59,12 +59,8 @@ chrome.runtime.sendMessage(message, undefined, (response) => {
     const sans_serif = response.data.sans_serif;
     const monospace = response.data.monospace;
     changeFontFamily(document.body, serif, sans_serif, monospace, false);
-  } else if (response.type === "redirect") {
-    console.log("here url: ", response.data.redirect_url);
-    window.open(response.data.redirect_url, "_blank");
-  } else if (response.type === "restore") {
-    console.log("Message received for restoring fonts...");
-    changeFontFamily(document.body, "", "", "", true);
+  } else if (response.type === "none") {
+    console.log("Font not set for site");
   }
 });
 
@@ -77,6 +73,13 @@ chrome.runtime.onConnect.addListener((port) => {
         const sans_serif = message.data.sans_serif;
         const monospace = message.data.monospace;
         changeFontFamily(document.body, serif, sans_serif, monospace, false);
+      } else if (message.type === "restore") {
+        console.log("Message received for restoring fonts...");
+        changeFontFamily(document.body, "", "", "", true);
+      } else if (message.type === "redirect") {
+        console.log("Received Redirect Request");
+        console.log("here url: ", message.data.redirect_url);
+        window.open(message.data.redirect_url, "_blank");
       }
     }
   });

@@ -58,6 +58,8 @@ type fontData = {
   monospace: string;
 };
 
+let tab_id: number;
+
 const updatePlaceholders = (innerText: fontData, value: fontData) => {
   // Placeholder text content
   serifPlaceholder!.innerHTML = innerText.serif;
@@ -70,6 +72,30 @@ const updatePlaceholders = (innerText: fontData, value: fontData) => {
   monospacePlaceholder!.value = value.monospace;
 };
 
+// Populating placeholder values
+chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+  tab_id = tabs[0].id;
+  const domain = new URL(tabs[0].url!).hostname;
+  console.log("From the popup: ", domain);
+  chrome.storage.sync.get([domain]).then((result) => {
+    const fontData = result[domain];
+    console.log(fontData);
+    if (fontData) {
+      updatePlaceholders(fontData, fontData);
+      control.style.display = "flex";
+    }
+  });
+});
+
+// Setting state of pauseButton at PopUp open
+
+pauseButton.addEventListener("click", () => {
+  const port = chrome.tabs.connect(tab_id);
+  port.postMessage({
+    type: "restore",
+  });
+});
+
 restoreButton.addEventListener("click", async () => {
   // Restoring the original fonts
   let [tab] = await chrome.tabs.query({
@@ -80,7 +106,8 @@ restoreButton.addEventListener("click", async () => {
     let message = {
       type: "restore",
     };
-    chrome.tabs.sendMessage(tab.id!, message);
+    const port = chrome.tabs.connect(tab.id);
+    port.postMessage(message);
     // Delete the font from Sync Storage
     const domain = new URL(tab.url!).hostname;
     chrome.storage.sync.remove(domain, () => {
@@ -104,22 +131,6 @@ restoreButton.addEventListener("click", async () => {
 
     helpDiv.style.display = "block";
   }
-});
-
-// TODO: Add Pause Button Functionality
-
-// Populating placeholder values
-chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-  const domain = new URL(tabs[0].url!).hostname;
-  console.log("From the popup: ", domain);
-  chrome.storage.sync.get([domain]).then((result) => {
-    const fontData = result[domain];
-    console.log(fontData);
-    if (fontData) {
-      updatePlaceholders(fontData, fontData);
-      control.style.display = "flex";
-    }
-  });
 });
 
 // Show Support Page
@@ -201,7 +212,8 @@ fontSelectionForm.addEventListener("submit", async (e) => {
 
 paymentButtons[0].addEventListener("click", () => {
   chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-    chrome.tabs.sendMessage(tabs[0].id!, {
+    const port = chrome.tabs.connect(tabs[0].id);
+    port.postMessage({
       type: "redirect",
       data: {
         redirect_url: "https://paypal.me/amkhrjee?country.x=IN&locale.x=en_GB",
@@ -212,10 +224,23 @@ paymentButtons[0].addEventListener("click", () => {
 
 paymentButtons[1].addEventListener("click", () => {
   chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-    chrome.tabs.sendMessage(tabs[0].id!, {
+    const port = chrome.tabs.connect(tabs[0].id);
+    port.postMessage({
       type: "redirect",
       data: {
         redirect_url: "https://www.buymeacoffee.com/amkhrjee",
+      },
+    });
+  });
+});
+
+paymentButtons[3].addEventListener("click", () => {
+  chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+    const port = chrome.tabs.connect(tabs[0].id);
+    port.postMessage({
+      type: "redirect",
+      data: {
+        redirect_url: "https://linktr.ee/amkhrjee",
       },
     });
   });
