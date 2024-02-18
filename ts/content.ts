@@ -51,6 +51,7 @@ let message = {
   domain: window.location.hostname,
 };
 
+// Tries to load font when page is loaded
 chrome.runtime.sendMessage(message, undefined, (response) => {
   console.log("Received response from service worker: ", response);
   if (response.type === "apply_font") {
@@ -67,6 +68,7 @@ chrome.runtime.sendMessage(message, undefined, (response) => {
   }
 });
 
+// Listens for the popup buttons
 chrome.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener((message) => {
     {
