@@ -105,44 +105,8 @@ restoreButton.addEventListener("click", async () => {
     helpDiv.style.display = "block";
   }
 });
-// Pause Button
-// let isPaused = false; // I have to maintain this global state
-pauseButton.addEventListener("click", async () => {
-  let [tab] = await chrome.tabs.query({
-    active: true,
-    lastFocusedWindow: true,
-  });
-  console.log(tab);
-  if (!isPaused) {
-    // Popup UI Change
-    document.querySelector("#pause-btn>.material-symbols-outlined")!.innerHTML =
-      "play_arrow";
-    document.querySelector("#pause-btn>.btn-text")!.innerHTML = "Resume";
-    // Restore the defaults without deleting the font data
-    if (tab) {
-      let message = {
-        type: "restore",
-      };
-      console.log("Sending message from Pop");
-      chrome.tabs.sendMessage(tab.id!, message);
-    }
-    // Prompt to refresh to see changes
-  } else {
-    // Popup UI Change
-    document.querySelector("#pause-btn>.material-symbols-outlined")!.innerHTML =
-      "pause";
-    document.querySelector("#pause-btn>.btn-text")!.innerHTML = "Pause";
-    // Apply the fonts in the Sync Storage
-    if (tab) {
-      let message = {
-        type: "resume",
-      };
-      console.log("Sending message from Pop");
-      chrome.tabs.sendMessage(tab.id!, message);
-    }
-  }
-  isPaused = !isPaused;
-});
+
+// TODO: Add Pause Button Functionality
 
 // Populating placeholder values
 chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {

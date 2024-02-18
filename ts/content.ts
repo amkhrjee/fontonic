@@ -56,6 +56,7 @@ chrome.runtime.onMessage.addListener((req, _sender, _res) => {
     console.log("here url: ", req.data.redirect_url);
     window.open(req.data.redirect_url, "_blank");
   } else if (req.type === "restore") {
+    console.log("Message received for restoring fonts...");
     changeFontFamily(document.body, "", "", "", true);
   }
   return true;
