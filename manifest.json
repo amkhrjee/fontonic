@@ -24,8 +24,7 @@
         {
             "matches": [
                 "https://*/*",
-                "http://*/*",
-                "localhost://*/*"
+                "http://*/*"
             ],
             "js": [
                 "./js/content.js"
