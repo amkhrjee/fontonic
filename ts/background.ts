@@ -19,7 +19,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
             },
           });
         } else {
-          console.error("Font Not Found");
+          console.log("Font Not Found");
         }
       })
       .catch((err) => {
