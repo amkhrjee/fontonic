@@ -1,14 +1,21 @@
+let doRestore = false;
+chrome.runtime.onMessage.addListener((message, _sender, _res) => {
+  if (message.type === "restore") {
+    doRestore = true;
+  } else if (message.type === "resume") {
+    doRestore = false;
+  }
+  return true;
+});
 const updateFonts = (tab) => {
+  console.log("DoRestore value in SW: ", doRestore);
   const domain = new URL(tab.url).hostname;
   chrome.storage.sync
     .get([domain])
     .then((result) => {
-      if (chrome.runtime.lastError)
-        console.log("Error in getting data from Sync Storage");
-
       const fontData = result[domain];
       console.log("Service Worker -- Font Data", fontData);
-      if (fontData) {
+      if (fontData && !doRestore) {
         // Applying the font
         let message = {
           type: "apply_font",

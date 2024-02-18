@@ -1,31 +1,40 @@
-let originalSerif, originalSansSerif, originalMonospace;
+let originalSerif: string, originalSansSerif: string, originalMonospace: string;
 
-const changeFontFamily = (node, serif, sansSerif, monospace, doRestore) => {
+const changeFontFamily = (
+  node: Node,
+  serif: string,
+  sansSerif: string,
+  monospace: string,
+  doRestore: boolean
+) => {
   if (node.nodeType === 1) {
-    const computedStyle = window.getComputedStyle(node);
+    const computedStyle = window.getComputedStyle(node as Element);
     const fontFamily = computedStyle.getPropertyValue("font-family");
 
     if (fontFamily) {
       if (fontFamily.includes("sans-serif")) {
         if (!doRestore || sansSerif != "Default") {
           originalSansSerif = fontFamily;
-          node.style.fontFamily = `'${sansSerif}', ${originalSansSerif}`;
+          (node as HTMLElement).style.fontFamily =
+            `'${sansSerif}', ${originalSansSerif}`;
         } else {
-          node.style.fontFamily = `${originalSansSerif}`;
+          (node as HTMLElement).style.fontFamily = `${originalSansSerif}`;
         }
       } else if (fontFamily.includes("serif")) {
         if (!doRestore || serif != "Default") {
           originalSerif = fontFamily;
-          node.style.fontFamily = `'${serif}', ${originalSerif}`;
+          (node as HTMLElement).style.fontFamily =
+            `'${serif}', ${originalSerif}`;
         } else {
-          node.style.fontFamily = `${originalSerif}`;
+          (node as HTMLElement).style.fontFamily = `${originalSerif}`;
         }
       } else if (fontFamily.includes("monospace")) {
         if (!doRestore || monospace != "Default") {
           originalMonospace = fontFamily;
-          node.style.fontFamily = `'${monospace}', ${originalMonospace}`;
+          (node as HTMLElement).style.fontFamily =
+            `'${monospace}', ${originalMonospace}`;
         } else {
-          node.style.fontFamily = `${originalMonospace}`;
+          (node as HTMLElement).style.fontFamily = `${originalMonospace}`;
         }
       }
     }
@@ -37,7 +46,7 @@ const changeFontFamily = (node, serif, sansSerif, monospace, doRestore) => {
   }
 };
 
-chrome.runtime.onMessage.addListener((req, sender, res) => {
+chrome.runtime.onMessage.addListener((req, _sender, _res) => {
   if (req.type === "apply_font") {
     const serif = req.data.serif;
     const sans_serif = req.data.sans_serif;
@@ -49,4 +58,5 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
   } else if (req.type === "restore") {
     changeFontFamily(document.body, "", "", "", true);
   }
+  return true;
 });

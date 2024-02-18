@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "ES6",
+    "outDir": "./js",
+    "rootDir": "./ts",
+    "strict": true,
+    "noImplicitAny": false
+  },
+  "include": [
+    "ts/**/*.ts",
+    "./node_modules/chrome-types/index.d.ts",
+    "./popup.html"
+  ]
+}
