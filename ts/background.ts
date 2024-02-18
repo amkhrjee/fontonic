@@ -1,3 +1,16 @@
+let globalState = {
+  isPaused: false,
+};
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === "get") {
+    sendResponse(globalState);
+  } else if (message.action === "set") {
+    globalState = message.newState;
+  }
+  return true;
+});
+
 let doRestore = false;
 chrome.runtime.onMessage.addListener((message, _sender, _res) => {
   if (message.type === "restore") {

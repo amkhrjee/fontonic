@@ -1,7 +1,7 @@
 {
-  "name": "interize",
+  "name": "fontonic",
   "version": "1.0.0",
-  "description": "Change font to Inter",
+  "description": "Browser extension for changing fonts",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,18 +11,19 @@
     "url": "git+https://github.com/amkhrjee/interize.git"
   },
   "keywords": [
-    "inter",
-    "browser",
-    "extension",
     "ui",
+    "fonts",
+    "browser",
+    "typography",
+    "extension",
     "customization"
   ],
   "author": "amkhrjee",
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "bugs": {
-    "url": "https://github.com/amkhrjee/interize/issues"
+    "url": "https://github.com/amkhrjee/fontonic/issues"
   },
-  "homepage": "https://github.com/amkhrjee/interize#readme",
+  "homepage": "https://github.com/amkhrjee/fontonic#readme",
   "dependencies": {
     "chrome-types": "^0.1.266"
   },

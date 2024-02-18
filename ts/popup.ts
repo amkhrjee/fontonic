@@ -106,7 +106,7 @@ restoreButton.addEventListener("click", async () => {
   }
 });
 // Pause Button
-let isPaused = false;
+// let isPaused = false; // I have to maintain this global state
 pauseButton.addEventListener("click", async () => {
   let [tab] = await chrome.tabs.query({
     active: true,
