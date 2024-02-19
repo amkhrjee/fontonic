@@ -12,7 +12,6 @@ const supportButtonText = document.querySelector(
 const paymentButtons = document.querySelectorAll(
     ".support-slide>button",
 ) as NodeListOf<HTMLButtonElement>;
-const pauseButton = document.querySelector("#pause-btn") as HTMLButtonElement;
 const control = document.querySelector(".control") as HTMLDivElement;
 const serifPlaceholder = document.querySelector(
     "#serif_placeholder",
@@ -84,26 +83,6 @@ chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
             control.style.display = "flex";
         }
     });
-});
-
-// Setting state of pauseButton at PopUp open
-/*
-The idea:
-  On Pause:
-  - get fonts from the storage
-  - delete the data from the storage
-  - reload the page
-  On Resume
-  - set the data back to storage
-  - reload the page
-
-*/
-
-pauseButton.addEventListener("click", () => {
-    const port = chrome.tabs.connect(tab_id);
-    // port.postMessage({
-    //   type: "pause",
-    // });
 });
 
 restoreButton.addEventListener("click", async () => {
