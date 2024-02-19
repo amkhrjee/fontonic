@@ -1,5 +1,5 @@
-<center><img style="height: 10rem" src="./res/logo_transparent.png"></center>
-<center>Elevate your browsing experience by effortlessly personalizing the typography of any website using your favorite local fonts!</center>
+<div style="text-align:center"><img style="height: 10rem" src="./res/logo_transparent.png"></div>
+<div style="text-align:center">Elevate your browsing experience by effortlessly personalizing the typography of any website using your favorite local fonts!</div>
 
 # Setup
 
