@@ -31,7 +31,6 @@ const serifSelect = fontSelectionForm.elements["serif"] as HTMLSelectElement;
 const sansSerifSelect = fontSelectionForm.elements[
   "sans_serif"
 ] as HTMLSelectElement;
-const helpDiv = document.querySelector(".help") as HTMLDivElement;
 const monospaceSelect = fontSelectionForm.elements[
   "monospace"
 ] as HTMLSelectElement;
@@ -88,12 +87,23 @@ chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
 });
 
 // Setting state of pauseButton at PopUp open
+/*
+The idea:
+  On Pause:
+  - get fonts from the storage
+  - delete the data from the storage
+  - reload the page
+  On Resume
+  - set the data back to storage
+  - reload the page
+
+*/
 
 pauseButton.addEventListener("click", () => {
   const port = chrome.tabs.connect(tab_id);
-  port.postMessage({
-    type: "restore",
-  });
+  // port.postMessage({
+  //   type: "pause",
+  // });
 });
 
 restoreButton.addEventListener("click", async () => {
@@ -128,8 +138,6 @@ restoreButton.addEventListener("click", async () => {
         monospace: "",
       }
     );
-
-    helpDiv.style.display = "block";
   }
 });
 
@@ -159,7 +167,6 @@ supportButton.addEventListener("click", () => {
 
 fontSelectionForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-  helpDiv.style.display = "none";
   const serifValue = serifSelect.value;
   const sansSerifValue = sansSerifSelect.value;
   const monospaceValue = monospaceSelect.value;

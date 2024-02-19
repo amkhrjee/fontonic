@@ -4,8 +4,7 @@ const changeFontFamily = (
   node: Node,
   serif: string,
   sansSerif: string,
-  monospace: string,
-  doRestore: boolean
+  monospace: string
 ) => {
   if (node.nodeType === 1) {
     const computedStyle = window.getComputedStyle(node as Element);
@@ -13,7 +12,7 @@ const changeFontFamily = (
 
     if (fontFamily) {
       if (fontFamily.includes("sans-serif")) {
-        if (!doRestore || sansSerif != "Default") {
+        if (sansSerif != "Default") {
           originalSansSerif = fontFamily;
           (node as HTMLElement).style.fontFamily =
             `'${sansSerif}', ${originalSansSerif}`;
@@ -21,7 +20,7 @@ const changeFontFamily = (
           (node as HTMLElement).style.fontFamily = `${originalSansSerif}`;
         }
       } else if (fontFamily.includes("serif")) {
-        if (!doRestore || serif != "Default") {
+        if (serif != "Default") {
           originalSerif = fontFamily;
           (node as HTMLElement).style.fontFamily =
             `'${serif}', ${originalSerif}`;
@@ -29,7 +28,7 @@ const changeFontFamily = (
           (node as HTMLElement).style.fontFamily = `${originalSerif}`;
         }
       } else if (fontFamily.includes("monospace")) {
-        if (!doRestore || monospace != "Default") {
+        if (monospace != "Default") {
           originalMonospace = fontFamily;
           (node as HTMLElement).style.fontFamily =
             `'${monospace}', ${originalMonospace}`;
@@ -42,7 +41,7 @@ const changeFontFamily = (
 
   // Recursively process child nodes
   for (const childNode of node.childNodes) {
-    changeFontFamily(childNode, serif, sansSerif, monospace, doRestore);
+    changeFontFamily(childNode, serif, sansSerif, monospace);
   }
 };
 
@@ -58,7 +57,7 @@ chrome.runtime.sendMessage(message, undefined, (response) => {
     const serif = response.data.serif;
     const sans_serif = response.data.sans_serif;
     const monospace = response.data.monospace;
-    changeFontFamily(document.body, serif, sans_serif, monospace, false);
+    changeFontFamily(document.body, serif, sans_serif, monospace);
   } else if (response.type === "none") {
     console.log("Font not set for site");
   }
@@ -72,10 +71,10 @@ chrome.runtime.onConnect.addListener((port) => {
         const serif = message.data.serif;
         const sans_serif = message.data.sans_serif;
         const monospace = message.data.monospace;
-        changeFontFamily(document.body, serif, sans_serif, monospace, false);
+        changeFontFamily(document.body, serif, sans_serif, monospace);
       } else if (message.type === "restore") {
         console.log("Message received for restoring fonts...");
-        changeFontFamily(document.body, "", "", "", true);
+        location.reload();
       } else if (message.type === "redirect") {
         console.log("Received Redirect Request");
         console.log("here url: ", message.data.redirect_url);
