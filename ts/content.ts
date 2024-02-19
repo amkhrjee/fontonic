@@ -54,7 +54,6 @@ let message = {
 
 // Tries to load font when page is loaded
 chrome.runtime.sendMessage(message, undefined, (response) => {
-    console.log("Received response from service worker: ", response);
     if (response.type === "apply_font") {
         const serif = response.data.serif;
         const sans_serif = response.data.sans_serif;
@@ -75,11 +74,8 @@ chrome.runtime.onConnect.addListener((port) => {
                 const monospace = message.data.monospace;
                 changeFontFamily(document.body, serif, sans_serif, monospace);
             } else if (message.type === "restore") {
-                console.log("Message received for restoring fonts...");
                 location.reload();
             } else if (message.type === "redirect") {
-                console.log("Received Redirect Request");
-                console.log("here url: ", message.data.redirect_url);
                 window.open(message.data.redirect_url, "_blank");
             }
         }
