@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Fontonic",
-    "description": "Change fonts to your liking!",
+    "description": "Change fonts of any website with your locally installed fonts!",
     "version": "1.0",
     "action": {
         "default_icon": {
