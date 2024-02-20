@@ -15,7 +15,6 @@
     "permissions": [
         "activeTab",
         "scripting",
-        "webNavigation",
         "storage",
         "tabs",
         "fontSettings"

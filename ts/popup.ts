@@ -233,6 +233,18 @@ paymentButtons[1].addEventListener("click", () => {
     });
 });
 
+paymentButtons[2].addEventListener("click", () => {
+    chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+        const port = chrome.tabs.connect(tabs[0].id);
+        port.postMessage({
+            type: "redirect",
+            data: {
+                redirect_url: "https://twitter.com/amkhrjee",
+            },
+        });
+    });
+});
+
 paymentButtons[3].addEventListener("click", () => {
     chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
         const port = chrome.tabs.connect(tabs[0].id);
