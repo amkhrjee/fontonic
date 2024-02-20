@@ -13,8 +13,6 @@
         "default_popup": "./popup/popup.html"
     },
     "permissions": [
-        "activeTab",
-        "scripting",
         "storage",
         "tabs",
         "fontSettings"
