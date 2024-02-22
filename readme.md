@@ -1,8 +1,8 @@
 <div align="center"><img style="height: 10rem" src="./res/logo_transparent.png"></div>
 <p align="center">Effortlessly change the web's typography!</p>
 
-<div style="display:flex; justify-content:center;gap:1rem;" align="center"><img href="https://chromewebstore.google.com/detail/fontonic/hnjlnpipbcbgllcjgbcjfgepmeomdcog" style="height: 4rem; cursor: pointer;" src="./res/webstore.png">
-<img href="https://addons.mozilla.org/en-US/firefox/addon/fontonic-customize-fonts/" style="height: 4rem; cursor: pointer;" src="./res/firefoxaddon.png">
+<div style="display:flex; justify-content:center;gap:1rem;" align="center"><a href="https://chromewebstore.google.com/detail/fontonic/hnjlnpipbcbgllcjgbcjfgepmeomdcog"><img style="height: 4rem; cursor: pointer;" src="./res/webstore.png"></a>
+<a href="https://addons.mozilla.org/en-US/firefox/addon/fontonic-customize-fonts/"><img style="height: 4rem; cursor: pointer;" src="./res/firefoxaddon.png"></a>
 </div>
 
 # Setup
