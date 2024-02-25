@@ -6,7 +6,15 @@
 </div>
 <br>
 <div align="center">
-<a href="https://www.producthunt.com/posts/fontonic?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-fontonic" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=440978&theme=neutral" alt="Fontonic - Customize&#0032;fonts&#0032;of&#0032;any&#0032;website&#0032;with&#0032;any&#0032;fonts&#0032;you&#0032;like&#0033; | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+<a href="https://www.producthunt.com/posts/fontonic?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-fontonic" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=440978&theme=neutral" alt="Fontonic - Customize&#0032;fonts&#0032;of&#0032;any&#0032;website&#0032;with&#0032;any&#0032;fonts&#0032;you&#0032;like&#0033; | Product Hunt" style="width: 220px;" width="250" height="54" /></a>
+</div>
+<br>
+<div style="display: flex; justify-content: center; gap: 1rem;" align="center">
+
+![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/hnjlnpipbcbgllcjgbcjfgepmeomdcog?style=flat&logo=googlechrome&logoColor=%23ffffff&label=web%20store%20users&color=%231f4341)
+
+![Mozilla Add-on Users](https://img.shields.io/amo/users/fontonic-customize-fonts?style=flat&logo=firefox&logoColor=%23ffffff&label=add-on%20users&color=%231f4341)
+
 </div>
 
 # Setup
