@@ -74,10 +74,10 @@ const updatePlaceholders = (innerText: fontData, value: fontData) => {
 chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
     tab_id = tabs[0].id;
     const domain = new URL(tabs[0].url!).hostname;
-    console.log("From the popup: ", domain);
+    // console.log("From the popup: ", domain);
     chrome.storage.sync.get([domain]).then((result) => {
         const fontData = result[domain];
-        console.log(fontData);
+        // console.log(fontData);
         if (fontData) {
             updatePlaceholders(fontData, fontData);
             control.style.display = "flex";
@@ -100,7 +100,7 @@ restoreButton.addEventListener("click", async () => {
         // Delete the font from Sync Storage
         const domain = new URL(tab.url!).hostname;
         chrome.storage.sync.remove(domain, () => {
-            console.log("Successfully removed entries for domain: ");
+            //console.log("Successfully removed entries for domain: ");
         });
         // Hide the Pause and Restore Buttons
         control.style.display = "none";
@@ -167,45 +167,51 @@ fontSelectionForm.addEventListener("submit", async (e) => {
             applyButton.innerHTML = "Apply Selection";
         }, 2000);
     }
-    console.log("MonoSpace Value", monospaceValue);
-    chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-        console.log("Popup.js -- tabs data", tabs);
-        if (tabs) {
-            let message = {
-                type: "apply_font",
-                data: {
-                    serif: serifValue.length ? serifValue : "Default",
-                    sans_serif: sansSerifValue.length
-                        ? sansSerifValue
-                        : "Default",
-                    monospace: monospaceValue.length
-                        ? monospaceValue
-                        : "Default",
-                },
-            };
-            const port = chrome.tabs.connect(tabs[0].id);
-            port.postMessage(message);
+    // console.log("MonoSpace Value", monospaceValue);
+    try {
+        chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+            // console.log("Popup.js -- tabs data", tabs);
+            if (tabs) {
+                let message = {
+                    type: "apply_font",
+                    data: {
+                        serif: serifValue.length ? serifValue : "Default",
+                        sans_serif: sansSerifValue.length
+                            ? sansSerifValue
+                            : "Default",
+                        monospace: monospaceValue.length
+                            ? monospaceValue
+                            : "Default",
+                    },
+                };
+                const port = chrome.tabs.connect(tabs[0].id);
+                port.postMessage(message);
 
-            // Saving in the Sync Storage
-            const domain = new URL(tabs[0].url!).hostname;
-            const fontData = {
-                serif: message.data.serif,
-                sans_serif: message.data.sans_serif,
-                monospace: message.data.monospace,
-            };
-            console.log("Popup.js -- Saving font data into Sync Storage...");
-            if (
-                serifValue.length ||
-                sansSerifValue.length ||
-                monospaceValue.length
-            ) {
-                control.style.display = "flex";
-                chrome.storage.sync.set({ [domain]: fontData }).then(() => {
-                    console.log("Stored in Sync Storage!");
-                });
+                // Saving in the Sync Storage
+                const domain = new URL(tabs[0].url!).hostname;
+                const fontData = {
+                    serif: message.data.serif,
+                    sans_serif: message.data.sans_serif,
+                    monospace: message.data.monospace,
+                };
+                // console.log(
+                //     "Popup.js -- Saving font data into Sync Storage...",
+                // );
+                if (
+                    serifValue.length ||
+                    sansSerifValue.length ||
+                    monospaceValue.length
+                ) {
+                    control.style.display = "flex";
+                    chrome.storage.sync.set({ [domain]: fontData }).then(() => {
+                        // console.log("Stored in Sync Storage!");
+                    });
+                }
             }
-        }
-    });
+        });
+    } catch (error) {
+        console.error(error);
+    }
 });
 
 paymentButtons[0].addEventListener("click", () => {
