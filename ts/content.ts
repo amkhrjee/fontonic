@@ -11,32 +11,18 @@ const changeFontFamily = (
         const fontFamily = computedStyle.getPropertyValue("font-family");
 
         if (fontFamily) {
-            if (fontFamily.includes("sans-serif")) {
-                if (sansSerif != "Default") {
-                    originalSansSerif = fontFamily;
-                    (node as HTMLElement).style.fontFamily =
-                        `'${sansSerif}', ${originalSansSerif}`;
-                } else {
-                    (node as HTMLElement).style.fontFamily =
-                        `${originalSansSerif}`;
-                }
-            } else if (fontFamily.includes("serif")) {
-                if (serif != "Default") {
-                    originalSerif = fontFamily;
-                    (node as HTMLElement).style.fontFamily =
-                        `'${serif}', ${originalSerif}`;
-                } else {
-                    (node as HTMLElement).style.fontFamily = `${originalSerif}`;
-                }
-            } else if (fontFamily.includes("monospace")) {
-                if (monospace != "Default") {
-                    originalMonospace = fontFamily;
-                    (node as HTMLElement).style.fontFamily =
-                        `'${monospace}', ${originalMonospace}`;
-                } else {
-                    (node as HTMLElement).style.fontFamily =
-                        `${originalMonospace}`;
-                }
+            if (fontFamily.includes("sans-serif") && sansSerif != "Default") {
+                (node as HTMLElement).style.fontFamily =
+                    `'${sansSerif}', ${originalSansSerif}`;
+            } else if (fontFamily.includes("serif") && serif != "Default") {
+                (node as HTMLElement).style.fontFamily =
+                    `'${serif}', ${originalSerif}`;
+            } else if (
+                fontFamily.includes("monospace") &&
+                monospace != "Default"
+            ) {
+                (node as HTMLElement).style.fontFamily =
+                    `'${monospace}', ${originalMonospace}`;
             }
         }
     }
