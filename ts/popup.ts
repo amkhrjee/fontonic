@@ -133,7 +133,7 @@ supportButton.addEventListener("click", () => {
         isSupportPageOpen = !isSupportPageOpen;
     } else {
         supportButtonIcon!.innerHTML = "favorite";
-        supportButtonText.innerHTML = "Sponsor";
+        supportButtonText.innerHTML = "Support";
         supportPage.style.transform = "translateX(18rem)";
         setTimeout(() => {
             supportPage.style.visibility = "hidden";
