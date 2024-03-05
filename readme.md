@@ -10,7 +10,8 @@
 ![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/hnjlnpipbcbgllcjgbcjfgepmeomdcog?style=flat&logo=googlechrome&logoColor=%23ffffff&label=web%20store%20users&color=%231f4341) ![Mozilla Add-on Users](https://img.shields.io/amo/users/fontonic-customize-fonts?style=flat&logo=firefox&logoColor=%23ffffff&label=add-on%20users&color=%231f4341)
 
 </div>
-# Setup
+
+## Setup
 
 Run the TypeScript comiler to generate the JavaScript files required in the `manifest.json`:
 
@@ -19,6 +20,14 @@ tsc --watch -p tsconfig.json
 ```
 
 Fontonic uses Prettier for code formatting. Thus, it is recommended to have the Prettier VS Code extension installed. Maintain the `tabWidth: 4` as configured in `.pretttierc`.
+
+### Building for publishing
+The Chrome Web Store requires you to package your extension as ZIP to submit for review. Unnecessary directories like `node_modules` and `ts` should be excluded to reduce the size footprint of the extension. The `build.py` automates this process.
+```sh
+python build.py <version_string>
+```
+
+This saves the ZIP file to the `build` directory (create the directory if not already there). 
 
 ## Source code for the Firefox Add-On
 
