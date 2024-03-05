@@ -9,7 +9,7 @@
             "32": "./res/icons/favicon-32x32.png",
             "96": "./res/icons/favicon-96x96.png"
         },
-        "default_title": "This is a tooltip!",
+        "default_title": "Click to customize fonts",
         "default_popup": "./popup/popup.html"
     },
     "permissions": [
