@@ -8,7 +8,8 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
             .get([message.domain])
             .then(async (result) => {
                 const fontData = result[message.domain];
-                if (fontData) {
+
+                if (Object.keys(result).length != 0) {
                     console.log("Font Found!");
                     let override_setting = await chrome.storage.sync.get([
                         "override",
@@ -25,8 +26,6 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
                             },
                         });
                     } else {
-                        console.log("I am Here");
-
                         chrome.storage.sync
                             .get(["lastUsed"])
                             .then((result) => {
@@ -57,6 +56,34 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
                                 );
                             });
                     }
+                } else {
+                    // Font is not set for this site
+                    chrome.storage.sync
+                        .get(["lastUsed"])
+                        .then((result) => {
+                            const fontData = result["lastUsed"];
+                            console.log(fontData);
+
+                            if (Object.keys(result).length != 0) {
+                                console.log("Font Found!");
+                                sendResponse({
+                                    type: "apply_font",
+                                    data: {
+                                        serif: fontData.serif,
+                                        sans_serif: fontData.sans_serif,
+                                        monospace: fontData.monospace,
+                                    },
+                                });
+                            } else {
+                                sendResponse({
+                                    type: "none",
+                                });
+                                console.log("Font Not Found");
+                            }
+                        })
+                        .catch((err) => {
+                            console.error("Error in getting lastUsed:", err);
+                        });
                 }
             })
             .catch((err) => {

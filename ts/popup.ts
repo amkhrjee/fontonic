@@ -119,13 +119,38 @@ const updatePlaceholders = (innerText: fontData, value: fontData) => {
 chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
     tab_id = tabs[0].id;
     const domain = new URL(tabs[0].url!).hostname;
-    // console.log("From the popup: ", domain);
     chrome.storage.sync.get([domain]).then((result) => {
         const fontData = result[domain];
-        // console.log(fontData);
-        if (fontData) {
-            updatePlaceholders(fontData, fontData);
-            control.style.display = "flex";
+        if (Object.keys(result).length != 0) {
+            // Font data is there but do we have to override?
+            chrome.storage.sync.get(["override"]).then((result) => {
+                overrideCheckbox.checked = result["override"] ? true : false;
+                if (result["override"]) {
+                    chrome.storage.sync.get(["lastUsed"]).then((result) => {
+                        const fontData = result["lastUsed"];
+                        // console.log(fontData);
+                        if (fontData) {
+                            updatePlaceholders(fontData, fontData);
+                            control.style.display = "flex";
+                        }
+                    });
+                } else {
+                    updatePlaceholders(fontData, fontData);
+                    control.style.display = "flex";
+                }
+            });
+        } else {
+            chrome.storage.sync.get(["global"]).then((result) => {
+                if (result["global"]) {
+                    chrome.storage.sync.get(["lastUsed"]).then((result) => {
+                        const fontData = result["lastUsed"];
+                        if (fontData) {
+                            updatePlaceholders(fontData, fontData);
+                            control.style.display = "flex";
+                        }
+                    });
+                }
+            });
         }
     });
 
@@ -138,16 +163,6 @@ chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
                     overrideCheckbox.checked = result["override"]
                         ? true
                         : false;
-                    if (result["override"]) {
-                        chrome.storage.sync.get(["lastUsed"]).then((result) => {
-                            const fontData = result["lastUsed"];
-                            // console.log(fontData);
-                            if (fontData) {
-                                updatePlaceholders(fontData, fontData);
-                                control.style.display = "flex";
-                            }
-                        });
-                    }
                 });
             } else {
                 overrideForm.style.display = "none";
@@ -157,6 +172,17 @@ chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
 });
 
 restoreButton.addEventListener("click", async () => {
+    // Uncheck everything
+    scopeSelectionCheckbox.checked = false;
+    overrideCheckbox.checked = false;
+    overrideForm.style.display = "none";
+    chrome.storage.sync.set({
+        global: false,
+    });
+    chrome.storage.sync.set({
+        override: false,
+    });
+    chrome.storage.sync.remove(["lastUsed"]);
     // Restoring the original fonts
     let [tab] = await chrome.tabs.query({
         active: true,
