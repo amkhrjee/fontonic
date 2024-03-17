@@ -37,8 +37,14 @@ const scopeSelectionForm = document.forms["scope"] as HTMLFormElement;
 const scopeSelectionCheckbox = scopeSelectionForm.elements[
     "global_apply"
 ] as HTMLInputElement;
+const overrideForm = document.forms["override_settings"] as HTMLFormElement;
+const overrideCheckbox = overrideForm.elements["override"] as HTMLInputElement;
 
 scopeSelectionCheckbox.addEventListener("change", () => {
+    overrideForm.style.display = scopeSelectionCheckbox.checked
+        ? "grid"
+        : "none";
+
     // Save preference to sync storage
     chrome.storage.sync
         .set({
@@ -49,6 +55,26 @@ scopeSelectionCheckbox.addEventListener("change", () => {
         })
         .catch((err) => {
             console.error("Error in applying global value:", err);
+        });
+
+    if (scopeSelectionCheckbox.checked == false) {
+        overrideCheckbox.checked = false;
+        chrome.storage.sync.set({
+            override: false,
+        });
+    }
+});
+
+overrideCheckbox.addEventListener("change", () => {
+    chrome.storage.sync
+        .set({
+            override: overrideCheckbox.checked,
+        })
+        .then(() => {
+            console.log("Override stored successfully.");
+        })
+        .catch((err) => {
+            console.error("Error in applying override value:", err);
         });
 });
 
@@ -107,6 +133,25 @@ chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
         .get(["global"])
         .then((result) => {
             scopeSelectionCheckbox.checked = result["global"] ? true : false;
+            if (result["global"]) {
+                chrome.storage.sync.get(["override"]).then((result) => {
+                    overrideCheckbox.checked = result["override"]
+                        ? true
+                        : false;
+                    if (result["override"]) {
+                        chrome.storage.sync.get(["lastUsed"]).then((result) => {
+                            const fontData = result["lastUsed"];
+                            // console.log(fontData);
+                            if (fontData) {
+                                updatePlaceholders(fontData, fontData);
+                                control.style.display = "flex";
+                            }
+                        });
+                    }
+                });
+            } else {
+                overrideForm.style.display = "none";
+            }
         })
         .catch((err) => console.error(err));
 });
@@ -193,10 +238,8 @@ fontSelectionForm.addEventListener("submit", async (e) => {
             applyButton.innerHTML = "Apply Selection";
         }, 2000);
     }
-    // console.log("MonoSpace Value", monospaceValue);
     try {
         chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-            // console.log("Popup.js -- tabs data", tabs);
             if (tabs) {
                 let message = {
                     type: "apply_font",
@@ -220,9 +263,7 @@ fontSelectionForm.addEventListener("submit", async (e) => {
                     sans_serif: message.data.sans_serif,
                     monospace: message.data.monospace,
                 };
-                // console.log(
-                //     "Popup.js -- Saving font data into Sync Storage...",
-                // );
+
                 if (
                     serifValue.length ||
                     sansSerifValue.length ||
@@ -230,8 +271,19 @@ fontSelectionForm.addEventListener("submit", async (e) => {
                 ) {
                     control.style.display = "flex";
                     chrome.storage.sync.set({ [domain]: fontData }).then(() => {
-                        // console.log("Stored in Sync Storage!");
+                        console.log("Stored in Sync Storage!");
                     });
+
+                    if (scopeSelectionCheckbox.checked) {
+                        chrome.storage.sync
+                            .set({
+                                lastUsed: fontData,
+                            })
+                            .then(() => console.log("Last Used Data Saved"))
+                            .catch((err) =>
+                                console.error("Error in LastUsed:", err),
+                            );
+                    }
                 }
             }
         });
