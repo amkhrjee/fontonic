@@ -4,7 +4,7 @@
   "description": "Browser extension for changing fonts",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "tsc": "tsc --watch -p tsconfig.json"
   },
   "repository": {
     "type": "git",

@@ -33,6 +33,25 @@ const sansSerifSelect = fontSelectionForm.elements[
 const monospaceSelect = fontSelectionForm.elements[
     "monospace"
 ] as HTMLSelectElement;
+const scopeSelectionForm = document.forms["scope"] as HTMLFormElement;
+const scopeSelectionCheckbox = scopeSelectionForm.elements[
+    "global_apply"
+] as HTMLInputElement;
+
+scopeSelectionCheckbox.addEventListener("change", () => {
+    // Save preference to sync storage
+    chrome.storage.sync
+        .set({
+            global: scopeSelectionCheckbox.checked,
+        })
+        .then(() => {
+            console.log("Global Settings applied successfully.");
+        })
+        .catch((err) => {
+            console.error("Error in applying global value:", err);
+        });
+});
+
 // load locally installed fonts
 const populateFonts = (element: HTMLElement) => {
     chrome.fontSettings.getFontList((fonts) => {
@@ -70,7 +89,7 @@ const updatePlaceholders = (innerText: fontData, value: fontData) => {
     monospacePlaceholder!.value = value.monospace;
 };
 
-// Populating placeholder values
+// Populating placeholder values + checkbox
 chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
     tab_id = tabs[0].id;
     const domain = new URL(tabs[0].url!).hostname;
@@ -83,6 +102,13 @@ chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
             control.style.display = "flex";
         }
     });
+
+    chrome.storage.sync
+        .get(["global"])
+        .then((result) => {
+            scopeSelectionCheckbox.checked = result["global"] ? true : false;
+        })
+        .catch((err) => console.error(err));
 });
 
 restoreButton.addEventListener("click", async () => {
