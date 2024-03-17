@@ -22,13 +22,17 @@ tsc --watch -p tsconfig.json
 Fontonic uses Prettier for code formatting. Thus, it is recommended to have the Prettier VS Code extension installed. Maintain the `tabWidth: 4` as configured in `.pretttierc`.
 
 ### Building for publishing
+
 The Chrome Web Store requires you to package your extension as ZIP to submit for review. Unnecessary directories like `node_modules` and `ts` should be excluded to reduce the size footprint of the extension. The `build.py` automates this process.
+
 ```sh
 python build.py <version_string>
 ```
 
-This saves the ZIP file to the `build` directory (create the directory if not already there). 
+This saves the ZIP file to the `build` directory (create the directory if not already there).
 
 ## Source code for the Firefox Add-On
 
-The source is hosted at: https://github.com/amkhrjee/fontonic-firefox
+💻 Firefox Desktop: https://github.com/amkhrjee/fontonic-firefox
+
+📱 Firefox Android: https://github.com/amkhrjee/fontonic-firefox-android
