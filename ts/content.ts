@@ -40,6 +40,8 @@ let message = {
 
 // Tries to load font when page is loaded
 chrome.runtime.sendMessage(message, undefined, (response) => {
+    console.log("response received:", response.type);
+
     if (response.type === "apply_font") {
         const serif = response.data.serif;
         const sans_serif = response.data.sans_serif;

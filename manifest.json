@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "Fontonic - Change Fonts",
     "description": "Change fonts of any website with your locally installed fonts!",
-    "version": "1.2",
+    "version": "1.3",
     "action": {
         "default_icon": {
             "16": "./res/icons/favicon-16x16.png",
