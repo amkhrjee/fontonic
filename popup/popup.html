@@ -29,6 +29,10 @@
             <p>You can report unsupported websites <a target="_blank"
                     href="https://forms.gle/3eqT9NU3mGHNjtyD8">here</a>.</p>
             <p>Tip: Refresh if you don't see any changes.</p>
+            <form name="scope">
+                <input type="checkbox">
+                <label>Apply selection to all sites</label>
+            </form>
             <form name="fonts">
                 <label for="serif">Serif</label>
                 <select id="serif" name="serif">
@@ -45,10 +49,6 @@
                 <button type="submit" class="apply">Apply Selection</button>
             </form>
             <div class="control">
-                <!-- <button id="pause-btn" class="icon-btn">
-                    <span class="material-symbols-outlined">pause</span>
-                    <span class="btn-text">Pause</span>
-                </button> -->
                 <button class="icon-btn">
                     <span class="material-symbols-outlined">history</span>
                     <span id="restore-btn" class="btn-text">Restore</span>

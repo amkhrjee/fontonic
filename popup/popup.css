@@ -15,7 +15,20 @@
             padding-inline: 0.2rem;
         }
 
-        form {
+        form[name="scope"] {
+            display: grid;
+            grid-template-columns: 5% 95%;
+            justify-content: start;
+            align-content: center;
+            gap: 0.5rem;
+        }
+
+        input[type="checkbox"] {
+            padding: 0;
+            margin: 0;
+        }
+
+        form[name="fonts"] {
             display: grid;
             grid-template-columns: 40% 60%;
             justify-content: space-between;
