@@ -11,7 +11,7 @@ const changeFontFamily = (
         const fontFamily = computedStyle.getPropertyValue("font-family");
 
         if (fontFamily) {
-            if (fontFamily.includes("sans-serif") && sansSerif != "Default") {
+            if (fontFamily.includes("sans") && sansSerif != "Default") {
                 (node as HTMLElement).style.fontFamily =
                     `'${sansSerif}', ${originalSansSerif}`;
             } else if (fontFamily.includes("serif") && serif != "Default") {
