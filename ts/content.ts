@@ -26,6 +26,9 @@ const changeFontFamily = (
   // Recursively process child nodes
   for (const childNode of node.childNodes) {
     changeFontFamily(childNode, serif, sansSerif, monospace);
+    new MutationObserver(() =>
+      changeFontFamily(childNode, serif, sansSerif, monospace)
+    ).observe(childNode, { childList: true });
   }
 };
 
@@ -43,13 +46,6 @@ chrome.runtime.sendMessage(message, undefined, (response) => {
     const sans_serif = response.data.sans_serif;
     const monospace = response.data.monospace;
     changeFontFamily(document.body, serif, sans_serif, monospace);
-    const mutationObserver = new MutationObserver(() => {
-      console.log("Mutation Observer Kicks in!");
-      changeFontFamily(document.body, serif, sans_serif, monospace);
-    });
-    mutationObserver.observe(document.body, { childList: true });
-  } else if (response.type === "none") {
-    console.log("Font not set for site");
   }
 });
 
@@ -62,11 +58,6 @@ chrome.runtime.onConnect.addListener((port) => {
         const sans_serif = message.data.sans_serif;
         const monospace = message.data.monospace;
         changeFontFamily(document.body, serif, sans_serif, monospace);
-        const mutationObserver = new MutationObserver(() => {
-          console.log("Mutation Observer Kicks in here!");
-          changeFontFamily(document.body, serif, sans_serif, monospace);
-        });
-        mutationObserver.observe(document.body, { childList: true });
       } else if (message.type === "restore") {
         location.reload();
       } else if (message.type === "redirect") {
