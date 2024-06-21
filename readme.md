@@ -17,7 +17,7 @@ If you are using Brave, Microsoft Edge, Yandex, Opera or any other chromium-base
 
 ## Development Setup
 
-Run the TypeScript comiler to generate the JavaScript files required in the `manifest.json`:
+Run the TypeScript compiler to generate the JavaScript files required in the `manifest.json`:
 
 ```sh
 tsc --watch -p tsconfig.json
