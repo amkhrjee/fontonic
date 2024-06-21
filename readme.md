@@ -19,8 +19,6 @@ Run the TypeScript comiler to generate the JavaScript files required in the `man
 tsc --watch -p tsconfig.json
 ```
 
-Fontonic uses Prettier for code formatting. Thus, it is recommended to have the Prettier VS Code extension installed. Maintain the `tabWidth: 4` as configured in `.pretttierc`.
-
 ### Building for publishing
 
 The Chrome Web Store requires you to package your extension as ZIP to submit for review. Unnecessary directories like `node_modules` and `ts` should be excluded to reduce the size footprint of the extension. The `build.py` automates this process.
