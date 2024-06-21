@@ -11,8 +11,9 @@
 
 </div>
 
-> [!NOTE]
-> If you are using Brave, Microsoft Edge, Yandex, Opera or any other chromium-based browsers, download the extension from Chrome Web Store.
+## For browsers other than Chrome & Firefox
+
+If you are using Brave, Microsoft Edge, Yandex, Opera or any other chromium-based browsers, download the extension from Chrome Web Store. For Android devices, use the [Firefox Mobile Add-On](https://addons.mozilla.org/en-US/android/addon/fontonic/).
 
 ## Development Setup
 
