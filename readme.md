@@ -11,7 +11,7 @@
 
 </div>
 
-## Setup
+## Development Setup
 
 Run the TypeScript comiler to generate the JavaScript files required in the `manifest.json`:
 
