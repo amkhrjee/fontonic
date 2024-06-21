@@ -11,6 +11,9 @@
 
 </div>
 
+> [!NOTE]
+> If you are using Brave, Microsoft Edge, Yandex, Opera or any other chromium-based browsers, download the extension from Chrome Web Store.
+
 ## Development Setup
 
 Run the TypeScript comiler to generate the JavaScript files required in the `manifest.json`:
