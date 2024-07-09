@@ -7,7 +7,7 @@
 <br>
 <div  align="center">
 
-<img src="https://img.shields.io/chrome-web-store/users/hnjlnpipbcbgllcjgbcjfgepmeomdcog?style=flat&logo=googlechrome&logoColor=%23ffffff&label=web%20store%20users&color=%231f4341" /> <img src="https://img.shields.io/amo/users/fontonic-customize-fonts?style=flat&logo=firefox&logoColor=%23ffffff&label=add-on%20users&color=%231f4341"/><img src="https://img.shields.io/amo/users/fontonic?logo=firefox&logoColor=white&label=android%20users&color=274644"/>
+<img src="https://img.shields.io/chrome-web-store/users/hnjlnpipbcbgllcjgbcjfgepmeomdcog?style=flat&logo=googlechrome&logoColor=%23ffffff&label=web%20store%20users&color=%231f4341" /> <img src="https://img.shields.io/amo/users/fontonic-customize-fonts?style=flat&logo=firefox&logoColor=%23ffffff&label=add-on%20users&color=%231f4341"/> <img src="https://img.shields.io/amo/users/fontonic?logo=firefox&logoColor=white&label=android%20users&color=274644"/>
 
 </div>
 
