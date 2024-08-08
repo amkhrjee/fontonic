@@ -15,6 +15,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
           console.log("Value of override", override_setting);
 
           if (!override_setting["override"]) {
+            // @ts-ignore
             sendResponse({
               type: "apply_font",
               data: {
@@ -32,6 +33,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
                 if (fontData) {
                   console.log("Font Found!");
+                  // @ts-ignore
                   sendResponse({
                     type: "apply_font",
                     data: {
@@ -41,6 +43,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
                     },
                   });
                 } else {
+                  // @ts-ignore
                   sendResponse({
                     type: "none",
                   });
@@ -61,6 +64,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
               if (Object.keys(result).length != 0) {
                 console.log("Font Found!");
+                // @ts-ignore
                 sendResponse({
                   type: "apply_font",
                   data: {
@@ -70,6 +74,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
                   },
                 });
               } else {
+                // @ts-ignore
                 sendResponse({
                   type: "none",
                 });
@@ -99,6 +104,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
               if (fontData) {
                 console.log("Font Found!");
+                // @ts-ignore
                 sendResponse({
                   type: "apply_font",
                   data: {
@@ -108,6 +114,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
                   },
                 });
               } else {
+                // @ts-ignore
                 sendResponse({
                   type: "none",
                 });
