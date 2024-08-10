@@ -39,11 +39,16 @@ const scopeSelectionCheckbox = scopeSelectionForm.elements[
 ] as HTMLInputElement;
 const overrideForm = document.forms["override_settings"] as HTMLFormElement;
 const overrideCheckbox = overrideForm.elements["override"] as HTMLInputElement;
+const exemptForm = document.forms["exempt_settings"] as HTMLFormElement;
+const exemptCheckbox = exemptForm.elements["exempt"] as HTMLInputElement;
 
 scopeSelectionCheckbox.addEventListener("change", () => {
     overrideForm.style.display = scopeSelectionCheckbox.checked
         ? "grid"
         : "none";
+    exemptForm.style.display =  scopeSelectionCheckbox.checked
+        ? "grid"
+        : "none"; 
 
     // Save preference to sync storage
     chrome.storage.sync
@@ -166,6 +171,7 @@ chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
                 });
             } else {
                 overrideForm.style.display = "none";
+                exemptForm.style.display = "none";
             }
         })
         .catch((err) => console.error(err));
@@ -176,6 +182,7 @@ restoreButton.addEventListener("click", async () => {
     scopeSelectionCheckbox.checked = false;
     overrideCheckbox.checked = false;
     overrideForm.style.display = "none";
+    exemptForm.style.display = "none";
     chrome.storage.sync.set({
         global: false,
     });
@@ -315,53 +322,3 @@ fontSelectionForm.addEventListener("submit", async (e) => {
         console.error(error);
     }
 });
-
-paymentButtons[0].addEventListener("click", () => {
-    chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-        const port = chrome.tabs.connect(tabs[0].id);
-        port.postMessage({
-            type: "redirect",
-            data: {
-                redirect_url:
-                    "https://paypal.me/amkhrjee?country.x=IN&locale.x=en_GB",
-            },
-        });
-    });
-});
-
-paymentButtons[1].addEventListener("click", () => {
-    chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-        const port = chrome.tabs.connect(tabs[0].id);
-        port.postMessage({
-            type: "redirect",
-            data: {
-                redirect_url: "https://www.buymeacoffee.com/amkhrjee",
-            },
-        });
-    });
-});
-
-paymentButtons[2].addEventListener("click", () => {
-    chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-        const port = chrome.tabs.connect(tabs[0].id);
-        port.postMessage({
-            type: "redirect",
-            data: {
-                redirect_url: "https://ko-fi.com/amkhrjee",
-            },
-        });
-    });
-});
-
-paymentButtons[3].addEventListener("click", () => {
-    chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-        const port = chrome.tabs.connect(tabs[0].id);
-        port.postMessage({
-            type: "redirect",
-            data: {
-                redirect_url: "https://chromewebstore.google.com/detail/fontonic-change-fonts/hnjlnpipbcbgllcjgbcjfgepmeomdcog",
-            },
-        });
-    });
-});
-
