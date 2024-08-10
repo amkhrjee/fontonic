@@ -221,8 +221,7 @@ restoreButton.addEventListener("click", async () => {
 let isSupportPageOpen = false;
 supportButton.addEventListener("click", () => {
     if (!isSupportPageOpen) {
-        supportButtonIcon!.innerHTML = "arrow_back";
-        supportButtonText.innerHTML = "Go Back";
+        supportButtonText.innerHTML = "⬅ Go Back";
         mainPage.style.opacity = "0";
         mainPage.style.visibility = "hidden";
         supportPage.style.visibility = "visible";
@@ -230,7 +229,7 @@ supportButton.addEventListener("click", () => {
         isSupportPageOpen = !isSupportPageOpen;
     } else {
         supportButtonIcon!.innerHTML = "favorite";
-        supportButtonText.innerHTML = "Support";
+        supportButtonText.innerHTML = "❤ Support";
         supportPage.style.transform = "translateX(18rem)";
         setTimeout(() => {
             supportPage.style.visibility = "hidden";
