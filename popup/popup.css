@@ -4,7 +4,7 @@
             background-color: #1f221b;
             color: #9cd57b;
             min-width: 18rem;
-            font-family: 'Inter Tight', 'Bricolage Grotesque', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+            font-family: 'Inter Tight', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
         }
 
         h2 {
@@ -34,6 +34,7 @@
         input[type="checkbox"] {
             padding: 0;
             margin: 0;
+            accent-color: #92ca71;
         }
 
         form[name="fonts"] {

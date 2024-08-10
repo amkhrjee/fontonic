@@ -366,14 +366,3 @@ paymentButtons[3].addEventListener("click", () => {
     });
 });
 
-paymentButtons[4].addEventListener("click", () => {
-    chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-        const port = chrome.tabs.connect(tabs[0].id);
-        port.postMessage({
-            type: "redirect",
-            data: {
-                redirect_url: "https://linktr.ee/amkhrjee",
-            },
-        });
-    });
-});
