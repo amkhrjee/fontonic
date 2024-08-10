@@ -228,7 +228,6 @@ supportButton.addEventListener("click", () => {
         supportPage.style.transform = "translateX(0)";
         isSupportPageOpen = !isSupportPageOpen;
     } else {
-        supportButtonIcon!.innerHTML = "favorite";
         supportButtonText.innerHTML = "❤ Support";
         supportPage.style.transform = "translateX(18rem)";
         setTimeout(() => {
@@ -348,7 +347,7 @@ paymentButtons[2].addEventListener("click", () => {
         port.postMessage({
             type: "redirect",
             data: {
-                redirect_url: "https://github.com/amkhrjee/fontonic",
+                redirect_url: "https://ko-fi.com/amkhrjee",
             },
         });
     });
