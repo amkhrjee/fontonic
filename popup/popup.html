@@ -13,7 +13,7 @@
 
 <body>
     <!-- Wrapper -->
-    <div style="font-family: 'Inter Tight', sans-serif;" class="min-w-96 p-4">
+    <div id="wrapper" style="font-family: 'Inter Tight', sans-serif;" class="min-w-96 p-4">
         <!-- Header -->
         <div class="flex justify-between items-center">
             <!-- Logo -->
@@ -24,40 +24,66 @@
                 </div>
             </a>
             <div class="flex gap-2">
-                <button class="btn btn-ghost">Settings</button>
-                <button class="btn btn-secondary">❤ Support</button>
+                <button id="settings-btn" class="btn btn-ghost">Settings</button>
+                <button id="support-btn" class="btn btn-secondary">❤ Support</button>
             </div>
         </div>
         <br>
-        <!-- Information -->
-        <div class="prose-sm">
-            <p>More fonts can be installed on your system from sites like <a class="link" target="_blank"
-                    href="https://fonts.google.com/">Google
-                    Fonts↗</a> or <a class="link" target="_blank" href="https://www.dafont.com/">DaFont↗</a>.
-            </p>
-            <p>You can <a class="link" target="_blank" href="https://forms.gle/3eqT9NU3mGHNjtyD8">report↗</a>
-                unsupported websites or bugs.</p>
-            <p>↺ Refresh if you don't see any changes.</p>
+        <div id="home-page">
+            <!-- Information -->
+            <div class="prose-sm">
+                <p>More fonts can be installed on your system from sites like <a class="link" target="_blank"
+                        href="https://fonts.google.com/">Google
+                        Fonts↗</a> or <a class="link" target="_blank" href="https://www.dafont.com/">DaFont↗</a>.
+                </p>
+                <p>You can <a class="link" target="_blank" href="https://forms.gle/3eqT9NU3mGHNjtyD8">report↗</a>
+                    unsupported websites or bugs.</p>
+                <p>↺ Refresh if you don't see any changes.</p>
+            </div>
+            <br>
+            <!-- Font Selection -->
+            <div>
+                <form name="fonts" class="grid grid-cols-2 gap-2">
+                    <label class="text-lg font-serif" for="serif">Serif</label>
+                    <select class="text-lg" id="serif" name="serif">
+                        <option id="serif_placeholder" value="">Default</option>
+                    </select>
+                    <label class="text-lg font-sans" for="sans_serif">Sans-serif</label>
+                    <select class="text-lg" id="sans_serif" name="sans_serif">
+                        <option id="sans_serif_placeholder" value="">Default</option>
+                    </select>
+                    <label class="text-lg font-mono" for="monospace">Monospace</label>
+                    <select class="text-lg" id="monospace" name="monospace">
+                        <option id="monospace_placeholder" value="">Default</option>
+                    </select>
+                    <br>
+                    <button type="submit" class="btn btn-primary w-full col-span-2">Apply Selection</button>
+                </form>
+            </div>
         </div>
-        <br>
-        <!-- Font Selection -->
-        <div>
-            <form name="fonts" class="grid grid-cols-2 gap-2">
-                <label class="text-lg font-serif" for="serif">Serif</label>
-                <select class="text-lg" id="serif" name="serif">
-                    <option id="serif_placeholder" value="">Default</option>
-                </select>
-                <label class="text-lg font-sans" for="sans_serif">Sans-serif</label>
-                <select class="text-lg" id="sans_serif" name="sans_serif">
-                    <option id="sans_serif_placeholder" value="">Default</option>
-                </select>
-                <label class="text-lg font-mono" for="monospace">Monospace</label>
-                <select class="text-lg" id="monospace" name="monospace">
-                    <option id="monospace_placeholder" value="">Default</option>
-                </select>
-                <br>
-                <button type="submit" class="btn btn-primary w-full col-span-2">Apply Selection</button>
-            </form>
+
+        <!-- Settings page -->
+        <div id="settings-page" class="prose">
+            <div class="flex justify-between items-center">
+                <p>Apply selections to all sites</p>
+                <input type="checkbox" class="toggle" />
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Override existing selections</p>
+                <input type="checkbox" disabled class="toggle" />
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Exempt current site from global settings</p>
+                <input type="checkbox" disabled class="toggle" />
+            </div>
+            <div class="divider"></div>
+            <div class="prose-sm text-center">
+                <p>
+                    v1.6, August 2024
+                </p>
+                <p>Made by <a class="link" href="https://amkhrjee.xyz">amkhrjee↗</a> • View <a class="link"
+                        href="https://github.com/amkhrjee/fontonic" target="_blank">source code↗</a></p>
+            </div>
         </div>
     </div>
 
