@@ -36,3 +36,25 @@ supportButton.addEventListener("click", () => {
     wrapper.appendChild(homePage);
   }
 });
+
+const fontSelectionForm = document.forms["fonts"] as HTMLFormElement;
+const serifSelect = fontSelectionForm.elements["serif"] as HTMLSelectElement;
+const sansSerifSelect = fontSelectionForm.elements[
+  "sans_serif"
+] as HTMLSelectElement;
+const monospaceSelect = fontSelectionForm.elements[
+  "monospace"
+] as HTMLSelectElement;
+
+// load locally installed fonts
+for (const each_type of [serifSelect, sansSerifSelect, monospaceSelect]) {
+  chrome.fontSettings.getFontList((fonts) => {
+    fonts.forEach((font) => {
+      const option = document.createElement("option");
+      option.value = font.displayName;
+      option.textContent = font.displayName;
+      option.style.fontFamily = font.displayName;
+      each_type.appendChild(option);
+    });
+  });
+}
