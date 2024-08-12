@@ -2493,6 +2493,20 @@ html {
         0 0 0 2px var(--tglbg) inset;
 }
 
+.toggle-primary:focus-visible {
+  outline-color: var(--fallback-p,oklch(var(--p)/1));
+}
+
+.toggle-primary:checked,
+    .toggle-primary[aria-checked="true"] {
+  border-color: var(--fallback-p,oklch(var(--p)/var(--tw-border-opacity)));
+  --tw-border-opacity: 0.1;
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-p,oklch(var(--p)/var(--tw-bg-opacity)));
+  --tw-text-opacity: 1;
+  color: var(--fallback-pc,oklch(var(--pc)/var(--tw-text-opacity)));
+}
+
 .toggle:disabled {
   cursor: not-allowed;
   --tw-border-opacity: 1;
