@@ -3,88 +3,63 @@
 <head>
     <title>Fontonic</title>
     <meta charset='UTF-8' />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="popup.css">
     <script defer src="../js/popup.js"></script>
 </head>
 
 <body>
-    <div class="wrapper">
-        <div class="head">
+    <!-- Wrapper -->
+    <div style="font-family: 'Inter Tight', sans-serif;" class="min-w-96 p-4">
+        <!-- Header -->
+        <div class="flex justify-between items-center">
+            <!-- Logo -->
             <a target="_blank" href="https://fontonic.amkhrjee.xyz">
-                <div class="title">
-                    <img src="../res/icons/favicon-96x96.png">
-                    <h2>Fontonic</h2>
+                <div class="flex">
+                    <img class="h-6" src="../res/icons/favicon-96x96.png">
+                    <h2 style="color: #ff914c;" class="text-xl font-bold items-center">Fontonic</h2>
                 </div>
             </a>
-            <div style="display: flex; gap: 8px; justify-content: center; align-items: center;" class="support">
-                <a href="https://github.com/amkhrjee/fontonic" target="_blank"><img src="../res/github-mark-white.svg"
-                        height="24" width="24"></a>
-                <button><span class="support-btn-text">❤ Support</span></button>
+            <div class="flex gap-2">
+                <button class="btn btn-ghost">Settings</button>
+                <button class="btn btn-secondary">❤ Support</button>
             </div>
         </div>
-        <div class="main">
-            <p>More fonts can be installed on your system from sites like <a target="_blank"
+        <br>
+        <!-- Information -->
+        <div class="prose-sm">
+            <p>More fonts can be installed on your system from sites like <a class="link" target="_blank"
                     href="https://fonts.google.com/">Google
-                    Fonts↗</a> or <a target="_blank" href="https://www.dafont.com/">DaFont↗</a>.
+                    Fonts↗</a> or <a class="link" target="_blank" href="https://www.dafont.com/">DaFont↗</a>.
             </p>
-            <p>You can <a target="_blank" href="https://forms.gle/3eqT9NU3mGHNjtyD8">report↗</a> unsupported
-                websites or bugs.</p>
+            <p>You can <a class="link" target="_blank" href="https://forms.gle/3eqT9NU3mGHNjtyD8">report↗</a>
+                unsupported websites or bugs.</p>
             <p>↺ Refresh if you don't see any changes.</p>
-            <form name="scope">
-                <input name="global_apply" type="checkbox">
-                <label for="global_apply">Apply selected fonts to all sites</label>
-            </form>
-            <form name="override_settings">
-                <input name="override" type="checkbox">
-                <label for="override">Override existing font selections</label>
-            </form>
-            <form name="exempt_settings">
-                <input name="exempt" type="checkbox">
-                <label for="override">Exempt this site from global settings</label>
-            </form>
-            <form name="fonts">
-                <label for="serif">Serif</label>
-                <select id="serif" name="serif">
+        </div>
+        <br>
+        <!-- Font Selection -->
+        <div>
+            <form name="fonts" class="grid grid-cols-2 gap-2">
+                <label class="text-lg font-serif" for="serif">Serif</label>
+                <select class="text-lg" id="serif" name="serif">
                     <option id="serif_placeholder" value="">Default</option>
                 </select>
-                <label for="sans_serif">Sans-serif</label>
-                <select id="sans_serif" name="sans_serif">
+                <label class="text-lg font-sans" for="sans_serif">Sans-serif</label>
+                <select class="text-lg" id="sans_serif" name="sans_serif">
                     <option id="sans_serif_placeholder" value="">Default</option>
                 </select>
-                <label for="monospace">Monospace</label>
-                <select id="monospace" name="monospace">
+                <label class="text-lg font-mono" for="monospace">Monospace</label>
+                <select class="text-lg" id="monospace" name="monospace">
                     <option id="monospace_placeholder" value="">Default</option>
                 </select>
-                <button type="submit" class="apply">Apply Selection</button>
+                <br>
+                <button type="submit" class="btn btn-primary w-full col-span-2">Apply Selection</button>
             </form>
-            <div class="control">
-                <button class="icon-btn">
-                    <span id="restore-btn" class="btn-text">↺ Restore</span>
-                </button>
-            </div>
-        </div>
-        <div class="support-slide">
-            <p style="text-align: center;">Thank you for using Fontonic ❤</p>
-            <div class="box">
-                <a href="https://paypal.me/amkhrjee?country.x=IN&locale.x=en_GB" target="_blank">
-                    <div class="box-item">Support via PayPal</div>
-                </a>
-                <a href="https://www.buymeacoffee.com/amkhrjee" target="_blank">
-                    <div class="box-item">Buy Me A Coffee</div>
-                </a>
-                <a href="https://ko-fi.com/amkhrjee" target="_blank">
-                    <div class="box-item">Support via Ko-Fi</div>
-                </a>
-                <a href="https://chromewebstore.google.com/detail/fontonic-change-fonts/hnjlnpipbcbgllcjgbcjfgepmeomdcog"
-                    target="_blank">
-                    <div class="box-item">Leave a rating</div>
-                </a>
-            </div>
-            <br><br><br><br>
-            <p style="text-align: center;">Made by <a href="https://amkhrjee.xyz">amkhrjee↗</a></p>
-            <p style="text-align: center;">v1.6, August 2024</p>
         </div>
     </div>
-</body>
 
-</html>
+    </div>
+</body>
