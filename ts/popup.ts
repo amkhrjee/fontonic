@@ -80,11 +80,7 @@ settingsButton.addEventListener("click", async () => {
       let exempted_domains = [];
       const result = await chrome.storage.sync.get(["exempts"]);
       if ("exempts" in result) exempted_domains = result["exempts"];
-      const [tab] = await chrome.tabs.query({
-        active: true,
-        lastFocusedWindow: true,
-      });
-      const domain = new URL(tab.url!).hostname;
+      const domain = await getDomain();
       if (exemptCheck.checked) exempted_domains.push(domain);
       else exempted_domains = exempted_domains.filter((el) => el !== domain);
       await chrome.storage.sync.set({
@@ -151,8 +147,7 @@ const updatePlaceholders = (innerText: fontData) => {
     innerText.monospace === "Default" ? "" : innerText.monospace;
 };
 
-chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-  const domain = new URL(tabs[0].url!).hostname;
+getDomain().then((domain) => {
   chrome.storage.sync.get([domain]).then((result) => {
     if (Object.keys(result).length != 0) {
       const fontData = result[domain];
@@ -234,11 +229,8 @@ restoreButton.addEventListener("click", async () => {
     sans_serif: "Default",
     monospace: "Default",
   });
-  let [tab] = await chrome.tabs.query({
-    active: true,
-    lastFocusedWindow: true,
-  });
-  const domain = new URL(tab.url!).hostname;
+
+  const domain = await getDomain();
   chrome.storage.sync.remove(domain);
   (document.getElementById("restore_modal") as HTMLDialogElement).showModal();
   restoreButton.remove();
