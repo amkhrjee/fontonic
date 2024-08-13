@@ -2596,10 +2596,6 @@ html {
   display: grid;
 }
 
-.hidden {
-  display: none;
-}
-
 .h-6 {
   height: 1.5rem;
 }
@@ -2686,11 +2682,6 @@ html {
 
 .font-bold {
   font-weight: 700;
-}
-
-.text-info {
-  --tw-text-opacity: 1;
-  color: var(--fallback-in,oklch(var(--in)/var(--tw-text-opacity)));
 }
 
 .text-warning {

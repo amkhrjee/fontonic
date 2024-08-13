@@ -256,6 +256,15 @@ fontSelectionForm.addEventListener("submit", (e) => {
 // when global mode is on, give users a prompt asking them if they are sure
 // because this will reset font settings for all websites if they had decided to override existing settings
 restoreButton.addEventListener("click", async () => {
+  const result = await chrome.storage.sync.get(["global"]);
+  if ("global" in result && result["global"]) {
+    (document.getElementById("warning_modal") as HTMLDialogElement).showModal();
+    await chrome.storage.sync.set({
+      global: false,
+    });
+    globalCheck.checked = false;
+    showTip(tipText);
+  }
   updatePlaceholders({
     serif: "Default",
     sans_serif: "Default",
@@ -263,6 +272,5 @@ restoreButton.addEventListener("click", async () => {
   });
 
   chrome.storage.sync.remove(await getDomain());
-  (document.getElementById("restore_modal") as HTMLDialogElement).showModal();
   restoreButton.remove();
 });
