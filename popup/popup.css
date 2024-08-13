@@ -2600,24 +2600,16 @@ html {
   height: 1.5rem;
 }
 
-.w-full {
-  width: 100%;
-}
-
-.w-11\/12 {
-  width: 91.666667%;
-}
-
 .w-3\/4 {
   width: 75%;
 }
 
-.min-w-96 {
-  min-width: 24rem;
+.w-full {
+  width: 100%;
 }
 
-.max-w-5xl {
-  max-width: 64rem;
+.min-w-96 {
+  min-width: 24rem;
 }
 
 .flex-1 {

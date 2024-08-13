@@ -7,12 +7,49 @@ const supportPage = document.getElementById("support-page");
 const restoreButton = document.getElementById("restore-btn");
 const formButtons = document.getElementById("form-btns");
 const applyButton = document.getElementById("apply-btn");
+// Check buttons
+const globalCheck = document.getElementById("global_check") as HTMLInputElement;
+const overrideCheck = document.getElementById(
+  "override_check"
+) as HTMLInputElement;
+const exemptCheck = document.getElementById("exempt_check") as HTMLInputElement;
+
+const getDomain = async () => {
+  const [tab] = await chrome.tabs.query({
+    active: true,
+    lastFocusedWindow: true,
+  });
+  return new URL(tab.url!).hostname;
+};
 
 // by default these extra pages are unmounted
 settingsPage.remove();
 supportPage.remove();
 restoreButton.remove();
-settingsButton.addEventListener("click", () => {
+
+// Check for configuration settings
+console.log("Checking for global config");
+chrome.storage.sync.get(["global"]).then((result) => {
+  globalCheck.checked = "global" in result && result["global"];
+
+  if (globalCheck.checked) {
+    overrideCheck.disabled = false;
+    exemptCheck.disabled = false;
+
+    chrome.storage.sync.get(["override"]).then((result) => {
+      overrideCheck.checked = "override" in result && result["override"];
+    });
+
+    chrome.storage.sync
+      .get(["exempts"])
+      .then(async (result: { exempts: string[] }) => {
+        exemptCheck.checked =
+          "exempts" in result && result["exempts"].includes(await getDomain());
+      });
+  }
+});
+
+settingsButton.addEventListener("click", async () => {
   if (settingsButton.textContent.charAt(0) === "S") {
     settingsButton.textContent = "Go back";
     if (supportButton.textContent.includes("<")) supportPage.remove();
@@ -20,16 +57,7 @@ settingsButton.addEventListener("click", () => {
     supportButton.textContent = "❤ Support";
     wrapper.appendChild(settingsPage);
 
-    // Check buttons
-    const globalCheck = document.getElementById(
-      "global_check"
-    ) as HTMLInputElement;
-    const overrideCheck = document.getElementById(
-      "override_check"
-    ) as HTMLInputElement;
-    const exemptCheck = document.getElementById(
-      "exempt_check"
-    ) as HTMLInputElement;
+    // Check for exisitng settings
     globalCheck.addEventListener("change", async () => {
       // enable/disable the other checkboxes
       overrideCheck.disabled = !globalCheck.checked;
@@ -177,6 +205,7 @@ fontSelectionForm.addEventListener("submit", (e) => {
           type: "apply_font",
           data: fontData,
         });
+
         // saving the fonts to sync storage
         const domain = new URL(tabs[0].url).hostname;
         if (
