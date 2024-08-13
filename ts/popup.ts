@@ -71,9 +71,12 @@ const updatePlaceholders = (innerText: fontData) => {
   monospacePlaceholder!.innerHTML = innerText.monospace;
 
   // Placeholder value
-  serifPlaceholder!.value = innerText.serif;
-  sansSerifPlaceholder!.value = innerText.sans_serif;
-  monospacePlaceholder!.value = innerText.monospace;
+  serifPlaceholder!.value =
+    innerText.serif === "Default" ? "" : innerText.serif;
+  sansSerifPlaceholder!.value =
+    innerText.sans_serif === "Default" ? "" : innerText.sans_serif;
+  monospacePlaceholder!.value =
+    innerText.monospace === "Default" ? "" : innerText.monospace;
 };
 
 chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
@@ -83,6 +86,7 @@ chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
     if (Object.keys(result).length != 0) {
       const fontData = result[domain];
       updatePlaceholders(fontData);
+      formButtons.prepend(restoreButton);
     }
   });
 });
@@ -147,4 +151,24 @@ fontSelectionForm.addEventListener("submit", (e) => {
     console.error("Error applying or saving font.");
     console.error(e);
   }
+});
+
+// Restore Button
+// when global mode is on, give users a prompt asking them if they are sure
+// because this will reset font settings for all websites if they had decided to override existing settings
+restoreButton.addEventListener("click", async () => {
+  updatePlaceholders({
+    serif: "Default",
+    sans_serif: "Default",
+    monospace: "Default",
+  });
+  let [tab] = await chrome.tabs.query({
+    active: true,
+    lastFocusedWindow: true,
+  });
+  const domain = new URL(tab.url!).hostname;
+  chrome.storage.sync.remove(domain);
+  // Show a modal telling users to refresh the page
+  (document.getElementById("restore_modal") as HTMLDialogElement).showModal();
+  restoreButton.remove();
 });
