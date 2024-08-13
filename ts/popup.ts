@@ -124,7 +124,6 @@ const updatePlaceholders = (innerText: fontData) => {
 };
 
 chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-  const tab_id = tabs[0].id;
   const domain = new URL(tabs[0].url!).hostname;
   chrome.storage.sync.get([domain]).then((result) => {
     if (Object.keys(result).length != 0) {
