@@ -13,6 +13,21 @@ const overrideCheck = document.getElementById(
   "override_check"
 ) as HTMLInputElement;
 const exemptCheck = document.getElementById("exempt_check") as HTMLInputElement;
+const tipText = document.getElementById("tip");
+const tipWhenOverrideOn = document.getElementById("tip-override-on");
+const tipWhenOverrideOff = document.getElementById("tip-override-off");
+const tipWhenSiteIsExempted = document.getElementById("tip-exempt");
+const tipBox = document.getElementById("tip-box");
+
+tipWhenOverrideOn.remove();
+tipWhenOverrideOff.remove();
+tipWhenSiteIsExempted.remove();
+
+const showTip = (tip: HTMLElement) => {
+  tipBox.removeChild(tipBox.children[0]);
+  tipBox.appendChild(tip);
+  return true;
+};
 
 const getDomain = async () => {
   const [tab] = await chrome.tabs.query({
@@ -27,6 +42,10 @@ settingsPage.remove();
 supportPage.remove();
 restoreButton.remove();
 
+const goToSettings = () => {
+  settingsButton.click();
+};
+
 // Check for configuration settings
 chrome.storage.sync.get(["global"]).then((result) => {
   globalCheck.checked = "global" in result && result["global"];
@@ -36,14 +55,18 @@ chrome.storage.sync.get(["global"]).then((result) => {
     exemptCheck.disabled = false;
 
     chrome.storage.sync.get(["override"]).then((result) => {
-      overrideCheck.checked = "override" in result && result["override"];
+      const willOverride = "override" in result && result["override"];
+      overrideCheck.checked = willOverride;
+      showTip(willOverride ? tipWhenOverrideOn : tipWhenOverrideOff);
     });
 
     chrome.storage.sync
       .get(["exempts"])
       .then(async (result: { exempts: string[] }) => {
         exemptCheck.checked =
-          "exempts" in result && result["exempts"].includes(await getDomain());
+          "exempts" in result &&
+          result["exempts"].includes(await getDomain()) &&
+          showTip(tipWhenSiteIsExempted);
       });
   }
 });
@@ -66,12 +89,18 @@ settingsButton.addEventListener("click", async () => {
       await chrome.storage.sync.set({
         global: globalCheck.checked,
       });
+
+      if (globalCheck.checked) {
+        showTip(overrideCheck.checked ? tipWhenOverrideOn : tipWhenOverrideOff);
+        exemptCheck.checked && showTip(tipWhenSiteIsExempted);
+      } else showTip(tipText);
     });
 
     overrideCheck.addEventListener("change", async () => {
       await chrome.storage.sync.set({
         override: overrideCheck.checked,
       });
+      showTip(overrideCheck.checked ? tipWhenOverrideOn : tipWhenOverrideOff);
     });
 
     exemptCheck.addEventListener("change", async () => {
@@ -80,8 +109,12 @@ settingsButton.addEventListener("click", async () => {
       const result = await chrome.storage.sync.get(["exempts"]);
       if ("exempts" in result) exempted_domains = result["exempts"];
       const domain = await getDomain();
-      if (exemptCheck.checked) exempted_domains.push(domain);
-      else exempted_domains = exempted_domains.filter((el) => el !== domain);
+      if (exemptCheck.checked && showTip(tipWhenSiteIsExempted))
+        exempted_domains.push(domain);
+      else {
+        exempted_domains = exempted_domains.filter((el) => el !== domain);
+        showTip(overrideCheck.checked ? tipWhenOverrideOn : tipWhenOverrideOff);
+      }
       await chrome.storage.sync.set({
         exempts: exempted_domains,
       });
