@@ -28,7 +28,6 @@ supportPage.remove();
 restoreButton.remove();
 
 // Check for configuration settings
-console.log("Checking for global config");
 chrome.storage.sync.get(["global"]).then((result) => {
   globalCheck.checked = "global" in result && result["global"];
 
@@ -230,8 +229,7 @@ restoreButton.addEventListener("click", async () => {
     monospace: "Default",
   });
 
-  const domain = await getDomain();
-  chrome.storage.sync.remove(domain);
+  chrome.storage.sync.remove(await getDomain());
   (document.getElementById("restore_modal") as HTMLDialogElement).showModal();
   restoreButton.remove();
 });
