@@ -19,6 +19,50 @@ settingsButton.addEventListener("click", () => {
     else homePage.remove();
     supportButton.textContent = "❤ Support";
     wrapper.appendChild(settingsPage);
+
+    // Check buttons
+    const globalCheck = document.getElementById(
+      "global_check"
+    ) as HTMLInputElement;
+    const overrideCheck = document.getElementById(
+      "override_check"
+    ) as HTMLInputElement;
+    const exemptCheck = document.getElementById(
+      "exempt_check"
+    ) as HTMLInputElement;
+    globalCheck.addEventListener("change", async () => {
+      // enable/disable the other checkboxes
+      overrideCheck.disabled = !globalCheck.checked;
+      exemptCheck.disabled = !globalCheck.checked;
+
+      // Save this setting to sync storage
+      await chrome.storage.sync.set({
+        global: globalCheck.checked,
+      });
+    });
+
+    overrideCheck.addEventListener("change", async () => {
+      await chrome.storage.sync.set({
+        override: overrideCheck.checked,
+      });
+    });
+
+    exemptCheck.addEventListener("change", async () => {
+      // Get the list of all exempted websites
+      let exempted_domains = [];
+      const result = await chrome.storage.sync.get(["exempts"]);
+      if ("exempts" in result) exempted_domains = result["exempts"];
+      const [tab] = await chrome.tabs.query({
+        active: true,
+        lastFocusedWindow: true,
+      });
+      const domain = new URL(tab.url!).hostname;
+      if (exemptCheck.checked) exempted_domains.push(domain);
+      else exempted_domains = exempted_domains.filter((el) => el !== domain);
+      await chrome.storage.sync.set({
+        exempts: exempted_domains,
+      });
+    });
   } else {
     settingsButton.textContent = "Settings";
     settingsPage.remove();
@@ -168,7 +212,6 @@ restoreButton.addEventListener("click", async () => {
   });
   const domain = new URL(tab.url!).hostname;
   chrome.storage.sync.remove(domain);
-  // Show a modal telling users to refresh the page
   (document.getElementById("restore_modal") as HTMLDialogElement).showModal();
   restoreButton.remove();
 });
