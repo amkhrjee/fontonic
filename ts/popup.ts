@@ -252,9 +252,6 @@ fontSelectionForm.addEventListener("submit", (e) => {
   }
 });
 
-// Restore Button
-// when global mode is on, give users a prompt asking them if they are sure
-// because this will reset font settings for all websites if they had decided to override existing settings
 restoreButton.addEventListener("click", async () => {
   const result = await chrome.storage.sync.get(["global"]);
   if ("global" in result && result["global"]) {
