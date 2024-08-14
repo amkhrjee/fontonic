@@ -2838,6 +2838,10 @@ html {
   width: 100%;
 }
 
+.w-96 {
+  width: 24rem;
+}
+
 .min-w-96 {
   min-width: 24rem;
 }
