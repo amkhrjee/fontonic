@@ -8,8 +8,10 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     chrome.storage.sync.get(["global"]).then((is_global) => {
       chrome.storage.sync.get(["override"]).then((is_override) => {
         if ("global" in is_global && is_global["global"])
-          if ("override" in is_override && is_override["override"])
+          if ("override" in is_override && is_override["override"]) {
             // global & override both are on so apply global fonts to all sites
+            console.log("GLOBAL IS ON + OVERRIDE IS ON");
+
             chrome.storage.sync.get(["global_fonts"]).then((result) => {
               if ("global_fonts" in result) {
                 //@ts-ignore
@@ -19,37 +21,52 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
                 });
               }
             });
-          else
+          } else {
+            console.log("GLOBAL IS ON + OVERRIDE IS OFF");
+
             chrome.storage.sync.get([message.domain]).then((is_domain) => {
-              if (message.domain in is_domain)
+              if (message.domain in is_domain) {
+                console.log(
+                  "GLOBAL IS ON + OVERRIDE IS OFF + Domain has set fonts"
+                );
+
                 // @ts-ignore
                 sendResponse({
                   type: "apply_font",
                   data: is_domain[message.domain],
                 });
-                else
-                // prettier-ignore
-                // @ts-ignore
-                sendResponse({
-                  type: "apply_font",
-                  data: is_domain[message.domain],
+              } else {
+                console.log(
+                  "GLOBAL IS ON + OVERRIDE IS OFF + Domain does not have set fonts"
+                );
+                chrome.storage.sync.get(["global_fonts"]).then((result) => {
+                  if ("global_fonts" in result) {
+                    //@ts-ignore
+                    sendResponse({
+                      type: "apply_font",
+                      data: result["global_fonts"],
+                    });
+                  }
                 });
+              }
             });
-        else
+          }
+        else {
           chrome.storage.sync.get([message.domain]).then((is_domain) => {
             if (message.domain in is_domain)
-                // @ts-ignore
-                sendResponse({
-                  type: "apply_font",
-                  data: is_domain[message.domain],
-                });
-              else 
-                // prettier-ignore
-                // @ts-ignore
+              // @ts-ignore
+            sendResponse({
+              type: "apply_font",
+              data: is_domain[message.domain],
+            });
+            else 
+            // prettier-ignore
+          // @ts-ignore
               sendResponse({
                 type: "none",
               });
           });
+        }
       });
     });
   }

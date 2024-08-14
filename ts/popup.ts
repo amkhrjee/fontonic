@@ -104,8 +104,6 @@ settingsButton.addEventListener("click", async () => {
         // check if fonts are set for the site
         const domain = await getDomain();
         const setFonts = await chrome.storage.sync.get([domain]);
-        // console.log(setFonts);
-
         if (domain in setFonts) {
           await chrome.storage.sync.set({
             global_fonts: setFonts[domain],
