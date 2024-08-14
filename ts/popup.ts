@@ -23,6 +23,28 @@ const globalNotSelectedInfoText = document.getElementById(
 );
 const globalFontsSelection = document.getElementById("global_fonts_selection");
 
+const globalFontSelectionForm = document.forms[
+  "global_fonts"
+] as HTMLFormElement;
+const globalSerifSelect = globalFontSelectionForm.elements[
+  "global_serif"
+] as HTMLSelectElement;
+const globalSansSerifSelect = globalFontSelectionForm.elements[
+  "global_sans_serif"
+] as HTMLSelectElement;
+const globalMonospaceSelect = globalFontSelectionForm.elements[
+  "global_monospace"
+] as HTMLSelectElement;
+const globalSerifPlaceholder = document.querySelector(
+  "#global_serif_placeholder"
+) as HTMLOptionElement;
+const globalSansSerifPlaceholder = document.querySelector(
+  "#global_sans_serif_placeholder"
+) as HTMLOptionElement;
+const globalMonospacePlaceholder = document.querySelector(
+  "#global_monospace_placeholder"
+) as HTMLOptionElement;
+
 tipWhenOverrideOn.remove();
 tipWhenOverrideOff.remove();
 tipWhenSiteIsExempted.remove();
@@ -58,13 +80,29 @@ const goToSettings = () => {
 };
 
 // Check for configuration settings
-chrome.storage.sync.get(["global"]).then((result) => {
+chrome.storage.sync.get(["global"]).then(async (result) => {
   globalCheck.checked = "global" in result && result["global"];
 
   if (globalCheck.checked) {
     overrideCheck.disabled = false;
     exemptCheck.disabled = false;
     globalNotSelectedInfoText.remove();
+    const globalFonts = await chrome.storage.sync.get(["global_fonts"]);
+    if ("global_fonts" in globalFonts) {
+      const global_fonts = globalFonts["global_fonts"];
+      // Placeholder text content
+      globalSerifPlaceholder.innerHTML = global_fonts.serif;
+      globalSansSerifPlaceholder.innerHTML = global_fonts.sans_serif;
+      globalMonospacePlaceholder.innerHTML = global_fonts.monospace;
+
+      // Placeholder value
+      globalSerifPlaceholder.value =
+        global_fonts.serif === "Default" ? "" : global_fonts.serif;
+      globalSansSerifPlaceholder.value =
+        global_fonts.sans_serif === "Default" ? "" : global_fonts.sans_serif;
+      globalMonospacePlaceholder.value =
+        global_fonts.monospace === "Default" ? "" : global_fonts.monospace;
+    }
 
     chrome.storage.sync.get(["override"]).then((result) => {
       const willOverride = "override" in result && result["override"];
@@ -109,6 +147,7 @@ settingsButton.addEventListener("click", async () => {
         exemptCheck.checked && showTip(tipWhenSiteIsExempted);
         globalNotSelectedInfoText.remove();
         settingsPage.appendChild(globalFontsSelection);
+
         // check if fonts are set for the site
         const domain = await getDomain();
         const setFonts = await chrome.storage.sync.get([domain]);
@@ -168,6 +207,14 @@ supportButton.addEventListener("click", () => {
   }
 });
 
+type fontData = {
+  serif: string;
+  sans_serif: string;
+  monospace: string;
+};
+// For global
+
+// For Domain specific
 const fontSelectionForm = document.forms["fonts"] as HTMLFormElement;
 const serifSelect = fontSelectionForm.elements["serif"] as HTMLSelectElement;
 const sansSerifSelect = fontSelectionForm.elements[
@@ -187,11 +234,6 @@ const monospacePlaceholder = document.querySelector(
 ) as HTMLOptionElement;
 
 // Populating placeholder values + checkbox
-type fontData = {
-  serif: string;
-  sans_serif: string;
-  monospace: string;
-};
 const updatePlaceholders = (innerText: fontData) => {
   // Placeholder text content
   serifPlaceholder!.innerHTML = innerText.serif;
@@ -219,6 +261,23 @@ getDomain().then((domain) => {
 
 // load locally installed fonts
 for (const each_type of [serifSelect, sansSerifSelect, monospaceSelect]) {
+  chrome.fontSettings.getFontList((fonts) => {
+    fonts.forEach((font) => {
+      const option = document.createElement("option");
+      option.value = font.displayName;
+      option.textContent = font.displayName;
+      option.style.fontFamily = font.displayName;
+      each_type.appendChild(option);
+    });
+  });
+}
+
+// for global fonts form
+for (const each_type of [
+  globalSerifSelect,
+  globalSansSerifSelect,
+  globalMonospaceSelect,
+]) {
   chrome.fontSettings.getFontList((fonts) => {
     fonts.forEach((font) => {
       const option = document.createElement("option");
