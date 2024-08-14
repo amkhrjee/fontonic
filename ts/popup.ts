@@ -29,12 +29,19 @@ const showTip = (tip: HTMLElement) => {
   return true;
 };
 
-const getDomain = async () => {
-  const [tab] = await chrome.tabs.query({
-    active: true,
-    lastFocusedWindow: true,
+const getDomain = (): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    chrome.tabs.query(
+      {
+        active: true,
+        lastFocusedWindow: true,
+      },
+      (tabs) => {
+        if (tabs[0] && tabs[0].url) resolve(new URL(tabs[0].url).hostname);
+        else reject(new Error("Could not return tab url"));
+      }
+    );
   });
-  return new URL(tab.url!).hostname;
 };
 
 // by default these extra pages are unmounted
@@ -93,6 +100,17 @@ settingsButton.addEventListener("click", async () => {
       if (globalCheck.checked) {
         showTip(overrideCheck.checked ? tipWhenOverrideOn : tipWhenOverrideOff);
         exemptCheck.checked && showTip(tipWhenSiteIsExempted);
+
+        // check if fonts are set for the site
+        const domain = await getDomain();
+        const setFonts = await chrome.storage.sync.get([domain]);
+        // console.log(setFonts);
+
+        if (domain in setFonts) {
+          await chrome.storage.sync.set({
+            global_fonts: setFonts[domain],
+          });
+        }
       } else showTip(tipText);
     });
 
@@ -228,6 +246,7 @@ fontSelectionForm.addEventListener("submit", (e) => {
           sans_serif: sansSerifValue.length ? sansSerifValue : "Default",
           monospace: monospaceValue.length ? monospaceValue : "Default",
         };
+
         chrome.tabs.connect(tabs[0].id).postMessage({
           type: "apply_font",
           data: fontData,
@@ -244,6 +263,13 @@ fontSelectionForm.addEventListener("submit", (e) => {
             [domain]: fontData,
           });
         }
+
+        // if global is checked, save to global_fonts
+        const result = await chrome.storage.sync.get(["global"]);
+        if ("global" in result && result["global"])
+          await chrome.storage.sync.set({
+            global_fonts: fontData,
+          });
       }
     );
   } catch (e) {
