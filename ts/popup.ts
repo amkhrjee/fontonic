@@ -18,6 +18,10 @@ const tipWhenOverrideOn = document.getElementById("tip-override-on");
 const tipWhenOverrideOff = document.getElementById("tip-override-off");
 const tipWhenSiteIsExempted = document.getElementById("tip-exempt");
 const tipBox = document.getElementById("tip-box");
+const globalNotSelectedInfoText = document.getElementById(
+  "global_not_checked_info_text"
+);
+const globalFontsSelection = document.getElementById("global_fonts_selection");
 
 tipWhenOverrideOn.remove();
 tipWhenOverrideOff.remove();
@@ -60,6 +64,7 @@ chrome.storage.sync.get(["global"]).then((result) => {
   if (globalCheck.checked) {
     overrideCheck.disabled = false;
     exemptCheck.disabled = false;
+    globalNotSelectedInfoText.remove();
 
     chrome.storage.sync.get(["override"]).then((result) => {
       const willOverride = "override" in result && result["override"];
@@ -75,6 +80,8 @@ chrome.storage.sync.get(["global"]).then((result) => {
           result["exempts"].includes(await getDomain()) &&
           showTip(tipWhenSiteIsExempted);
       });
+  } else {
+    globalFontsSelection.remove();
   }
 });
 
@@ -100,7 +107,8 @@ settingsButton.addEventListener("click", async () => {
       if (globalCheck.checked) {
         showTip(overrideCheck.checked ? tipWhenOverrideOn : tipWhenOverrideOff);
         exemptCheck.checked && showTip(tipWhenSiteIsExempted);
-
+        globalNotSelectedInfoText.remove();
+        settingsPage.appendChild(globalFontsSelection);
         // check if fonts are set for the site
         const domain = await getDomain();
         const setFonts = await chrome.storage.sync.get([domain]);
@@ -109,7 +117,11 @@ settingsButton.addEventListener("click", async () => {
             global_fonts: setFonts[domain],
           });
         }
-      } else showTip(tipText);
+      } else {
+        showTip(tipText);
+        globalFontsSelection.remove();
+        settingsPage.appendChild(globalNotSelectedInfoText);
+      }
     });
 
     overrideCheck.addEventListener("change", async () => {

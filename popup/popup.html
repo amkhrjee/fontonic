@@ -46,9 +46,9 @@
                     unsupported websites or bugs.</p>
                 <div id="tip-box">
                     <p id="tip">↺ Refresh if you don't see any changes.</p>
-                    <p id="tip-override-off" class="text-warning">✺ Fonts applied to all sites. Override is off.
+                    <p id="tip-override-off" class="text-warning">✺ Global fonts apply is on. Override is off.
                     </p>
-                    <p id="tip-override-on" class="text-warning">✺ Fonts applied to all sites. Override is on.
+                    <p id="tip-override-on" class="text-warning">✺ Global fonts apply is on. Override is on.
                     </p>
                     <p id="tip-exempt" class="text-warning">⮾ This site is exempted from the global settings.</p>
                 </div>
@@ -81,28 +81,50 @@
         </div>
 
         <!-- Settings page -->
-        <div id="settings-page" class="prose">
-            <div class="flex justify-between items-center">
+        <div id="settings-page">
+            <div class="flex justify-between items-center text-sm">
                 <p>Apply selections to all sites</p>
                 <input id="global_check" type="checkbox" class="toggle toggle-primary" />
             </div>
-            <div class="flex justify-between items-center">
+            <br>
+            <div class="flex justify-between items-center text-sm">
                 <p>Override existing selections</p>
                 <input id="override_check" type="checkbox" disabled class="toggle toggle-primary" />
             </div>
-            <div class="flex justify-between items-center">
+            <br>
+            <div class="flex justify-between items-center text-sm">
                 <p>Exempt current site from global settings</p>
                 <input id="exempt_check" type="checkbox" disabled class="toggle toggle-primary" />
             </div>
             <div class="divider"></div>
-            <div class="prose-sm text-center">
-                <p>
-                    v1.6, August 2024
-                </p>
-                <p>Made by <a class="link link-primary" href="https://amkhrjee.xyz" target="_blank">amkhrjee↗</a> • View
-                    <a class="link link-primary" href="https://github.com/amkhrjee/fontonic" target="_blank">source
-                        code↗</a>
-                </p>
+            <div id="global_not_checked_info_text"
+                class="prose-sm border border-dashed rounded-md border-primary p-6 text-center flex justify-center items-center  h-44">
+                <p>To apply fonts to all websites, select fonts for any website and turn on the setting.</p>
+            </div>
+            <div id="global_fonts_selection">
+                <form name=" fonts">
+                    <div class="grid grid-cols-2 gap-2">
+                        <label class="text-lg font-serif" for="serif">Serif</label>
+                        <select class="text-lg" id="serif" name="serif">
+                            <option id="serif_placeholder" value="">Default</option>
+                        </select>
+                        <label class="text-lg font-sans" for="sans_serif">Sans-serif</label>
+                        <select class="text-lg" id="sans_serif" name="sans_serif">
+                            <option id="sans_serif_placeholder" value="">Default</option>
+                        </select>
+                        <label class="text-lg font-mono" for="monospace">Monospace</label>
+                        <select class="text-lg" id="monospace" name="monospace">
+                            <option id="monospace_placeholder" value="">Default</option>
+                        </select>
+                    </div>
+                    <br>
+                    <div id="form-btns" class="flex w-full gap-2 tooltip"
+                        data-tip="Modifies your global fonts selection">
+                        <button id="apply-btn" type="submit" class="btn btn-neutral flex-1 ">
+                            🌐 Apply to all sites
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -123,11 +145,14 @@
                 <p>Your donations help keep this project bug-free and motivates me to add new features ❤️</p>
             </div>
             <br>
-            <div class="text-sm flex gap-4 justify-center items-center">
-                <a href="https://github.com/amkhrjee/fontonic" target="_blank" class="link link-secondary">Star on
-                    GitHub↗</a>
-                <a href="https://www.producthunt.com/posts/fontonic" target="_blank" class="link link-secondary">Upvote
-                    on ProductHunt↗</a>
+            <div class="prose-sm text-center p-4 ">
+                <p>
+                    v1.6, August 2024
+                </p>
+                <p>Made by <a class="link link-primary" href="https://amkhrjee.xyz" target="_blank">amkhrjee↗</a> • View
+                    <a class="link link-primary" href="https://github.com/amkhrjee/fontonic" target="_blank">source
+                        code↗</a>
+                </p>
             </div>
         </div>
     </div>
