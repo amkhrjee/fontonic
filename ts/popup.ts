@@ -263,11 +263,22 @@ fontSelectionForm.addEventListener("submit", (e) => {
         }
 
         // if global is checked, save to global_fonts
-        const result = await chrome.storage.sync.get(["global"]);
-        if ("global" in result && result["global"])
-          await chrome.storage.sync.set({
-            global_fonts: fontData,
-          });
+        // don't if the site has been exempted
+        const exempts_list = await chrome.storage.sync.get(["exempts"]);
+        if (
+          "exempts" in exempts_list &&
+          exempts_list["exempts"].includes(domain)
+        ) {
+          console.log(
+            "This site has been exempted, so don't change the global fonts"
+          );
+        } else {
+          const result = await chrome.storage.sync.get(["global"]);
+          if ("global" in result && result["global"])
+            await chrome.storage.sync.set({
+              global_fonts: fontData,
+            });
+        }
       }
     );
   } catch (e) {
