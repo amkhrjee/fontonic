@@ -156,6 +156,24 @@ settingsButton.addEventListener("click", async () => {
             global_fonts: setFonts[domain],
           });
         }
+        const globalFonts = await chrome.storage.sync.get(["global_fonts"]);
+        if ("global_fonts" in globalFonts) {
+          const global_fonts = globalFonts["global_fonts"];
+          // Placeholder text content
+          globalSerifPlaceholder.innerHTML = global_fonts.serif;
+          globalSansSerifPlaceholder.innerHTML = global_fonts.sans_serif;
+          globalMonospacePlaceholder.innerHTML = global_fonts.monospace;
+
+          // Placeholder value
+          globalSerifPlaceholder.value =
+            global_fonts.serif === "Default" ? "" : global_fonts.serif;
+          globalSansSerifPlaceholder.value =
+            global_fonts.sans_serif === "Default"
+              ? ""
+              : global_fonts.sans_serif;
+          globalMonospacePlaceholder.value =
+            global_fonts.monospace === "Default" ? "" : global_fonts.monospace;
+        }
       } else {
         showTip(tipText);
         globalFontsSelection.remove();
@@ -390,20 +408,34 @@ globalFontSelectionForm.addEventListener("submit", async (e) => {
 
 restoreButton.addEventListener("click", async () => {
   const result = await chrome.storage.sync.get(["global"]);
+  const domain = await getDomain();
   if ("global" in result && result["global"]) {
-    (document.getElementById("warning_modal") as HTMLDialogElement).showModal();
-    await chrome.storage.sync.set({
-      global: false,
-    });
-    globalCheck.checked = false;
-    showTip(tipText);
+    const is_exempted = await chrome.storage.sync.get(["exempts"]);
+    if ("exempts" in is_exempted && is_exempted["exempts"].includes(domain)) {
+      // Only change for the site
+      // Show refresh suggesion modal
+      (
+        document.getElementById("restore_modal") as HTMLDialogElement
+      ).showModal();
+      chrome.storage.sync.remove(domain);
+      restoreButton.remove();
+    } else {
+      (
+        document.getElementById("warning_modal") as HTMLDialogElement
+      ).showModal();
+      await chrome.storage.sync.set({
+        global: false,
+      });
+      globalCheck.checked = false;
+      showTip(tipText);
+    }
   }
   updatePlaceholders({
     serif: "Default",
     sans_serif: "Default",
     monospace: "Default",
   });
-
+  (document.getElementById("restore_modal") as HTMLDialogElement).showModal();
   chrome.storage.sync.remove(await getDomain());
   restoreButton.remove();
 });
