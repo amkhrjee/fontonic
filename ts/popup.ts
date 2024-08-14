@@ -358,6 +358,36 @@ fontSelectionForm.addEventListener("submit", (e) => {
   }
 });
 
+globalFontSelectionForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const globalSerifValue = globalSerifSelect.value;
+  const globalSansSerifValue = globalSansSerifSelect.value;
+  const globaMonospaceValue = globalMonospaceSelect.value;
+  const applyButton = document.getElementById("global-apply-btn");
+  if (
+    !globalSerifValue.length &&
+    !globalSansSerifValue.length &&
+    !globaMonospaceValue.length
+  )
+    applyButton.innerHTML = "No Changes Made";
+  else {
+    applyButton.textContent = "Global fonts modified";
+  }
+  setTimeout(() => {
+    applyButton.innerHTML = "🌐 Apply to all sites";
+  }, 1500);
+
+  await chrome.storage.sync.set({
+    global_fonts: {
+      serif: globalSerifValue.length ? globalSerifValue : "Default",
+      sans_serif: globalSansSerifValue.length
+        ? globalSansSerifValue
+        : "Default",
+      monospace: globaMonospaceValue.length ? globaMonospaceValue : "Default",
+    },
+  });
+});
+
 restoreButton.addEventListener("click", async () => {
   const result = await chrome.storage.sync.get(["global"]);
   if ("global" in result && result["global"]) {
