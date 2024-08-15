@@ -1,18 +1,246 @@
-// UI Elements
-const applyButton = document.querySelector(".apply") as HTMLButtonElement;
-const supportPage = document.querySelector(".support-slide") as HTMLDivElement;
-const mainPage = document.querySelector(".main") as HTMLDivElement;
-const supportButton = document.querySelector(
-  ".support>button"
-) as HTMLButtonElement;
-const supportButtonIcon = document.querySelector(".material-symbols-outlined");
-const supportButtonText = document.querySelector(
-  ".support-btn-text"
-) as HTMLSpanElement;
-const paymentButtons = document.querySelectorAll(
-  ".support-slide>button"
-) as NodeListOf<HTMLButtonElement>;
-const control = document.querySelector(".control") as HTMLDivElement;
+const settingsButton = document.getElementById("settings-btn");
+const supportButton = document.getElementById("support-btn");
+const homePage = document.getElementById("home-page");
+const settingsPage = document.getElementById("settings-page");
+const wrapper = document.getElementById("wrapper");
+const supportPage = document.getElementById("support-page");
+const restoreButton = document.getElementById("restore-btn");
+const formButtons = document.getElementById("form-btns");
+const applyButton = document.getElementById("apply-btn");
+// Check buttons
+const globalCheck = document.getElementById("global_check") as HTMLInputElement;
+const overrideCheck = document.getElementById(
+  "override_check"
+) as HTMLInputElement;
+const exemptCheck = document.getElementById("exempt_check") as HTMLInputElement;
+const tipText = document.getElementById("tip");
+const tipWhenOverrideOn = document.getElementById("tip-override-on");
+const tipWhenOverrideOff = document.getElementById("tip-override-off");
+const tipWhenSiteIsExempted = document.getElementById("tip-exempt");
+const tipBox = document.getElementById("tip-box");
+const globalNotSelectedInfoText = document.getElementById(
+  "global_not_checked_info_text"
+);
+const globalFontsSelection = document.getElementById("global_fonts_selection");
+
+const globalFontSelectionForm = document.forms[
+  "global_fonts"
+] as HTMLFormElement;
+const globalSerifSelect = globalFontSelectionForm.elements[
+  "global_serif"
+] as HTMLSelectElement;
+const globalSansSerifSelect = globalFontSelectionForm.elements[
+  "global_sans_serif"
+] as HTMLSelectElement;
+const globalMonospaceSelect = globalFontSelectionForm.elements[
+  "global_monospace"
+] as HTMLSelectElement;
+const globalSerifPlaceholder = document.querySelector(
+  "#global_serif_placeholder"
+) as HTMLOptionElement;
+const globalSansSerifPlaceholder = document.querySelector(
+  "#global_sans_serif_placeholder"
+) as HTMLOptionElement;
+const globalMonospacePlaceholder = document.querySelector(
+  "#global_monospace_placeholder"
+) as HTMLOptionElement;
+
+tipWhenOverrideOn.remove();
+tipWhenOverrideOff.remove();
+tipWhenSiteIsExempted.remove();
+
+const showTip = (tip: HTMLElement) => {
+  tipBox.removeChild(tipBox.children[0]);
+  tipBox.appendChild(tip);
+  return true;
+};
+
+const getDomain = (): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    chrome.tabs.query(
+      {
+        active: true,
+        lastFocusedWindow: true,
+      },
+      (tabs) => {
+        if (tabs[0] && tabs[0].url) resolve(new URL(tabs[0].url).hostname);
+        else reject(new Error("Could not return tab url"));
+      }
+    );
+  });
+};
+
+// by default these extra pages are unmounted
+settingsPage.remove();
+supportPage.remove();
+restoreButton.remove();
+
+const goToSettings = () => {
+  settingsButton.click();
+};
+
+// Check for configuration settings
+chrome.storage.sync.get(["global"]).then(async (result) => {
+  globalCheck.checked = "global" in result && result["global"];
+
+  if (globalCheck.checked) {
+    overrideCheck.disabled = false;
+    exemptCheck.disabled = false;
+    globalNotSelectedInfoText.remove();
+    const globalFonts = await chrome.storage.sync.get(["global_fonts"]);
+    if ("global_fonts" in globalFonts) {
+      const global_fonts = globalFonts["global_fonts"];
+      // Placeholder text content
+      globalSerifPlaceholder.innerHTML = global_fonts.serif;
+      globalSansSerifPlaceholder.innerHTML = global_fonts.sans_serif;
+      globalMonospacePlaceholder.innerHTML = global_fonts.monospace;
+
+      // Placeholder value
+      globalSerifPlaceholder.value =
+        global_fonts.serif === "Default" ? "" : global_fonts.serif;
+      globalSansSerifPlaceholder.value =
+        global_fonts.sans_serif === "Default" ? "" : global_fonts.sans_serif;
+      globalMonospacePlaceholder.value =
+        global_fonts.monospace === "Default" ? "" : global_fonts.monospace;
+    }
+
+    chrome.storage.sync.get(["override"]).then((result) => {
+      const willOverride = "override" in result && result["override"];
+      overrideCheck.checked = willOverride;
+      showTip(willOverride ? tipWhenOverrideOn : tipWhenOverrideOff);
+    });
+
+    chrome.storage.sync
+      .get(["exempts"])
+      .then(async (result: { exempts: string[] }) => {
+        exemptCheck.checked =
+          "exempts" in result &&
+          result["exempts"].includes(await getDomain()) &&
+          showTip(tipWhenSiteIsExempted);
+      });
+  } else {
+    globalFontsSelection.remove();
+  }
+});
+
+settingsButton.addEventListener("click", async () => {
+  if (settingsButton.textContent.charAt(0) === "S") {
+    settingsButton.textContent = "Go back";
+    if (supportButton.textContent.includes("<")) supportPage.remove();
+    else homePage.remove();
+    supportButton.textContent = "❤ Support";
+    wrapper.appendChild(settingsPage);
+
+    // Check for exisitng settings
+    globalCheck.addEventListener("change", async () => {
+      // enable/disable the other checkboxes
+      overrideCheck.disabled = !globalCheck.checked;
+      exemptCheck.disabled = !globalCheck.checked;
+
+      // Save this setting to sync storage
+      await chrome.storage.sync.set({
+        global: globalCheck.checked,
+      });
+
+      if (globalCheck.checked) {
+        showTip(overrideCheck.checked ? tipWhenOverrideOn : tipWhenOverrideOff);
+        exemptCheck.checked && showTip(tipWhenSiteIsExempted);
+        globalNotSelectedInfoText.remove();
+        settingsPage.appendChild(globalFontsSelection);
+
+        // check if fonts are set for the site
+        const domain = await getDomain();
+        const setFonts = await chrome.storage.sync.get([domain]);
+        if (domain in setFonts) {
+          await chrome.storage.sync.set({
+            global_fonts: setFonts[domain],
+          });
+        }
+        const globalFonts = await chrome.storage.sync.get(["global_fonts"]);
+        if ("global_fonts" in globalFonts) {
+          const global_fonts = globalFonts["global_fonts"];
+          // Placeholder text content
+          globalSerifPlaceholder.innerHTML = global_fonts.serif;
+          globalSansSerifPlaceholder.innerHTML = global_fonts.sans_serif;
+          globalMonospacePlaceholder.innerHTML = global_fonts.monospace;
+
+          // Placeholder value
+          globalSerifPlaceholder.value =
+            global_fonts.serif === "Default" ? "" : global_fonts.serif;
+          globalSansSerifPlaceholder.value =
+            global_fonts.sans_serif === "Default"
+              ? ""
+              : global_fonts.sans_serif;
+          globalMonospacePlaceholder.value =
+            global_fonts.monospace === "Default" ? "" : global_fonts.monospace;
+        }
+      } else {
+        showTip(tipText);
+        globalFontsSelection.remove();
+        settingsPage.appendChild(globalNotSelectedInfoText);
+      }
+    });
+
+    overrideCheck.addEventListener("change", async () => {
+      await chrome.storage.sync.set({
+        override: overrideCheck.checked,
+      });
+      showTip(overrideCheck.checked ? tipWhenOverrideOn : tipWhenOverrideOff);
+    });
+
+    exemptCheck.addEventListener("change", async () => {
+      // Get the list of all exempted websites
+      let exempted_domains = [];
+      const result = await chrome.storage.sync.get(["exempts"]);
+      if ("exempts" in result) exempted_domains = result["exempts"];
+      const domain = await getDomain();
+      if (exemptCheck.checked && showTip(tipWhenSiteIsExempted))
+        exempted_domains.push(domain);
+      else {
+        exempted_domains = exempted_domains.filter((el) => el !== domain);
+        showTip(overrideCheck.checked ? tipWhenOverrideOn : tipWhenOverrideOff);
+      }
+      await chrome.storage.sync.set({
+        exempts: exempted_domains,
+      });
+    });
+  } else {
+    settingsButton.textContent = "Settings";
+    settingsPage.remove();
+    wrapper.appendChild(homePage);
+  }
+});
+
+supportButton.addEventListener("click", () => {
+  if (supportButton.textContent.includes("❤")) {
+    supportButton.textContent = "<- Go back";
+    if (settingsButton.textContent.includes("G")) settingsPage.remove();
+    else homePage.remove();
+    settingsButton.textContent = "Settings";
+    wrapper.appendChild(supportPage);
+  } else {
+    supportButton.textContent = "❤ Support";
+    supportPage.remove();
+    wrapper.appendChild(homePage);
+  }
+});
+
+type fontData = {
+  serif: string;
+  sans_serif: string;
+  monospace: string;
+};
+// For global
+
+// For Domain specific
+const fontSelectionForm = document.forms["fonts"] as HTMLFormElement;
+const serifSelect = fontSelectionForm.elements["serif"] as HTMLSelectElement;
+const sansSerifSelect = fontSelectionForm.elements[
+  "sans_serif"
+] as HTMLSelectElement;
+const monospaceSelect = fontSelectionForm.elements[
+  "monospace"
+] as HTMLSelectElement;
 const serifPlaceholder = document.querySelector(
   "#serif_placeholder"
 ) as HTMLOptionElement;
@@ -22,315 +250,192 @@ const sansSerifPlaceholder = document.querySelector(
 const monospacePlaceholder = document.querySelector(
   "#monospace_placeholder"
 ) as HTMLOptionElement;
-const restoreButton = document.querySelector(
-  "#restore-btn"
-) as HTMLButtonElement;
-const fontSelectionForm = document.forms["fonts"] as HTMLFormElement;
-const serifSelect = fontSelectionForm.elements["serif"] as HTMLSelectElement;
-const sansSerifSelect = fontSelectionForm.elements[
-  "sans_serif"
-] as HTMLSelectElement;
-const monospaceSelect = fontSelectionForm.elements[
-  "monospace"
-] as HTMLSelectElement;
-const scopeSelectionForm = document.forms["scope"] as HTMLFormElement;
-const scopeSelectionCheckbox = scopeSelectionForm.elements[
-  "global_apply"
-] as HTMLInputElement;
-const overrideForm = document.forms["override_settings"] as HTMLFormElement;
-const overrideCheckbox = overrideForm.elements["override"] as HTMLInputElement;
-const exemptForm = document.forms["exempt_settings"] as HTMLFormElement;
-const exemptCheckbox = exemptForm.elements["exempt"] as HTMLInputElement;
 
-scopeSelectionCheckbox.addEventListener("change", () => {
-  overrideForm.style.display = scopeSelectionCheckbox.checked ? "grid" : "none";
-  exemptForm.style.display = scopeSelectionCheckbox.checked ? "grid" : "none";
-
-  // Save preference to sync storage
-  chrome.storage.sync
-    .set({
-      global: scopeSelectionCheckbox.checked,
-    })
-    .then(() => {
-      console.log("Global Settings applied successfully.");
-    })
-    .catch((err) => {
-      console.error("Error in applying global value:", err);
-    });
-
-  if (scopeSelectionCheckbox.checked == false) {
-    overrideCheckbox.checked = false;
-    chrome.storage.sync.set({
-      override: false,
-    });
-  }
-});
-
-overrideCheckbox.addEventListener("change", () => {
-  chrome.storage.sync
-    .set({
-      override: overrideCheckbox.checked,
-    })
-    .then(() => {
-      console.log("Override stored successfully.");
-    })
-    .catch((err) => {
-      console.error("Error in applying override value:", err);
-    });
-});
-
-exemptCheckbox.addEventListener("change", () => {
-  let newList: string[] = [];
-  console.log("Adding to exempts list...");
-  chrome.tabs.query({ active: true, lastFocusedWindow: true }, async (tabs) => {
-    tab_id = tabs[0].id;
-    const domain = new URL(tabs[0].url!).hostname;
-    const result: { exempts?: string[] } = await chrome.storage.sync.get([
-      "exempts",
-    ]);
-    if ("exempts" in result) newList = result["exempts"];
-    if (exemptCheckbox.checked) {
-      newList.push(domain);
-    } else {
-      newList = newList.filter((item) => item !== domain);
-    }
-    chrome.storage.sync
-      .set({
-        exempts: newList,
-      })
-      .then(() => {
-        console.log("Saved/Removed site in exempts list");
-      })
-      .catch(() => {
-        console.error("Error saving/removing site in exempts list");
-      });
-  });
-});
-
-// load locally installed fonts
-const populateFonts = (element: HTMLElement) => {
-  chrome.fontSettings.getFontList((fonts) => {
-    fonts.forEach((font) => {
-      const option = document.createElement("option");
-      option.value = font.displayName;
-      option.textContent = font.displayName;
-      option.style.fontFamily = font.displayName;
-      element.appendChild(option);
-    });
-  });
-};
-
-populateFonts(serifSelect);
-populateFonts(sansSerifSelect);
-populateFonts(monospaceSelect);
-
-type fontData = {
-  serif: string;
-  sans_serif: string;
-  monospace: string;
-};
-
-let tab_id: number;
-
-const updatePlaceholders = (innerText: fontData, value: fontData) => {
+// Populating placeholder values + checkbox
+const updatePlaceholders = (innerText: fontData) => {
   // Placeholder text content
   serifPlaceholder!.innerHTML = innerText.serif;
   sansSerifPlaceholder!.innerHTML = innerText.sans_serif;
   monospacePlaceholder!.innerHTML = innerText.monospace;
 
   // Placeholder value
-  serifPlaceholder!.value = value.serif;
-  sansSerifPlaceholder!.value = value.sans_serif;
-  monospacePlaceholder!.value = value.monospace;
+  serifPlaceholder!.value =
+    innerText.serif === "Default" ? "" : innerText.serif;
+  sansSerifPlaceholder!.value =
+    innerText.sans_serif === "Default" ? "" : innerText.sans_serif;
+  monospacePlaceholder!.value =
+    innerText.monospace === "Default" ? "" : innerText.monospace;
 };
 
-// Populating placeholder values + checkbox
-chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-  tab_id = tabs[0].id;
-  const domain = new URL(tabs[0].url!).hostname;
+getDomain().then((domain) => {
   chrome.storage.sync.get([domain]).then((result) => {
-    const fontData = result[domain];
     if (Object.keys(result).length != 0) {
-      // Font data is there but do we have to override?
-      chrome.storage.sync.get(["override"]).then((result) => {
-        overrideCheckbox.checked = result["override"] ? true : false;
-        if (result["override"]) {
-          chrome.storage.sync.get(["lastUsed"]).then((result) => {
-            const fontData = result["lastUsed"];
-            // console.log(fontData);
-            if (fontData) {
-              updatePlaceholders(fontData, fontData);
-              control.style.display = "flex";
-            }
-          });
-        } else {
-          updatePlaceholders(fontData, fontData);
-          control.style.display = "flex";
-        }
-      });
-    } else {
-      chrome.storage.sync.get(["global"]).then((result) => {
-        if (result["global"]) {
-          chrome.storage.sync.get(["lastUsed"]).then((result) => {
-            const fontData = result["lastUsed"];
-            if (fontData) {
-              updatePlaceholders(fontData, fontData);
-              control.style.display = "flex";
-            }
-          });
-        }
-      });
+      const fontData = result[domain];
+      updatePlaceholders(fontData);
+      formButtons.prepend(restoreButton);
     }
   });
-
-  chrome.storage.sync
-    .get(["global"])
-    .then((result) => {
-      scopeSelectionCheckbox.checked = result["global"] ? true : false;
-      if (result["global"]) {
-        chrome.storage.sync.get(["override"]).then((result) => {
-          overrideCheckbox.checked = result["override"] ? true : false;
-        });
-      } else {
-        overrideForm.style.display = "none";
-        exemptForm.style.display = "none";
-      }
-    })
-    .catch((err) => console.error(err));
 });
 
-restoreButton.addEventListener("click", async () => {
-  // Uncheck everything
-  scopeSelectionCheckbox.checked = false;
-  overrideCheckbox.checked = false;
-  overrideForm.style.display = "none";
-  exemptForm.style.display = "none";
-  chrome.storage.sync.set({
-    global: false,
-  });
-  chrome.storage.sync.set({
-    override: false,
-  });
-  chrome.storage.sync.remove(["lastUsed"]);
-  // Restoring the original fonts
-  let [tab] = await chrome.tabs.query({
-    active: true,
-    lastFocusedWindow: true,
-  });
-  if (tab) {
-    let message = {
-      type: "restore",
-    };
-    const port = chrome.tabs.connect(tab.id);
-    port.postMessage(message);
-    // Delete the font from Sync Storage
-    const domain = new URL(tab.url!).hostname;
-    chrome.storage.sync.remove(domain, () => {
-      //console.log("Successfully removed entries for domain: ");
+// load locally installed fonts
+for (const each_type of [serifSelect, sansSerifSelect, monospaceSelect]) {
+  chrome.fontSettings.getFontList((fonts) => {
+    fonts.forEach((font) => {
+      const option = document.createElement("option");
+      option.value = font.displayName;
+      option.textContent = font.displayName;
+      option.style.fontFamily = font.displayName;
+      each_type.appendChild(option);
     });
-    // Hide the Pause and Restore Buttons
-    control.style.display = "none";
-    // Revert the placeholders to default
-    updatePlaceholders(
-      {
-        serif: "Default",
-        sans_serif: "Default",
-        monospace: "Default",
-      },
-      {
-        serif: "",
-        sans_serif: "",
-        monospace: "",
-      }
-    );
-  }
-});
+  });
+}
 
-// Show Support Page
-let isSupportPageOpen = false;
-supportButton.addEventListener("click", () => {
-  if (!isSupportPageOpen) {
-    supportButtonText.innerHTML = "⬅ Go Back";
-    mainPage.style.opacity = "0";
-    mainPage.style.visibility = "hidden";
-    supportPage.style.visibility = "visible";
-    supportPage.style.transform = "translateX(0)";
-    isSupportPageOpen = !isSupportPageOpen;
-  } else {
-    supportButtonText.innerHTML = "❤ Support";
-    supportPage.style.transform = "translateX(18rem)";
-    setTimeout(() => {
-      supportPage.style.visibility = "hidden";
-      mainPage.style.visibility = "visible";
-      mainPage.style.opacity = "1";
-    }, 200);
-    isSupportPageOpen = !isSupportPageOpen;
-  }
-});
+// for global fonts form
+for (const each_type of [
+  globalSerifSelect,
+  globalSansSerifSelect,
+  globalMonospaceSelect,
+]) {
+  chrome.fontSettings.getFontList((fonts) => {
+    fonts.forEach((font) => {
+      const option = document.createElement("option");
+      option.value = font.displayName;
+      option.textContent = font.displayName;
+      option.style.fontFamily = font.displayName;
+      each_type.appendChild(option);
+    });
+  });
+}
 
-fontSelectionForm.addEventListener("submit", async (e) => {
+fontSelectionForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const serifValue = serifSelect.value;
   const sansSerifValue = sansSerifSelect.value;
   const monospaceValue = monospaceSelect.value;
-
-  if (!serifValue.length && !sansSerifValue.length && !monospaceValue.length) {
+  if (!serifValue.length && !sansSerifValue.length && !monospaceValue.length)
     applyButton.innerHTML = "No Changes Made";
-    applyButton.style.color = "#ffb6ad";
-    setTimeout(() => {
-      applyButton.innerHTML = "Apply Selection";
-      applyButton.style.color = "#bccbaf";
-    }, 1000);
-  } else {
-    applyButton.innerHTML = "✔ Applied";
-    setTimeout(() => {
-      applyButton.innerHTML = "Apply Selection";
-    }, 2000);
+  else {
+    applyButton.textContent = "✔ Applied";
+    if (!formButtons.contains(restoreButton))
+      formButtons.prepend(restoreButton);
   }
+  setTimeout(() => {
+    applyButton.innerHTML = "Apply Selection";
+  }, 1500);
+
   try {
-    chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-      if (tabs) {
-        let message = {
-          type: "apply_font",
-          data: {
-            serif: serifValue.length ? serifValue : "Default",
-            sans_serif: sansSerifValue.length ? sansSerifValue : "Default",
-            monospace: monospaceValue.length ? monospaceValue : "Default",
-          },
-        };
-        const port = chrome.tabs.connect(tabs[0].id);
-        port.postMessage(message);
-
-        // Saving in the Sync Storage
-        const domain = new URL(tabs[0].url!).hostname;
+    chrome.tabs.query(
+      { active: true, lastFocusedWindow: true },
+      async (tabs) => {
+        // telling the service worker to apply the font
         const fontData = {
-          serif: message.data.serif,
-          sans_serif: message.data.sans_serif,
-          monospace: message.data.monospace,
+          serif: serifValue.length ? serifValue : "Default",
+          sans_serif: sansSerifValue.length ? sansSerifValue : "Default",
+          monospace: monospaceValue.length ? monospaceValue : "Default",
         };
 
+        chrome.tabs.connect(tabs[0].id).postMessage({
+          type: "apply_font",
+          data: fontData,
+        });
+
+        // saving the fonts to sync storage
+        const domain = new URL(tabs[0].url).hostname;
         if (
           serifValue.length ||
           sansSerifValue.length ||
           monospaceValue.length
         ) {
-          control.style.display = "flex";
-          chrome.storage.sync.set({ [domain]: fontData }).then(() => {
-            console.log("Stored in Sync Storage!");
+          await chrome.storage.sync.set({
+            [domain]: fontData,
           });
+        }
 
-          if (scopeSelectionCheckbox.checked) {
-            chrome.storage.sync
-              .set({
-                lastUsed: fontData,
-              })
-              .then(() => console.log("Last Used Data Saved"))
-              .catch((err) => console.error("Error in LastUsed:", err));
-          }
+        // if global is checked, save to global_fonts
+        // don't if the site has been exempted
+        const exempts_list = await chrome.storage.sync.get(["exempts"]);
+        if (
+          "exempts" in exempts_list &&
+          exempts_list["exempts"].includes(domain)
+        ) {
+          console.log(
+            "This site has been exempted, so don't change the global fonts"
+          );
+        } else {
+          const result = await chrome.storage.sync.get(["global"]);
+          if ("global" in result && result["global"])
+            await chrome.storage.sync.set({
+              global_fonts: fontData,
+            });
         }
       }
-    });
-  } catch (error) {
-    console.error(error);
+    );
+  } catch (e) {
+    console.error("Error applying or saving font.");
+    console.error(e);
   }
+});
+
+globalFontSelectionForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const globalSerifValue = globalSerifSelect.value;
+  const globalSansSerifValue = globalSansSerifSelect.value;
+  const globaMonospaceValue = globalMonospaceSelect.value;
+  const applyButton = document.getElementById("global-apply-btn");
+  if (
+    !globalSerifValue.length &&
+    !globalSansSerifValue.length &&
+    !globaMonospaceValue.length
+  )
+    applyButton.innerHTML = "No Changes Made";
+  else {
+    applyButton.textContent = "Global fonts modified";
+  }
+  setTimeout(() => {
+    applyButton.innerHTML = "🌐 Apply to all sites";
+  }, 1500);
+
+  await chrome.storage.sync.set({
+    global_fonts: {
+      serif: globalSerifValue.length ? globalSerifValue : "Default",
+      sans_serif: globalSansSerifValue.length
+        ? globalSansSerifValue
+        : "Default",
+      monospace: globaMonospaceValue.length ? globaMonospaceValue : "Default",
+    },
+  });
+});
+
+restoreButton.addEventListener("click", async () => {
+  const result = await chrome.storage.sync.get(["global"]);
+  const domain = await getDomain();
+  if ("global" in result && result["global"]) {
+    const is_exempted = await chrome.storage.sync.get(["exempts"]);
+    if ("exempts" in is_exempted && is_exempted["exempts"].includes(domain)) {
+      // Only change for the site
+      // Show refresh suggesion modal
+      (
+        document.getElementById("restore_modal") as HTMLDialogElement
+      ).showModal();
+      chrome.storage.sync.remove(domain);
+      restoreButton.remove();
+    } else {
+      (
+        document.getElementById("warning_modal") as HTMLDialogElement
+      ).showModal();
+      await chrome.storage.sync.set({
+        global: false,
+      });
+      globalCheck.checked = false;
+      showTip(tipText);
+    }
+  }
+  updatePlaceholders({
+    serif: "Default",
+    sans_serif: "Default",
+    monospace: "Default",
+  });
+  (document.getElementById("restore_modal") as HTMLDialogElement).showModal();
+  chrome.storage.sync.remove(await getDomain());
+  restoreButton.remove();
 });

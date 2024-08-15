@@ -3,88 +3,178 @@
 <head>
     <title>Fontonic</title>
     <meta charset='UTF-8' />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="popup.css">
     <script defer src="../js/popup.js"></script>
 </head>
 
 <body>
-    <div class="wrapper">
-        <div class="head">
+    <!-- Wrapper -->
+    <div id="wrapper" style="font-family: 'Inter Tight', sans-serif;" class="w-96 p-4">
+        <!-- Header -->
+        <div class="flex justify-between items-center">
+            <!-- Logo -->
             <a target="_blank" href="https://fontonic.amkhrjee.xyz">
-                <div class="title">
-                    <img src="../res/icons/favicon-96x96.png">
-                    <h2>Fontonic</h2>
+                <div class="flex">
+                    <img class="h-6" src="../res/icons/favicon-96x96.png">
+                    <h2 style="color: #ff914c;" class="text-xl font-bold items-center">Fontonic</h2>
                 </div>
             </a>
-            <div style="display: flex; gap: 8px; justify-content: center; align-items: center;" class="support">
-                <a href="https://github.com/amkhrjee/fontonic" target="_blank"><img src="../res/github-mark-white.svg"
-                        height="24" width="24"></a>
-                <button><span class="support-btn-text">❤ Support</span></button>
+            <div class="flex gap-2">
+                <button id="settings-btn" class="btn btn-ghost">Settings</button>
+                <button id="support-btn" class="btn btn-secondary">❤ Support</button>
             </div>
         </div>
-        <div class="main">
-            <p>More fonts can be installed on your system from sites like <a target="_blank"
-                    href="https://fonts.google.com/">Google
-                    Fonts↗</a> or <a target="_blank" href="https://www.dafont.com/">DaFont↗</a>.
-            </p>
-            <p>You can <a target="_blank" href="https://forms.gle/3eqT9NU3mGHNjtyD8">report↗</a> unsupported
-                websites or bugs.</p>
-            <p>↺ Refresh if you don't see any changes.</p>
-            <form name="scope">
-                <input name="global_apply" type="checkbox">
-                <label for="global_apply">Apply selected fonts to all sites</label>
-            </form>
-            <form name="override_settings">
-                <input name="override" type="checkbox">
-                <label for="override">Override existing font selections</label>
-            </form>
-            <form name="exempt_settings">
-                <input name="exempt" type="checkbox">
-                <label for="override">Exempt this site from global settings</label>
-            </form>
-            <form name="fonts">
-                <label for="serif">Serif</label>
-                <select id="serif" name="serif">
-                    <option id="serif_placeholder" value="">Default</option>
-                </select>
-                <label for="sans_serif">Sans-serif</label>
-                <select id="sans_serif" name="sans_serif">
-                    <option id="sans_serif_placeholder" value="">Default</option>
-                </select>
-                <label for="monospace">Monospace</label>
-                <select id="monospace" name="monospace">
-                    <option id="monospace_placeholder" value="">Default</option>
-                </select>
-                <button type="submit" class="apply">Apply Selection</button>
-            </form>
-            <div class="control">
-                <button class="icon-btn">
-                    <span id="restore-btn" class="btn-text">↺ Restore</span>
-                </button>
+        <br>
+        <div id="home-page">
+            <!-- Information -->
+            <div class="prose-sm">
+                <p>More fonts can be installed on your system from sites like <a class="link" target="_blank"
+                        href="https://fonts.google.com/">Google
+                        Fonts↗</a> or <a class="link" target="_blank" href="https://www.dafont.com/">DaFont↗</a>.
+                </p>
+                <p>You can <a class="link" target="_blank" href="https://forms.gle/3eqT9NU3mGHNjtyD8">report↗</a>
+                    unsupported websites or bugs.</p>
+                <div id="tip-box">
+                    <p id="tip">↺ Refresh if you don't see any changes.</p>
+                    <p id="tip-override-off" class="text-warning">✺ Global fonts apply is on. Override is off.
+                    </p>
+                    <p id="tip-override-on" class="text-warning">✺ Global fonts apply is on. Override is on.
+                    </p>
+                    <p id="tip-exempt" class="text-warning">⮾ This site is exempted from the global settings.</p>
+                </div>
+            </div>
+            <br>
+            <!-- Font Selection -->
+            <div>
+                <form name="fonts">
+                    <div class="grid grid-cols-2 gap-2">
+                        <label class="text-lg font-serif" for="serif">Serif</label>
+                        <select class="text-lg" id="serif" name="serif">
+                            <option id="serif_placeholder" value="">Default</option>
+                        </select>
+                        <label class="text-lg font-sans" for="sans_serif">Sans-serif</label>
+                        <select class="text-lg" id="sans_serif" name="sans_serif">
+                            <option id="sans_serif_placeholder" value="">Default</option>
+                        </select>
+                        <label class="text-lg font-mono" for="monospace">Monospace</label>
+                        <select class="text-lg" id="monospace" name="monospace">
+                            <option id="monospace_placeholder" value="">Default</option>
+                        </select>
+                    </div>
+                    <br>
+                    <div id="form-btns" class="flex w-full gap-2">
+                        <button id="restore-btn" type="button" class="btn btn-accent flex-1 ">↺ Restore</button>
+                        <button id="apply-btn" type="submit" class="btn btn-primary flex-1 tooltip"
+                            data-tip="Refresh if nothing changes">Apply
+                            Selection</button>
+
+                    </div>
+                </form>
             </div>
         </div>
-        <div class="support-slide">
-            <p style="text-align: center;">Thank you for using Fontonic ❤</p>
-            <div class="box">
-                <a href="https://paypal.me/amkhrjee?country.x=IN&locale.x=en_GB" target="_blank">
-                    <div class="box-item">Support via PayPal</div>
-                </a>
-                <a href="https://www.buymeacoffee.com/amkhrjee" target="_blank">
-                    <div class="box-item">Buy Me A Coffee</div>
-                </a>
-                <a href="https://ko-fi.com/amkhrjee" target="_blank">
-                    <div class="box-item">Support via Ko-Fi</div>
-                </a>
+
+        <!-- Settings page -->
+        <div id="settings-page">
+            <div class="flex justify-between items-center text-sm">
+                <p>Apply selections to all sites</p>
+                <input id="global_check" type="checkbox" class="toggle toggle-primary" />
+            </div>
+            <br>
+            <div class="flex justify-between items-center text-sm">
+                <p>Override existing selections</p>
+                <input id="override_check" type="checkbox" disabled class="toggle toggle-primary" />
+            </div>
+            <br>
+            <div class="flex justify-between items-center text-sm">
+                <p>Exempt current site from global settings</p>
+                <input id="exempt_check" type="checkbox" disabled class="toggle toggle-primary" />
+            </div>
+            <div class="divider"></div>
+            <div id="global_not_checked_info_text"
+                class="prose-sm border border-dashed rounded-md border-primary p-6 text-center flex justify-center items-center  h-44">
+                <p>To apply fonts to all websites, select fonts for any website and turn on the setting.</p>
+            </div>
+            <div id="global_fonts_selection">
+                <form name="global_fonts">
+                    <div class="grid grid-cols-2 gap-2">
+                        <label class="text-lg font-serif" for="serif">Serif</label>
+                        <select class="text-lg" id="global_serif" name="serif">
+                            <option id="global_serif_placeholder" value="">Default</option>
+                        </select>
+                        <label class="text-lg font-sans" for="sans_serif">Sans-serif</label>
+                        <select class="text-lg" id="global_sans_serif" name="sans_serif">
+                            <option id="global_sans_serif_placeholder" value="">Default</option>
+                        </select>
+                        <label class="text-lg font-mono" for="monospace">Monospace</label>
+                        <select class="text-lg" id="global_monospace" name="monospace">
+                            <option id="global_monospace_placeholder" value="">Default</option>
+                        </select>
+                    </div>
+                    <br>
+                    <div id="global-form-btns" class="flex w-full gap-2 tooltip"
+                        data-tip="Modifies your global fonts selection">
+                        <button id="global-apply-btn" type="submit" class="btn btn-neutral flex-1 ">
+                            🌐 Apply to all sites
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Support Page -->
+        <div id="support-page">
+            <div class="grid grid-cols-2 gap-2">
+                <a href="https://paypal.me/amkhrjee?country.x=IN&locale.x=en_GB" target="_blank"
+                    class="btn btn-primary">Support via PayPal</a>
+                <a href="https://www.buymeacoffee.com/amkhrjee" target="_blank" class="btn btn-primary">Buy Me A
+                    Coffee</a>
+                <a href="https://ko-fi.com/amkhrjee" target="_blank" class="btn btn-primary">Support via Ko-Fi</a>
                 <a href="https://chromewebstore.google.com/detail/fontonic-change-fonts/hnjlnpipbcbgllcjgbcjfgepmeomdcog"
-                    target="_blank">
-                    <div class="box-item">Leave a rating</div>
-                </a>
+                    target="_blank" class="btn btn-primary">Leave a rating</a>
             </div>
-            <br><br><br><br>
-            <p style="text-align: center;">Made by <a href="https://amkhrjee.xyz">amkhrjee↗</a></p>
-            <p style="text-align: center;">v1.6, August 2024</p>
+            <br>
+            <br><br>
+            <div class="prose text-center">
+                <p>Your donations help keep this project bug-free and motivates me to add new features ❤️</p>
+            </div>
+            <br>
+            <div class="prose-sm text-center p-4 ">
+                <p>
+                    v1.6, August 2024
+                </p>
+                <p>Made by <a class="link link-primary" href="https://amkhrjee.xyz" target="_blank">amkhrjee↗</a> • View
+                    <a class="link link-primary" href="https://github.com/amkhrjee/fontonic" target="_blank">source
+                        code↗</a>
+                </p>
+            </div>
         </div>
     </div>
+    </div>
+    <dialog id="restore_modal" class="modal font-sans">
+        <div class="modal-box w-3/4">
+            <h3 style="font-family: 'Inter Tight';" class="text-lg font-bold">Fonts Restored</h3>
+            <p style="font-family: 'Inter Tight';" class="py-4 text-sm">Refresh the page to see changes.</p>
+            <div style="font-family: 'Inter Tight';" class="modal-action">
+                <form method="dialog">
+                    <button style="font-family: 'Inter Tight';" class="btn">OK</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+    <dialog id="warning_modal" class="modal font-sans">
+        <div class="modal-box w-3/4">
+            <h3 style="font-family: 'Inter Tight';" class="text-lg font-bold">Global apply was on</h3>
+            <p style="font-family: 'Inter Tight';" class="py-4 text-sm">Fonts will restore to default on all websites.
+                You'll have to manually restore for exempted sites. Global apply will be turned off.</p>
+            <div style="font-family: 'Inter Tight';" class="modal-action">
+                <form method="dialog">
+                    <button style="font-family: 'Inter Tight';" class="btn">OK</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
 </body>
-
-</html>

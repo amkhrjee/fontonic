@@ -6,29 +6,24 @@ const changeFontFamily = (
   sansSerif: string,
   monospace: string
 ) => {
-  if (node.nodeType === 1) {
-    const computedStyle = window.getComputedStyle(node as Element);
-    const fontFamily = computedStyle.getPropertyValue("font-family");
+  if (node.nodeType !== Node.ELEMENT_NODE) return;
 
-    if (fontFamily) {
-      if (fontFamily.includes("sans") && sansSerif != "Default") {
-        (node as HTMLElement).style.fontFamily =
-          `'${sansSerif}', ${originalSansSerif}`;
-      } else if (fontFamily.includes("serif") && serif != "Default") {
-        (node as HTMLElement).style.fontFamily = `'${serif}', ${originalSerif}`;
-      } else if (fontFamily.includes("monospace") && monospace != "Default") {
-        (node as HTMLElement).style.fontFamily =
-          `'${monospace}', ${originalMonospace}`;
-      }
+  const element = node as HTMLElement;
+  const fontFamily = getComputedStyle(element).fontFamily;
+
+  if (fontFamily) {
+    if (fontFamily.includes("sans") && sansSerif !== "Default") {
+      element.style.fontFamily = `'${sansSerif}', ${originalSansSerif}`;
+    } else if (fontFamily.includes("serif") && serif !== "Default") {
+      element.style.fontFamily = `'${serif}', ${originalSerif}`;
+    } else if (fontFamily.includes("monospace") && monospace !== "Default") {
+      element.style.fontFamily = `'${monospace}', ${originalMonospace}`;
     }
   }
 
-  // Recursively process child nodes
-  for (const childNode of node.childNodes) {
-    changeFontFamily(childNode, serif, sansSerif, monospace);
-    new MutationObserver(() =>
-      changeFontFamily(childNode, serif, sansSerif, monospace)
-    ).observe(childNode, { childList: true });
+  const childNodes = element.children;
+  for (let i = 0; i < childNodes.length; i++) {
+    changeFontFamily(childNodes[i], serif, sansSerif, monospace);
   }
 };
 
@@ -45,7 +40,14 @@ chrome.runtime.sendMessage(message, undefined, (response) => {
     const serif = response.data.serif;
     const sans_serif = response.data.sans_serif;
     const monospace = response.data.monospace;
-    changeFontFamily(document.body, serif, sans_serif, monospace);
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        for (const addedNode of mutation.addedNodes) {
+          changeFontFamily(addedNode, serif, sans_serif, monospace);
+        }
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
   }
 });
 
@@ -57,7 +59,14 @@ chrome.runtime.onConnect.addListener((port) => {
         const serif = message.data.serif;
         const sans_serif = message.data.sans_serif;
         const monospace = message.data.monospace;
-        changeFontFamily(document.body, serif, sans_serif, monospace);
+        const observer = new MutationObserver((mutations) => {
+          for (const mutation of mutations) {
+            for (const addedNode of mutation.addedNodes) {
+              changeFontFamily(addedNode, serif, sans_serif, monospace);
+            }
+          }
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
       } else if (message.type === "restore") {
         location.reload();
       } else if (message.type === "redirect") {

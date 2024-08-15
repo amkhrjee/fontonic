@@ -4,7 +4,8 @@
   "description": "Browser extension for changing fonts",
   "main": "index.js",
   "scripts": {
-    "tsc": "tsc --watch -p tsconfig.json"
+    "tsc": "tsc --watch -p tsconfig.json",
+    "tailwind": "npx tailwindcss -i input.css -o ./popup/popup.css --watch"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,9 @@
     "chrome-types": "^0.1.266"
   },
   "devDependencies": {
-    "prettier": "^3.2.5"
+    "@tailwindcss/typography": "^0.5.14",
+    "daisyui": "^4.12.10",
+    "prettier": "^3.2.5",
+    "tailwindcss": "^3.4.9"
   }
 }
