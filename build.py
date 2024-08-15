@@ -7,11 +7,20 @@ if len(sys.argv) < 2:
     print("Usage: python build.py <version_string>")
     sys.exit(1)
 
-excluded_file_paths = {r"^.git", r"^build", r"^.prettierrc", r"^.git",
+
+excluded_file_paths = {}
+if os.name == 'nt':
+    excluded_file_paths = {r"^.git", r"^build", r"^.prettierrc", r"^.git",
                        r"^ts", r"^node_modules", r"LICENSE", r"^package", 
                        r"^readme", r"^tsconfig", r".vscode", r"^_config", 
-                       r"^CNAME" , r"^res/webstore.png", r"^res/firefoxaddon.png",
-                       r"^res/logo_transparent.png"}
+                       r"^CNAME" , r"^res\\webstore.png", r"^res\\firefoxaddon",
+                       r"^res\\logo_transparent.png", r"^tailwind", r"^input"}
+else:
+    excluded_file_paths = {r"^.git", r"^build", r"^.prettierrc", r"^.git",
+                       r"^ts", r"^node_modules", r"LICENSE", r"^package", 
+                       r"^readme", r"^tsconfig", r".vscode", r"^_config", 
+                       r"^CNAME" , r"^res/webstore.png", r"^res/firefoxaddon",
+                       r"^res/logo_transparent.png", r"^tailwind", r"^input"}
 
 
 def shouldBeAdded(file_path):
