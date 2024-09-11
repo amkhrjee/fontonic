@@ -27,6 +27,20 @@ const changeFontFamily = (
   }
 };
 
+// const makeBold = (node: Node) => {
+//   if (node.nodeType !== Node.ELEMENT_NODE) return;
+//   const element = node as HTMLElement;
+//   const fontWeight = getComputedStyle(element).fontWeight;
+
+//   if (fontWeight) {
+//     element.style.fontWeight =
+//   }
+
+// }
+// Bold
+// Italic
+// Indent
+
 let message = {
   action: "on-page-load",
   domain: window.location.hostname,
