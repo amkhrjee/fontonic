@@ -54,7 +54,7 @@
             <div>
                 <form name="fonts">
                     <div class="grid grid-cols-[40%_50%_10%] gap-2">
-                        <label class="text-lg font-serif" for="serif">Serif</label>
+                        <label id="serif_label" class="text-lg font-serif" for="serif">Serif</label>
                         <select class="text-lg" id="serif" name="serif">
                             <option id="serif_placeholder" value="">Default</option>
                         </select>
@@ -65,11 +65,11 @@
                                 </span>
                             </div>
                             <ul tabindex="0"
-                                class="dropdown-content menu bg-neutral rounded-box z-[1] p-2 shadow flex-row w-max mr-2">
-                                <li><span class="material-symbols-outlined">
+                                class="dropdown-content menu bg-neutral rounded-box z-[1] p-2 shadow flex-row w-max mr-2 gap-2">
+                                <li id="serif_bold" class="rounded-lg"><span class="material-symbols-outlined">
                                         format_bold
                                     </span></li>
-                                <li><span class="material-symbols-outlined">
+                                <li id="serif_ital" class="rounded-lg"><span class="material-symbols-outlined">
                                         format_italic
                                     </span></li>
                             </ul>

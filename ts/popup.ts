@@ -267,6 +267,24 @@ const updatePlaceholders = (innerText: fontData) => {
     innerText.monospace === "Default" ? "" : innerText.monospace;
 };
 
+// Bold and Italicizing
+const btnSelect = (node: HTMLElement) => {
+  node.style.backgroundColor = "oklch(var(--s))";
+  node.style.color = "oklch(var(--sc))";
+};
+
+const btnDeselect = (node: HTMLElement) => {
+  node.style.backgroundColor = "oklch(var(--n))";
+  node.style.color = "oklch(var(--nc))";
+};
+
+const serifBoldBtn = document.getElementById("serif_bold");
+const serifItalBtn = document.getElementById("serif_ital");
+const serifLabel = document.getElementById("serif_label");
+
+let isSerifBoldBtnOn: boolean;
+let isSerifItalBtnOn: boolean;
+
 getDomain().then((domain) => {
   chrome.storage.sync.get([domain]).then((result) => {
     if (Object.keys(result).length != 0) {
@@ -275,6 +293,60 @@ getDomain().then((domain) => {
       formButtons.prepend(restoreButton);
     }
   });
+  chrome.storage.sync.get([`FT_SERIF_BOLD_${domain}`]).then((result) => {
+    isSerifBoldBtnOn =
+      `FT_SERIF_BOLD_${domain}` in result && result[`FT_SERIF_BOLD_${domain}`];
+    if (isSerifBoldBtnOn) {
+      btnSelect(serifBoldBtn);
+      serifLabel.classList.add("font-bold");
+    }
+  });
+  chrome.storage.sync.get([`FT_SERIF_ITAL_${domain}`]).then((result) => {
+    isSerifItalBtnOn =
+      `FT_SERIF_ITAL_${domain}` in result && result[`FT_SERIF_ITAL_${domain}`];
+    if (isSerifItalBtnOn) {
+      btnSelect(serifItalBtn);
+      serifLabel.classList.add("italic");
+    }
+  });
+});
+
+serifBoldBtn.addEventListener("click", async () => {
+  if (isSerifBoldBtnOn) {
+    btnDeselect(serifBoldBtn);
+    serifLabel.classList.remove("font-bold");
+
+    await chrome.storage.sync.set({
+      [`FT_SERIF_BOLD_${await getDomain()}`]: false,
+    });
+  } else {
+    btnSelect(serifBoldBtn);
+    serifLabel.classList.add("font-bold");
+
+    await chrome.storage.sync.set({
+      [`FT_SERIF_BOLD_${await getDomain()}`]: true,
+    });
+  }
+  isSerifBoldBtnOn = !isSerifBoldBtnOn;
+});
+
+serifItalBtn.addEventListener("click", async () => {
+  if (isSerifItalBtnOn) {
+    btnDeselect(serifItalBtn);
+    serifLabel.classList.remove("italic");
+
+    await chrome.storage.sync.set({
+      [`FT_SERIF_ITAL_${await getDomain()}`]: false,
+    });
+  } else {
+    btnSelect(serifItalBtn);
+    serifLabel.classList.add("italic");
+
+    await chrome.storage.sync.set({
+      [`FT_SERIF_ITAL_${await getDomain()}`]: true,
+    });
+  }
+  isSerifItalBtnOn = !isSerifItalBtnOn;
 });
 
 // load locally installed fonts
