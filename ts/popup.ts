@@ -282,8 +282,22 @@ const serifBoldBtn = document.getElementById("serif_bold");
 const serifItalBtn = document.getElementById("serif_ital");
 const serifLabel = document.getElementById("serif_label");
 
+const sansBoldBtn = document.getElementById("sans_bold");
+const sansItalBtn = document.getElementById("sans_ital");
+const sansLabel = document.getElementById("sans_label");
+
+const monoBoldBtn = document.getElementById("mono_bold");
+const monoItalBtn = document.getElementById("mono_ital");
+const monoLabel = document.getElementById("mono_label");
+
 let isSerifBoldBtnOn: boolean;
 let isSerifItalBtnOn: boolean;
+
+let isSansBoldBtnOn: boolean;
+let isSansItalBtnOn: boolean;
+
+let isMonoBoldBtnOn: boolean;
+let isMonoItalBtnOn: boolean;
 
 getDomain().then((domain) => {
   chrome.storage.sync.get([domain]).then((result) => {
@@ -307,6 +321,38 @@ getDomain().then((domain) => {
     if (isSerifItalBtnOn) {
       btnSelect(serifItalBtn);
       serifLabel.classList.add("italic");
+    }
+  });
+  chrome.storage.sync.get([`FT_SANS_BOLD_${domain}`]).then((result) => {
+    isSansBoldBtnOn =
+      `FT_SANS_BOLD_${domain}` in result && result[`FT_SANS_BOLD_${domain}`];
+    if (isSansBoldBtnOn) {
+      btnSelect(sansBoldBtn);
+      sansLabel.classList.add("font-bold");
+    }
+  });
+  chrome.storage.sync.get([`FT_SANS_ITAL_${domain}`]).then((result) => {
+    isSansItalBtnOn =
+      `FT_SANS_ITAL_${domain}` in result && result[`FT_SANS_ITAL_${domain}`];
+    if (isSansItalBtnOn) {
+      btnSelect(sansItalBtn);
+      sansLabel.classList.add("italic");
+    }
+  });
+  chrome.storage.sync.get([`FT_MONO_BOLD_${domain}`]).then((result) => {
+    isMonoBoldBtnOn =
+      `FT_MONO_BOLD_${domain}` in result && result[`FT_MONO_BOLD_${domain}`];
+    if (isMonoBoldBtnOn) {
+      btnSelect(monoBoldBtn);
+      monoLabel.classList.add("font-bold");
+    }
+  });
+  chrome.storage.sync.get([`FT_MONO_ITAL_${domain}`]).then((result) => {
+    isMonoItalBtnOn =
+      `FT_MONO_ITAL_${domain}` in result && result[`FT_MONO_ITAL_${domain}`];
+    if (isMonoItalBtnOn) {
+      btnSelect(monoItalBtn);
+      monoLabel.classList.add("italic");
     }
   });
 });
@@ -347,6 +393,82 @@ serifItalBtn.addEventListener("click", async () => {
     });
   }
   isSerifItalBtnOn = !isSerifItalBtnOn;
+});
+
+sansBoldBtn.addEventListener("click", async () => {
+  if (isSansBoldBtnOn) {
+    btnDeselect(sansBoldBtn);
+    sansLabel.classList.remove("font-bold");
+
+    await chrome.storage.sync.set({
+      [`FT_SANS_BOLD_${await getDomain()}`]: false,
+    });
+  } else {
+    btnSelect(sansBoldBtn);
+    sansLabel.classList.add("font-bold");
+
+    await chrome.storage.sync.set({
+      [`FT_SANS_BOLD_${await getDomain()}`]: true,
+    });
+  }
+  isSansBoldBtnOn = !isSansBoldBtnOn;
+});
+
+sansItalBtn.addEventListener("click", async () => {
+  if (isSansItalBtnOn) {
+    btnDeselect(sansItalBtn);
+    sansLabel.classList.remove("italic");
+
+    await chrome.storage.sync.set({
+      [`FT_SANS_ITAL_${await getDomain()}`]: false,
+    });
+  } else {
+    btnSelect(sansItalBtn);
+    sansLabel.classList.add("italic");
+
+    await chrome.storage.sync.set({
+      [`FT_SANS_ITAL_${await getDomain()}`]: true,
+    });
+  }
+  isSansItalBtnOn = !isSansItalBtnOn;
+});
+
+monoBoldBtn.addEventListener("click", async () => {
+  if (isMonoBoldBtnOn) {
+    btnDeselect(monoBoldBtn);
+    monoLabel.classList.remove("font-bold");
+
+    await chrome.storage.sync.set({
+      [`FT_MONO_BOLD_${await getDomain()}`]: false,
+    });
+  } else {
+    btnSelect(monoBoldBtn);
+    monoLabel.classList.add("font-bold");
+
+    await chrome.storage.sync.set({
+      [`FT_MONO_BOLD_${await getDomain()}`]: true,
+    });
+  }
+  isMonoBoldBtnOn = !isMonoBoldBtnOn;
+});
+
+monoItalBtn.addEventListener("click", async () => {
+  if (isMonoItalBtnOn) {
+    btnDeselect(monoItalBtn);
+    monoLabel.classList.remove("italic");
+
+    await chrome.storage.sync.set({
+      [`FT_MONO_ITAL_${await getDomain()}`]: false,
+    });
+  } else {
+    btnSelect(monoItalBtn);
+    monoLabel.classList.add("italic");
+
+    await chrome.storage.sync.set({
+      [`FT_MONO_ITAL_${await getDomain()}`]: true,
+    });
+  }
+  isMonoItalBtnOn = !isMonoItalBtnOn;
 });
 
 // load locally installed fonts

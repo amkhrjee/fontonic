@@ -74,7 +74,7 @@
                                     </span></li>
                             </ul>
                         </div>
-                        <label class="text-lg font-sans" for="sans_serif">Sans-serif</label>
+                        <label id="sans_label" class="text-lg font-sans" for="sans_serif">Sans-serif</label>
                         <select class="text-lg" id="sans_serif" name="sans_serif">
                             <option id="sans_serif_placeholder" value="">Default</option>
                         </select>
@@ -85,17 +85,17 @@
                                 </span>
                             </div>
                             <ul tabindex="0"
-                                class="dropdown-content menu bg-neutral rounded-box z-[1] p-2 shadow flex-row w-max mr-2">
-                                <li><span class="material-symbols-outlined">
+                                class="dropdown-content menu bg-neutral rounded-box z-[1] p-2 shadow flex-row w-max mr-2 gap-2">
+                                <li id="sans_bold" class="rounded-lg"><span class="material-symbols-outlined">
                                         format_bold
                                     </span></li>
-                                <li><span class="material-symbols-outlined">
+                                <li id="sans_ital" class="rounded-lg"><span class="material-symbols-outlined">
                                         format_italic
                                     </span></li>
                             </ul>
                         </div>
 
-                        <label class="text-lg font-mono" for="monospace">Monospace</label>
+                        <label id="mono_label" class="text-lg font-mono" for="monospace">Monospace</label>
                         <select class="text-lg" id="monospace" name="monospace">
                             <option id="monospace_placeholder" value="">Default</option>
                         </select>
@@ -106,11 +106,11 @@
                                 </span>
                             </div>
                             <ul tabindex="0"
-                                class="dropdown-content menu bg-neutral rounded-box z-[1] p-2 shadow flex-row w-max mr-2">
-                                <li><span class="material-symbols-outlined">
+                                class="dropdown-content menu bg-neutral rounded-box z-[1] p-2 shadow flex-row w-max mr-2 gap-2">
+                                <li id="mono_bold" class="rounded-lg"><span class="material-symbols-outlined">
                                         format_bold
                                     </span></li>
-                                <li><span class="material-symbols-outlined">
+                                <li id="mono_ital" class="rounded-lg"><span class="material-symbols-outlined">
                                         format_italic
                                     </span></li>
                             </ul>
