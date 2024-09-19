@@ -37,4 +37,4 @@ This saves the ZIP file to the `build` directory (create the directory if not al
 
 💻 Firefox Desktop: https://github.com/amkhrjee/fontonic-firefox
 
-📱 Firefox Android: https://github.com/amkhrjee/fontonic-firefox-android 
+📱 Firefox Android: https://github.com/amkhrjee/fontonic-firefox-android
