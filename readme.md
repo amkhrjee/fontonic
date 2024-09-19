@@ -33,8 +33,15 @@ python build.py <version_string>
 
 This saves the ZIP file to the `build` directory (create the directory if not already there).
 
-## Source code for the Firefox Add-On
+## Fontonic Add-On for Firefox Android
 
-💻 Firefox Desktop: https://github.com/amkhrjee/fontonic-firefox
+<div align="center" style="display: flex; justify-content:center; gap: 2rem;">
 
-📱 Firefox Android: https://github.com/amkhrjee/fontonic-firefox-android
+<img src="./screenshots/mobile_one.png" style="height: 50%; width: 50%">
+<img src="./screenshots/mobile_two.png" style="height: 50%; width: 50%">
+
+</div>
+
+<br>
+
+Get it here: [https://addons.mozilla.org/en-US/firefox/addon/fontonic/](https://addons.mozilla.org/en-US/firefox/addon/fontonic/)
