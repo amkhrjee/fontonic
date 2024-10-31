@@ -45,6 +45,37 @@ const globalMonospacePlaceholder = document.querySelector(
   "#global_monospace_placeholder"
 ) as HTMLOptionElement;
 
+// Global versions
+const globalSerifBoldBtn = document.querySelector(
+  "#global_serif_bold"
+) as HTMLElement;
+const globalSerifItalBtn = document.querySelector(
+  "#global_serif_ital"
+) as HTMLElement;
+const globalSerifLabel = document.querySelector(
+  "#global_serif_label"
+) as HTMLElement;
+
+const globalSansBoldBtn = document.querySelector(
+  "#global_sans_bold"
+) as HTMLElement;
+const globalSansItalBtn = document.querySelector(
+  "#global_sans_ital"
+) as HTMLElement;
+const globalSansLabel = document.querySelector(
+  "#global_sans_label"
+) as HTMLElement;
+
+const globalMonoBoldBtn = document.querySelector(
+  "#global_mono_bold"
+) as HTMLElement;
+const globalMonoItalBtn = document.querySelector(
+  "#global_mono_ital"
+) as HTMLElement;
+const globalMonoLabel = document.querySelector(
+  "#global_mono_label"
+) as HTMLElement;
+
 tipWhenOverrideOn.remove();
 tipWhenOverrideOff.remove();
 tipWhenSiteIsExempted.remove();
@@ -401,6 +432,87 @@ monoItalBtn.addEventListener("click", async () => {
   isMonoItalBtnOn = !isMonoItalBtnOn;
 });
 
+let isGlobalSerifBoldBtnOn: boolean;
+let isGlobalSerifItalBtnOn: boolean;
+
+let isGlobalSansBoldBtnOn: boolean;
+let isGlobalSansItalBtnOn: boolean;
+
+let isGlobalMonoBoldBtnOn: boolean;
+let isGlobalMonoItalBtnOn: boolean;
+
+chrome.storage.sync.get(["global_fonts"]).then((result) => {
+  if (Object.keys(result).length != 0) {
+    const fontData = result["global_fonts"] as fontData;
+    updatePlaceholders({
+      serif: fontData.serif.font,
+      sans_serif: fontData.sans_serif.font,
+      monospace: fontData.monospace.font,
+    });
+    isGlobalSerifBoldBtnOn = fontData.serif.bold;
+
+    if (isGlobalSerifBoldBtnOn) {
+      btnSelect(globalSerifBoldBtn);
+    }
+    isGlobalSerifItalBtnOn = fontData.serif.ital;
+    if (isGlobalSerifItalBtnOn) {
+      btnSelect(globalSerifItalBtn);
+    }
+    isGlobalSansBoldBtnOn = fontData.sans_serif.bold;
+    if (isGlobalSansBoldBtnOn) {
+      btnSelect(globalSansBoldBtn);
+    }
+    isGlobalSansItalBtnOn = fontData.sans_serif.ital;
+    if (isGlobalSansItalBtnOn) {
+      btnSelect(globalSansItalBtn);
+    }
+    isGlobalMonoBoldBtnOn = fontData.monospace.bold;
+    if (isGlobalMonoBoldBtnOn) {
+      btnSelect(globalMonoBoldBtn);
+    }
+    isGlobalMonoItalBtnOn = fontData.monospace.ital;
+    if (isGlobalMonoItalBtnOn) {
+      btnSelect(globalMonoItalBtn);
+    }
+  }
+});
+
+globalSerifBoldBtn.addEventListener("click", async () => {
+  if (isGlobalSerifBoldBtnOn) btnDeselect(globalSerifBoldBtn);
+  else btnSelect(globalSerifBoldBtn);
+  isGlobalSerifBoldBtnOn = !isGlobalSerifBoldBtnOn;
+});
+
+globalSerifItalBtn.addEventListener("click", async () => {
+  if (isGlobalSerifItalBtnOn) btnDeselect(globalSerifItalBtn);
+  else btnSelect(globalSerifItalBtn);
+  isGlobalSerifItalBtnOn = !isGlobalSerifItalBtnOn;
+});
+
+globalSansBoldBtn.addEventListener("click", async () => {
+  if (isGlobalSansBoldBtnOn) btnDeselect(globalSansBoldBtn);
+  else btnSelect(globalSansBoldBtn);
+  isGlobalSansBoldBtnOn = !isGlobalSansBoldBtnOn;
+});
+
+globalSansItalBtn.addEventListener("click", async () => {
+  if (isGlobalSansItalBtnOn) btnDeselect(globalSansItalBtn);
+  else btnSelect(globalSansItalBtn);
+  isGlobalSansItalBtnOn = !isGlobalSansItalBtnOn;
+});
+
+globalMonoBoldBtn.addEventListener("click", async () => {
+  if (isGlobalMonoBoldBtnOn) btnDeselect(globalMonoBoldBtn);
+  else btnSelect(globalMonoBoldBtn);
+  isGlobalMonoBoldBtnOn = !isGlobalMonoBoldBtnOn;
+});
+
+globalMonoItalBtn.addEventListener("click", async () => {
+  if (isGlobalMonoItalBtnOn) btnDeselect(globalMonoItalBtn);
+  else btnSelect(globalMonoItalBtn);
+  isGlobalMonoItalBtnOn = !isGlobalMonoItalBtnOn;
+});
+
 // load locally installed fonts
 for (const each_type of [serifSelect, sansSerifSelect, monospaceSelect]) {
   chrome.fontSettings.getFontList((fonts) => {
@@ -531,14 +643,26 @@ globalFontSelectionForm.addEventListener("submit", async (e) => {
     applyButton.innerHTML = "🌐 Apply to all sites";
   }, 1500);
 
-  await chrome.storage.sync.set({
-    global_fonts: {
-      serif: globalSerifValue.length ? globalSerifValue : "Default",
-      sans_serif: globalSansSerifValue.length
-        ? globalSansSerifValue
-        : "Default",
-      monospace: globaMonospaceValue.length ? globaMonospaceValue : "Default",
+  const fontData: fontData = {
+    serif: {
+      font: globalSerifValue.length ? globalSerifValue : "Default",
+      bold: isGlobalSerifBoldBtnOn,
+      ital: isGlobalSerifItalBtnOn,
     },
+    sans_serif: {
+      font: globalSansSerifValue.length ? globalSansSerifValue : "Default",
+      bold: isGlobalSansBoldBtnOn,
+      ital: isGlobalSansItalBtnOn,
+    },
+    monospace: {
+      font: globaMonospaceValue.length ? globaMonospaceValue : "Default",
+      bold: isGlobalMonoBoldBtnOn,
+      ital: isGlobalMonoItalBtnOn,
+    },
+  };
+
+  await chrome.storage.sync.set({
+    global_fonts: fontData,
   });
 });
 

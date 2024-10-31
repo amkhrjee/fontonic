@@ -1,4 +1,3 @@
-let originalSerif: string, originalSansSerif: string, originalMonospace: string;
 // let invokeCount = 0;
 
 type fontMetaData = {
@@ -25,7 +24,7 @@ const changeFontFamily = (
       fontFamily.includes("sans") ||
       (fontFamily.includes("spotify") && sansSerif.font !== "Default")
     ) {
-      element.style.fontFamily = `'${sansSerif.font}', ${originalSansSerif}`;
+      element.style.fontFamily = `'${sansSerif.font}'`;
       if (sansSerif.ital) {
         element.style.fontStyle = "italic";
       }
@@ -36,7 +35,7 @@ const changeFontFamily = (
       fontFamily.includes("serif") ||
       (fontFamily.includes("times new roman") && serif.font !== "Default")
     ) {
-      element.style.fontFamily = `'${serif.font}', ${originalSerif}`;
+      element.style.fontFamily = `'${serif.font}'`;
       if (serif.ital) {
         element.style.fontStyle = "italic";
       }
@@ -44,7 +43,7 @@ const changeFontFamily = (
         element.style.fontWeight = "bold";
       }
     } else if (fontFamily.includes("mono") && monospace.font !== "Default") {
-      element.style.fontFamily = `'${monospace.font}', ${originalMonospace}`;
+      element.style.fontFamily = `'${monospace.font}'`;
       if (monospace.ital) {
         element.style.fontStyle = "italic";
       }
