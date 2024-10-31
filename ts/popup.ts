@@ -226,9 +226,21 @@ supportButton.addEventListener("click", () => {
 });
 
 type fontData = {
-  serif: string;
-  sans_serif: string;
-  monospace: string;
+  serif: {
+    font: string;
+    bold: boolean;
+    ital: boolean;
+  };
+  sans_serif: {
+    font: string;
+    bold: boolean;
+    ital: boolean;
+  };
+  monospace: {
+    font: string;
+    bold: boolean;
+    ital: boolean;
+  };
 };
 // For global
 
@@ -251,8 +263,14 @@ const monospacePlaceholder = document.querySelector(
   "#monospace_placeholder"
 ) as HTMLOptionElement;
 
+type Placeholder = {
+  serif: string;
+  sans_serif: string;
+  monospace: string;
+};
+
 // Populating placeholder values + checkbox
-const updatePlaceholders = (innerText: fontData) => {
+const updatePlaceholders = (innerText: Placeholder) => {
   // Placeholder text content
   serifPlaceholder!.innerHTML = innerText.serif;
   sansSerifPlaceholder!.innerHTML = innerText.sans_serif;
@@ -299,60 +317,42 @@ let isSansItalBtnOn: boolean;
 let isMonoBoldBtnOn: boolean;
 let isMonoItalBtnOn: boolean;
 
+// Update the Bold and Ital Buttons when popup loaded for a site
 getDomain().then((domain) => {
   chrome.storage.sync.get([domain]).then((result) => {
     if (Object.keys(result).length != 0) {
-      const fontData = result[domain];
-      updatePlaceholders(fontData);
+      const fontData = result[domain] as fontData;
+      updatePlaceholders({
+        serif: fontData.serif.font,
+        sans_serif: fontData.sans_serif.font,
+        monospace: fontData.monospace.font,
+      });
       formButtons.prepend(restoreButton);
-    }
-  });
-  chrome.storage.sync.get([`FT_SERIF_BOLD_${domain}`]).then((result) => {
-    isSerifBoldBtnOn =
-      `FT_SERIF_BOLD_${domain}` in result && result[`FT_SERIF_BOLD_${domain}`];
-    if (isSerifBoldBtnOn) {
-      btnSelect(serifBoldBtn);
-      serifLabel.classList.add("font-bold");
-    }
-  });
-  chrome.storage.sync.get([`FT_SERIF_ITAL_${domain}`]).then((result) => {
-    isSerifItalBtnOn =
-      `FT_SERIF_ITAL_${domain}` in result && result[`FT_SERIF_ITAL_${domain}`];
-    if (isSerifItalBtnOn) {
-      btnSelect(serifItalBtn);
-      serifLabel.classList.add("italic");
-    }
-  });
-  chrome.storage.sync.get([`FT_SANS_BOLD_${domain}`]).then((result) => {
-    isSansBoldBtnOn =
-      `FT_SANS_BOLD_${domain}` in result && result[`FT_SANS_BOLD_${domain}`];
-    if (isSansBoldBtnOn) {
-      btnSelect(sansBoldBtn);
-      sansLabel.classList.add("font-bold");
-    }
-  });
-  chrome.storage.sync.get([`FT_SANS_ITAL_${domain}`]).then((result) => {
-    isSansItalBtnOn =
-      `FT_SANS_ITAL_${domain}` in result && result[`FT_SANS_ITAL_${domain}`];
-    if (isSansItalBtnOn) {
-      btnSelect(sansItalBtn);
-      sansLabel.classList.add("italic");
-    }
-  });
-  chrome.storage.sync.get([`FT_MONO_BOLD_${domain}`]).then((result) => {
-    isMonoBoldBtnOn =
-      `FT_MONO_BOLD_${domain}` in result && result[`FT_MONO_BOLD_${domain}`];
-    if (isMonoBoldBtnOn) {
-      btnSelect(monoBoldBtn);
-      monoLabel.classList.add("font-bold");
-    }
-  });
-  chrome.storage.sync.get([`FT_MONO_ITAL_${domain}`]).then((result) => {
-    isMonoItalBtnOn =
-      `FT_MONO_ITAL_${domain}` in result && result[`FT_MONO_ITAL_${domain}`];
-    if (isMonoItalBtnOn) {
-      btnSelect(monoItalBtn);
-      monoLabel.classList.add("italic");
+      isSerifBoldBtnOn = fontData.serif.bold;
+
+      if (isSerifBoldBtnOn) {
+        btnSelect(serifBoldBtn);
+      }
+      isSerifItalBtnOn = fontData.serif.ital;
+      if (isSerifItalBtnOn) {
+        btnSelect(serifItalBtn);
+      }
+      isSansBoldBtnOn = fontData.sans_serif.bold;
+      if (isSansBoldBtnOn) {
+        btnSelect(sansBoldBtn);
+      }
+      isSansItalBtnOn = fontData.sans_serif.ital;
+      if (isSansItalBtnOn) {
+        btnSelect(sansItalBtn);
+      }
+      isMonoBoldBtnOn = fontData.monospace.bold;
+      if (isMonoBoldBtnOn) {
+        btnSelect(monoBoldBtn);
+      }
+      isMonoItalBtnOn = fontData.monospace.ital;
+      if (isMonoItalBtnOn) {
+        btnSelect(monoItalBtn);
+      }
     }
   });
 });
@@ -360,18 +360,16 @@ getDomain().then((domain) => {
 serifBoldBtn.addEventListener("click", async () => {
   if (isSerifBoldBtnOn) {
     btnDeselect(serifBoldBtn);
-    serifLabel.classList.remove("font-bold");
 
-    await chrome.storage.sync.set({
-      [`FT_SERIF_BOLD_${await getDomain()}`]: false,
-    });
+    // await chrome.storage.sync.set({
+    //   [`FT_SERIF_BOLD_${await getDomain()}`]: false,
+    // });
   } else {
     btnSelect(serifBoldBtn);
-    serifLabel.classList.add("font-bold");
 
-    await chrome.storage.sync.set({
-      [`FT_SERIF_BOLD_${await getDomain()}`]: true,
-    });
+    // await chrome.storage.sync.set({
+    //   [`FT_SERIF_BOLD_${await getDomain()}`]: true,
+    // });
   }
   isSerifBoldBtnOn = !isSerifBoldBtnOn;
 });
@@ -379,18 +377,16 @@ serifBoldBtn.addEventListener("click", async () => {
 serifItalBtn.addEventListener("click", async () => {
   if (isSerifItalBtnOn) {
     btnDeselect(serifItalBtn);
-    serifLabel.classList.remove("italic");
 
-    await chrome.storage.sync.set({
-      [`FT_SERIF_ITAL_${await getDomain()}`]: false,
-    });
+    // await chrome.storage.sync.set({
+    //   [`FT_SERIF_ITAL_${await getDomain()}`]: false,
+    // });
   } else {
     btnSelect(serifItalBtn);
-    serifLabel.classList.add("italic");
 
-    await chrome.storage.sync.set({
-      [`FT_SERIF_ITAL_${await getDomain()}`]: true,
-    });
+    // await chrome.storage.sync.set({
+    //   [`FT_SERIF_ITAL_${await getDomain()}`]: true,
+    // });
   }
   isSerifItalBtnOn = !isSerifItalBtnOn;
 });
@@ -398,18 +394,16 @@ serifItalBtn.addEventListener("click", async () => {
 sansBoldBtn.addEventListener("click", async () => {
   if (isSansBoldBtnOn) {
     btnDeselect(sansBoldBtn);
-    sansLabel.classList.remove("font-bold");
 
-    await chrome.storage.sync.set({
-      [`FT_SANS_BOLD_${await getDomain()}`]: false,
-    });
+    // await chrome.storage.sync.set({
+    //   [`FT_SANS_BOLD_${await getDomain()}`]: false,
+    // });
   } else {
     btnSelect(sansBoldBtn);
-    sansLabel.classList.add("font-bold");
 
-    await chrome.storage.sync.set({
-      [`FT_SANS_BOLD_${await getDomain()}`]: true,
-    });
+    // await chrome.storage.sync.set({
+    //   [`FT_SANS_BOLD_${await getDomain()}`]: true,
+    // });
   }
   isSansBoldBtnOn = !isSansBoldBtnOn;
 });
@@ -417,18 +411,16 @@ sansBoldBtn.addEventListener("click", async () => {
 sansItalBtn.addEventListener("click", async () => {
   if (isSansItalBtnOn) {
     btnDeselect(sansItalBtn);
-    sansLabel.classList.remove("italic");
 
-    await chrome.storage.sync.set({
-      [`FT_SANS_ITAL_${await getDomain()}`]: false,
-    });
+    // await chrome.storage.sync.set({
+    //   [`FT_SANS_ITAL_${await getDomain()}`]: false,
+    // });
   } else {
     btnSelect(sansItalBtn);
-    sansLabel.classList.add("italic");
 
-    await chrome.storage.sync.set({
-      [`FT_SANS_ITAL_${await getDomain()}`]: true,
-    });
+    // await chrome.storage.sync.set({
+    //   [`FT_SANS_ITAL_${await getDomain()}`]: true,
+    // });
   }
   isSansItalBtnOn = !isSansItalBtnOn;
 });
@@ -436,18 +428,16 @@ sansItalBtn.addEventListener("click", async () => {
 monoBoldBtn.addEventListener("click", async () => {
   if (isMonoBoldBtnOn) {
     btnDeselect(monoBoldBtn);
-    monoLabel.classList.remove("font-bold");
 
-    await chrome.storage.sync.set({
-      [`FT_MONO_BOLD_${await getDomain()}`]: false,
-    });
+    // await chrome.storage.sync.set({
+    //   [`FT_MONO_BOLD_${await getDomain()}`]: false,
+    // });
   } else {
     btnSelect(monoBoldBtn);
-    monoLabel.classList.add("font-bold");
 
-    await chrome.storage.sync.set({
-      [`FT_MONO_BOLD_${await getDomain()}`]: true,
-    });
+    // await chrome.storage.sync.set({
+    //   [`FT_MONO_BOLD_${await getDomain()}`]: true,
+    // });
   }
   isMonoBoldBtnOn = !isMonoBoldBtnOn;
 });
@@ -455,18 +445,16 @@ monoBoldBtn.addEventListener("click", async () => {
 monoItalBtn.addEventListener("click", async () => {
   if (isMonoItalBtnOn) {
     btnDeselect(monoItalBtn);
-    monoLabel.classList.remove("italic");
 
-    await chrome.storage.sync.set({
-      [`FT_MONO_ITAL_${await getDomain()}`]: false,
-    });
+    // await chrome.storage.sync.set({
+    //   [`FT_MONO_ITAL_${await getDomain()}`]: false,
+    // });
   } else {
     btnSelect(monoItalBtn);
-    monoLabel.classList.add("italic");
 
-    await chrome.storage.sync.set({
-      [`FT_MONO_ITAL_${await getDomain()}`]: true,
-    });
+    // await chrome.storage.sync.set({
+    //   [`FT_MONO_ITAL_${await getDomain()}`]: true,
+    // });
   }
   isMonoItalBtnOn = !isMonoItalBtnOn;
 });
@@ -522,10 +510,22 @@ fontSelectionForm.addEventListener("submit", (e) => {
       { active: true, lastFocusedWindow: true },
       async (tabs) => {
         // telling the service worker to apply the font
-        const fontData = {
-          serif: serifValue.length ? serifValue : "Default",
-          sans_serif: sansSerifValue.length ? sansSerifValue : "Default",
-          monospace: monospaceValue.length ? monospaceValue : "Default",
+        const fontData: fontData = {
+          serif: {
+            font: serifValue.length ? serifValue : "Default",
+            bold: isSerifBoldBtnOn,
+            ital: isSerifItalBtnOn,
+          },
+          sans_serif: {
+            font: sansSerifValue.length ? sansSerifValue : "Default",
+            bold: isSansBoldBtnOn,
+            ital: isSansItalBtnOn,
+          },
+          monospace: {
+            font: monospaceValue.length ? monospaceValue : "Default",
+            bold: isMonoBoldBtnOn,
+            ital: isMonoItalBtnOn,
+          },
         };
 
         chrome.tabs.connect(tabs[0].id).postMessage({

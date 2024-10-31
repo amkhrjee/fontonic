@@ -53,157 +53,142 @@
             <!-- Font Selection -->
             <div>
                 <form name="fonts">
-                    <div class="grid grid-cols-[40%_50%_10%] gap-2">
+                    <div class="grid grid-cols-[30%_50%_20%] gap-2">
+                        <!-- Serif -->
                         <label id="serif_label" class="text-lg font-serif" for="serif">Serif</label>
                         <select class="text-lg" id="serif" name="serif">
                             <option id="serif_placeholder" value="">Default</option>
                         </select>
-                        <div class="dropdown dropdown-top dropdown-end">
-                            <div tabindex="0" role="button" class="select-none">
-                                <span class="material-symbols-outlined">
-                                    more_horiz
-                                </span>
-                            </div>
-                            <ul tabindex="0"
-                                class="dropdown-content menu bg-neutral rounded-box z-[1] p-2 shadow flex-row w-max mr-2 gap-2">
-                                <li id="serif_bold" class="rounded-lg"><span class="material-symbols-outlined">
-                                        format_bold
-                                    </span></li>
-                                <li id="serif_ital" class="rounded-lg"><span class="material-symbols-outlined">
-                                        format_italic
-                                    </span></li>
-                            </ul>
+                        <div>
+                            <button type="button" id="serif_bold" class="rounded-lg"><span
+                                    class="material-symbols-outlined">
+                                    format_bold
+                                </span></button>
+                            <button type="button" id="serif_ital" class="rounded-lg"><span
+                                    class="material-symbols-outlined">
+                                    format_italic
+                                </span></button>
                         </div>
+                        <!-- Sans -->
                         <label id="sans_label" class="text-lg font-sans" for="sans_serif">Sans-serif</label>
                         <select class="text-lg" id="sans_serif" name="sans_serif">
                             <option id="sans_serif_placeholder" value="">Default</option>
                         </select>
-                        <div class="dropdown dropdown-top dropdown-end">
-                            <div tabindex="0" role="button" class="select-none">
-                                <span class="material-symbols-outlined">
-                                    more_horiz
-                                </span>
-                            </div>
-                            <ul tabindex="0"
-                                class="dropdown-content menu bg-neutral rounded-box z-[1] p-2 shadow flex-row w-max mr-2 gap-2">
-                                <li id="sans_bold" class="rounded-lg"><span class="material-symbols-outlined">
-                                        format_bold
-                                    </span></li>
-                                <li id="sans_ital" class="rounded-lg"><span class="material-symbols-outlined">
-                                        format_italic
-                                    </span></li>
-                            </ul>
+                        <div>
+                            <button id="sans_bold" type="button" class="rounded-lg"><span
+                                    class="material-symbols-outlined">
+                                    format_bold
+                                </span></button>
+                            <button id="sans_ital" type="button" class="rounded-lg"><span
+                                    class="material-symbols-outlined">
+                                    format_italic
+                                </span></button>
                         </div>
-
+                        <!-- Mono -->
                         <label id="mono_label" class="text-lg font-mono" for="monospace">Monospace</label>
                         <select class="text-lg" id="monospace" name="monospace">
                             <option id="monospace_placeholder" value="">Default</option>
                         </select>
-                        <div class="dropdown dropdown-top dropdown-end">
-                            <div tabindex="0" role="button" class="select-none">
-                                <span class="material-symbols-outlined">
-                                    more_horiz
-                                </span>
-                            </div>
-                            <ul tabindex="0"
-                                class="dropdown-content menu bg-neutral rounded-box z-[1] p-2 shadow flex-row w-max mr-2 gap-2">
-                                <li id="mono_bold" class="rounded-lg"><span class="material-symbols-outlined">
-                                        format_bold
-                                    </span></li>
-                                <li id="mono_ital" class="rounded-lg"><span class="material-symbols-outlined">
-                                        format_italic
-                                    </span></li>
-                            </ul>
+                        <div>
+                            <button id="mono_bold" type="button" class="rounded-lg"><span
+                                    class="material-symbols-outlined">
+                                    format_bold
+                                </span></button>
+                            <button id="mono_ital" type="button" class="rounded-lg"><span
+                                    class="material-symbols-outlined">
+                                    format_italic
+                                </span></button>
                         </div>
-
                     </div>
-                    <br>
-                    <div id="form-btns" class="flex w-full gap-2">
-                        <button id="restore-btn" type="button" class="btn btn-accent flex-1 ">↺ Restore</button>
-                        <button id="apply-btn" type="submit" class="btn btn-primary flex-1 tooltip"
-                            data-tip="Refresh if nothing changes">Apply
-                            Selection</button>
 
-                    </div>
-                </form>
             </div>
+            <br>
+            <div id="form-btns" class="flex w-full gap-2">
+                <button id="restore-btn" type="button" class="btn btn-accent flex-1 ">↺ Restore</button>
+                <button id="apply-btn" type="submit" class="btn btn-primary flex-1 tooltip"
+                    data-tip="Refresh if nothing changes">Apply
+                    Selection</button>
+
+            </div>
+            </form>
         </div>
+    </div>
 
-        <!-- Settings page -->
-        <div id="settings-page">
-            <div class="flex justify-between items-center text-sm">
-                <p>Apply selections to all sites</p>
-                <input id="global_check" type="checkbox" class="toggle toggle-primary" />
-            </div>
-            <br>
-            <div class="flex justify-between items-center text-sm">
-                <p>Override existing selections</p>
-                <input id="override_check" type="checkbox" disabled class="toggle toggle-primary" />
-            </div>
-            <br>
-            <div class="flex justify-between items-center text-sm">
-                <p>Exempt current site from global settings</p>
-                <input id="exempt_check" type="checkbox" disabled class="toggle toggle-primary" />
-            </div>
-            <div class="divider"></div>
-            <div id="global_not_checked_info_text"
-                class="prose-sm border border-dashed rounded-md border-primary p-6 text-center flex justify-center items-center  h-44">
-                <p>To apply fonts to all websites, select fonts for any website and turn on the setting.</p>
-            </div>
-            <div id="global_fonts_selection">
-                <form name="global_fonts">
-                    <div class="grid grid-cols-2 gap-2">
-                        <label class="text-lg font-serif" for="serif">Serif</label>
-                        <select class="text-lg" id="global_serif" name="serif">
-                            <option id="global_serif_placeholder" value="">Default</option>
-                        </select>
-                        <label class="text-lg font-sans" for="sans_serif">Sans-serif</label>
-                        <select class="text-lg" id="global_sans_serif" name="sans_serif">
-                            <option id="global_sans_serif_placeholder" value="">Default</option>
-                        </select>
-                        <label class="text-lg font-mono" for="monospace">Monospace</label>
-                        <select class="text-lg" id="global_monospace" name="monospace">
-                            <option id="global_monospace_placeholder" value="">Default</option>
-                        </select>
-                    </div>
-                    <br>
-                    <div id="global-form-btns" class="flex w-full gap-2 tooltip"
-                        data-tip="Modifies your global fonts selection">
-                        <button id="global-apply-btn" type="submit" class="btn btn-neutral flex-1 ">
-                            🌐 Apply to all sites
-                        </button>
-                    </div>
-                </form>
-            </div>
+    <!-- Settings page -->
+    <div id="settings-page">
+        <div class="flex justify-between items-center text-sm">
+            <p>Apply selections to all sites</p>
+            <input id="global_check" type="checkbox" class="toggle toggle-primary" />
         </div>
+        <br>
+        <div class="flex justify-between items-center text-sm">
+            <p>Override existing selections</p>
+            <input id="override_check" type="checkbox" disabled class="toggle toggle-primary" />
+        </div>
+        <br>
+        <div class="flex justify-between items-center text-sm">
+            <p>Exempt current site from global settings</p>
+            <input id="exempt_check" type="checkbox" disabled class="toggle toggle-primary" />
+        </div>
+        <div class="divider"></div>
+        <div id="global_not_checked_info_text"
+            class="prose-sm border border-dashed rounded-md border-primary p-6 text-center flex justify-center items-center  h-44">
+            <p>To apply fonts to all websites, select fonts for any website and turn on the setting.</p>
+        </div>
+        <div id="global_fonts_selection">
+            <form name="global_fonts">
+                <div class="grid grid-cols-2 gap-2">
+                    <label class="text-lg font-serif" for="serif">Serif</label>
+                    <select class="text-lg" id="global_serif" name="serif">
+                        <option id="global_serif_placeholder" value="">Default</option>
+                    </select>
+                    <label class="text-lg font-sans" for="sans_serif">Sans-serif</label>
+                    <select class="text-lg" id="global_sans_serif" name="sans_serif">
+                        <option id="global_sans_serif_placeholder" value="">Default</option>
+                    </select>
+                    <label class="text-lg font-mono" for="monospace">Monospace</label>
+                    <select class="text-lg" id="global_monospace" name="monospace">
+                        <option id="global_monospace_placeholder" value="">Default</option>
+                    </select>
+                </div>
+                <br>
+                <div id="global-form-btns" class="flex w-full gap-2 tooltip"
+                    data-tip="Modifies your global fonts selection">
+                    <button id="global-apply-btn" type="submit" class="btn btn-neutral flex-1 ">
+                        🌐 Apply to all sites
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-        <!-- Support Page -->
-        <div id="support-page">
-            <div class="grid grid-cols-2 gap-2">
-                <a href="https://paypal.me/amkhrjee?country.x=IN&locale.x=en_GB" target="_blank"
-                    class="btn btn-primary">Support via PayPal</a>
-                <a href="https://www.buymeacoffee.com/amkhrjee" target="_blank" class="btn btn-primary">Buy Me A
-                    Coffee</a>
-                <a href="https://ko-fi.com/amkhrjee" target="_blank" class="btn btn-primary">Support via Ko-Fi</a>
-                <a href="https://chromewebstore.google.com/detail/fontonic-change-fonts/hnjlnpipbcbgllcjgbcjfgepmeomdcog"
-                    target="_blank" class="btn btn-primary">Leave a rating</a>
-            </div>
-            <br>
-            <br><br>
-            <div class="prose text-center">
-                <p>Your donations help keep this project bug-free and motivates me to add new features ❤️</p>
-            </div>
-            <br>
-            <div class="prose-sm text-center p-4 ">
-                <p>
-                    v1.6, August 2024
-                </p>
-                <p>Made by <a class="link link-primary" href="https://amkhrjee.xyz" target="_blank">amkhrjee↗</a> • View
-                    <a class="link link-primary" href="https://github.com/amkhrjee/fontonic" target="_blank">source
-                        code↗</a>
-                </p>
-            </div>
+    <!-- Support Page -->
+    <div id="support-page">
+        <div class="grid grid-cols-2 gap-2">
+            <a href="https://paypal.me/amkhrjee?country.x=IN&locale.x=en_GB" target="_blank"
+                class="btn btn-primary">Support via PayPal</a>
+            <a href="https://www.buymeacoffee.com/amkhrjee" target="_blank" class="btn btn-primary">Buy Me A
+                Coffee</a>
+            <a href="https://ko-fi.com/amkhrjee" target="_blank" class="btn btn-primary">Support via Ko-Fi</a>
+            <a href="https://chromewebstore.google.com/detail/fontonic-change-fonts/hnjlnpipbcbgllcjgbcjfgepmeomdcog"
+                target="_blank" class="btn btn-primary">Leave a rating</a>
         </div>
+        <br>
+        <br><br>
+        <div class="prose text-center">
+            <p>Your donations help keep this project bug-free and motivates me to add new features ❤️</p>
+        </div>
+        <br>
+        <div class="prose-sm text-center p-4 ">
+            <p>
+                v1.6, August 2024
+            </p>
+            <p>Made by <a class="link link-primary" href="https://amkhrjee.xyz" target="_blank">amkhrjee↗</a> • View
+                <a class="link link-primary" href="https://github.com/amkhrjee/fontonic" target="_blank">source
+                    code↗</a>
+            </p>
+        </div>
+    </div>
     </div>
     </div>
     <dialog id="restore_modal" class="modal font-sans">
