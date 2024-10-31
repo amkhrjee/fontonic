@@ -15,43 +15,34 @@ const changeFontFamily = (
   const element = node as HTMLElement;
   const fontFamily = getComputedStyle(element).fontFamily.toLowerCase();
 
+  const applyFontStyles = (fontMeta: fontMetaData) => {
+    element.style.fontFamily = `'${fontMeta.font}'`;
+    element.style.fontStyle = fontMeta.ital ? "italic" : "";
+    element.style.fontWeight = fontMeta.bold ? "bold" : "";
+  };
+
   if (fontFamily) {
+    const lowerFontFamily = fontFamily.toLowerCase();
     if (
-      (sansSerif.font !== "Default" && fontFamily.includes("sans")) ||
-      fontFamily.includes("spotify")
+      (sansSerif.font !== "Default" && lowerFontFamily.includes("sans")) ||
+      lowerFontFamily.includes("spotify")
     ) {
-      element.style.fontFamily = `'${sansSerif.font}'`;
-      if (sansSerif.ital) {
-        element.style.fontStyle = "italic";
-      }
-      if (sansSerif.bold) {
-        element.style.fontWeight = "bold";
-      }
+      applyFontStyles(sansSerif);
     } else if (
-      (serif.font !== "Default" && fontFamily.includes("serif")) ||
-      fontFamily.includes("times new roman")
+      (serif.font !== "Default" && lowerFontFamily.includes("serif")) ||
+      lowerFontFamily.includes("times new roman")
     ) {
-      element.style.fontFamily = `'${serif.font}'`;
-      if (serif.ital) {
-        element.style.fontStyle = "italic";
-      }
-      if (serif.bold) {
-        element.style.fontWeight = "bold";
-      }
-    } else if (monospace.font !== "Default" && fontFamily.includes("mono")) {
-      element.style.fontFamily = `'${monospace.font}'`;
-      if (monospace.ital) {
-        element.style.fontStyle = "italic";
-      }
-      if (monospace.bold) {
-        element.style.fontWeight = "bold";
-      }
+      applyFontStyles(serif);
+    } else if (
+      monospace.font !== "Default" &&
+      lowerFontFamily.includes("mono")
+    ) {
+      applyFontStyles(monospace);
     }
   }
 
-  const childNodes = element.children;
-  for (let i = 0; i < childNodes.length; i++) {
-    changeFontFamily(childNodes[i], serif, sansSerif, monospace);
+  for (let i = 0; i < element.children.length; i++) {
+    changeFontFamily(element.children[i], serif, sansSerif, monospace);
   }
 };
 
