@@ -358,104 +358,38 @@ getDomain().then((domain) => {
 });
 
 serifBoldBtn.addEventListener("click", async () => {
-  if (isSerifBoldBtnOn) {
-    btnDeselect(serifBoldBtn);
-
-    // await chrome.storage.sync.set({
-    //   [`FT_SERIF_BOLD_${await getDomain()}`]: false,
-    // });
-  } else {
-    btnSelect(serifBoldBtn);
-
-    // await chrome.storage.sync.set({
-    //   [`FT_SERIF_BOLD_${await getDomain()}`]: true,
-    // });
-  }
+  if (isSerifBoldBtnOn) btnDeselect(serifBoldBtn);
+  else btnSelect(serifBoldBtn);
   isSerifBoldBtnOn = !isSerifBoldBtnOn;
 });
 
 serifItalBtn.addEventListener("click", async () => {
-  if (isSerifItalBtnOn) {
-    btnDeselect(serifItalBtn);
-
-    // await chrome.storage.sync.set({
-    //   [`FT_SERIF_ITAL_${await getDomain()}`]: false,
-    // });
-  } else {
-    btnSelect(serifItalBtn);
-
-    // await chrome.storage.sync.set({
-    //   [`FT_SERIF_ITAL_${await getDomain()}`]: true,
-    // });
-  }
+  if (isSerifItalBtnOn) btnDeselect(serifItalBtn);
+  else btnSelect(serifItalBtn);
   isSerifItalBtnOn = !isSerifItalBtnOn;
 });
 
 sansBoldBtn.addEventListener("click", async () => {
-  if (isSansBoldBtnOn) {
-    btnDeselect(sansBoldBtn);
-
-    // await chrome.storage.sync.set({
-    //   [`FT_SANS_BOLD_${await getDomain()}`]: false,
-    // });
-  } else {
-    btnSelect(sansBoldBtn);
-
-    // await chrome.storage.sync.set({
-    //   [`FT_SANS_BOLD_${await getDomain()}`]: true,
-    // });
-  }
+  if (isSansBoldBtnOn) btnDeselect(sansBoldBtn);
+  else btnSelect(sansBoldBtn);
   isSansBoldBtnOn = !isSansBoldBtnOn;
 });
 
 sansItalBtn.addEventListener("click", async () => {
-  if (isSansItalBtnOn) {
-    btnDeselect(sansItalBtn);
-
-    // await chrome.storage.sync.set({
-    //   [`FT_SANS_ITAL_${await getDomain()}`]: false,
-    // });
-  } else {
-    btnSelect(sansItalBtn);
-
-    // await chrome.storage.sync.set({
-    //   [`FT_SANS_ITAL_${await getDomain()}`]: true,
-    // });
-  }
+  if (isSansItalBtnOn) btnDeselect(sansItalBtn);
+  else btnSelect(sansItalBtn);
   isSansItalBtnOn = !isSansItalBtnOn;
 });
 
 monoBoldBtn.addEventListener("click", async () => {
-  if (isMonoBoldBtnOn) {
-    btnDeselect(monoBoldBtn);
-
-    // await chrome.storage.sync.set({
-    //   [`FT_MONO_BOLD_${await getDomain()}`]: false,
-    // });
-  } else {
-    btnSelect(monoBoldBtn);
-
-    // await chrome.storage.sync.set({
-    //   [`FT_MONO_BOLD_${await getDomain()}`]: true,
-    // });
-  }
+  if (isMonoBoldBtnOn) btnDeselect(monoBoldBtn);
+  else btnSelect(monoBoldBtn);
   isMonoBoldBtnOn = !isMonoBoldBtnOn;
 });
 
 monoItalBtn.addEventListener("click", async () => {
-  if (isMonoItalBtnOn) {
-    btnDeselect(monoItalBtn);
-
-    // await chrome.storage.sync.set({
-    //   [`FT_MONO_ITAL_${await getDomain()}`]: false,
-    // });
-  } else {
-    btnSelect(monoItalBtn);
-
-    // await chrome.storage.sync.set({
-    //   [`FT_MONO_ITAL_${await getDomain()}`]: true,
-    // });
-  }
+  if (isMonoItalBtnOn) btnDeselect(monoItalBtn);
+  else btnSelect(monoItalBtn);
   isMonoItalBtnOn = !isMonoItalBtnOn;
 });
 
