@@ -1,5 +1,3 @@
-// let invokeCount = 0;
-
 type fontMetaData = {
   font: string;
   bold: boolean;
@@ -12,8 +10,6 @@ const changeFontFamily = (
   sansSerif: fontMetaData,
   monospace: fontMetaData
 ) => {
-  // console.log("Function Invokation Count:", invokeCount++);
-
   if (node.nodeType !== Node.ELEMENT_NODE) return;
 
   const element = node as HTMLElement;
@@ -21,8 +17,8 @@ const changeFontFamily = (
 
   if (fontFamily) {
     if (
-      fontFamily.includes("sans") ||
-      (fontFamily.includes("spotify") && sansSerif.font !== "Default")
+      (sansSerif.font !== "Default" && fontFamily.includes("sans")) ||
+      fontFamily.includes("spotify")
     ) {
       element.style.fontFamily = `'${sansSerif.font}'`;
       if (sansSerif.ital) {
@@ -32,8 +28,8 @@ const changeFontFamily = (
         element.style.fontWeight = "bold";
       }
     } else if (
-      fontFamily.includes("serif") ||
-      (fontFamily.includes("times new roman") && serif.font !== "Default")
+      (serif.font !== "Default" && fontFamily.includes("serif")) ||
+      fontFamily.includes("times new roman")
     ) {
       element.style.fontFamily = `'${serif.font}'`;
       if (serif.ital) {
@@ -42,7 +38,7 @@ const changeFontFamily = (
       if (serif.bold) {
         element.style.fontWeight = "bold";
       }
-    } else if (fontFamily.includes("mono") && monospace.font !== "Default") {
+    } else if (monospace.font !== "Default" && fontFamily.includes("mono")) {
       element.style.fontFamily = `'${monospace.font}'`;
       if (monospace.ital) {
         element.style.fontStyle = "italic";
@@ -73,6 +69,8 @@ chrome.runtime.sendMessage(message, undefined, (response) => {
     const serif = response.data.serif as fontMetaData;
     const sans_serif = response.data.sans_serif as fontMetaData;
     const monospace = response.data.monospace as fontMetaData;
+    console.log(response.data);
+
     changeFontFamily(document.body, serif, sans_serif, monospace);
 
     const observer = new MutationObserver((mutations) => {

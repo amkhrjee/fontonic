@@ -347,14 +347,14 @@ const monoBoldBtn = document.getElementById("mono_bold");
 const monoItalBtn = document.getElementById("mono_ital");
 const monoLabel = document.getElementById("mono_label");
 
-let isSerifBoldBtnOn: boolean;
-let isSerifItalBtnOn: boolean;
+let isSerifBoldBtnOn = false;
+let isSerifItalBtnOn = false;
 
-let isSansBoldBtnOn: boolean;
-let isSansItalBtnOn: boolean;
+let isSansBoldBtnOn = false;
+let isSansItalBtnOn = false;
 
-let isMonoBoldBtnOn: boolean;
-let isMonoItalBtnOn: boolean;
+let isMonoBoldBtnOn = false;
+let isMonoItalBtnOn = false;
 
 // Update the Bold and Ital Buttons when popup loaded for a site
 getDomain().then((domain) => {
@@ -432,14 +432,14 @@ monoItalBtn.addEventListener("click", async () => {
   isMonoItalBtnOn = !isMonoItalBtnOn;
 });
 
-let isGlobalSerifBoldBtnOn: boolean;
-let isGlobalSerifItalBtnOn: boolean;
+let isGlobalSerifBoldBtnOn = false;
+let isGlobalSerifItalBtnOn = false;
 
-let isGlobalSansBoldBtnOn: boolean;
-let isGlobalSansItalBtnOn: boolean;
+let isGlobalSansBoldBtnOn = false;
+let isGlobalSansItalBtnOn = false;
 
-let isGlobalMonoBoldBtnOn: boolean;
-let isGlobalMonoItalBtnOn: boolean;
+let isGlobalMonoBoldBtnOn = false;
+let isGlobalMonoItalBtnOn = false;
 
 chrome.storage.sync.get(["global_fonts"]).then((result) => {
   if (Object.keys(result).length != 0) {
