@@ -134,3 +134,4 @@ js
 build/
 
 /popup/popup.css
+/config.yml
