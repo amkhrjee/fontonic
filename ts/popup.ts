@@ -444,11 +444,7 @@ let isGlobalMonoItalBtnOn: boolean;
 chrome.storage.sync.get(["global_fonts"]).then((result) => {
   if (Object.keys(result).length != 0) {
     const fontData = result["global_fonts"] as fontData;
-    updatePlaceholders({
-      serif: fontData.serif.font,
-      sans_serif: fontData.sans_serif.font,
-      monospace: fontData.monospace.font,
-    });
+
     isGlobalSerifBoldBtnOn = fontData.serif.bold;
 
     if (isGlobalSerifBoldBtnOn) {
