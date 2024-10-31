@@ -162,21 +162,25 @@ settingsButton.addEventListener("click", async () => {
         }
         const globalFonts = await chrome.storage.sync.get(["global_fonts"]);
         if ("global_fonts" in globalFonts) {
-          const global_fonts = globalFonts["global_fonts"];
+          const global_fonts = globalFonts["global_fonts"] as fontData;
           // Placeholder text content
-          globalSerifPlaceholder.innerHTML = global_fonts.serif;
-          globalSansSerifPlaceholder.innerHTML = global_fonts.sans_serif;
-          globalMonospacePlaceholder.innerHTML = global_fonts.monospace;
+          globalSerifPlaceholder.innerHTML = global_fonts.serif.font;
+          globalSansSerifPlaceholder.innerHTML = global_fonts.sans_serif.font;
+          globalMonospacePlaceholder.innerHTML = global_fonts.monospace.font;
 
           // Placeholder value
           globalSerifPlaceholder.value =
-            global_fonts.serif === "Default" ? "" : global_fonts.serif;
-          globalSansSerifPlaceholder.value =
-            global_fonts.sans_serif === "Default"
+            global_fonts.serif.font === "Default"
               ? ""
-              : global_fonts.sans_serif;
+              : global_fonts.serif.font;
+          globalSansSerifPlaceholder.value =
+            global_fonts.sans_serif.font === "Default"
+              ? ""
+              : global_fonts.sans_serif.font;
           globalMonospacePlaceholder.value =
-            global_fonts.monospace === "Default" ? "" : global_fonts.monospace;
+            global_fonts.monospace.font === "Default"
+              ? ""
+              : global_fonts.monospace.font;
         }
       } else {
         showTip(tipText);

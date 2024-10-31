@@ -137,19 +137,49 @@
         </div>
         <div id="global_fonts_selection">
             <form name="global_fonts">
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid grid-cols-[30%_50%_20%] gap-2">
                     <label class="text-lg font-serif" for="serif">Serif</label>
                     <select class="text-lg" id="global_serif" name="serif">
                         <option id="global_serif_placeholder" value="">Default</option>
                     </select>
+                    <div>
+                        <button type="button" id="global_serif_bold" class="rounded-lg"><span
+                                class="material-symbols-outlined">
+                                format_bold
+                            </span></button>
+                        <button type="button" id="global_serif_ital" class="rounded-lg"><span
+                                class="material-symbols-outlined">
+                                format_italic
+                            </span></button>
+                    </div>
                     <label class="text-lg font-sans" for="sans_serif">Sans-serif</label>
                     <select class="text-lg" id="global_sans_serif" name="sans_serif">
                         <option id="global_sans_serif_placeholder" value="">Default</option>
                     </select>
+                    <div>
+                        <button id="global_sans_bold" type="button" class="rounded-lg"><span
+                                class="material-symbols-outlined">
+                                format_bold
+                            </span></button>
+                        <button id="global_sans_ital" type="button" class="rounded-lg"><span
+                                class="material-symbols-outlined">
+                                format_italic
+                            </span></button>
+                    </div>
                     <label class="text-lg font-mono" for="monospace">Monospace</label>
                     <select class="text-lg" id="global_monospace" name="monospace">
                         <option id="global_monospace_placeholder" value="">Default</option>
                     </select>
+                    <div>
+                        <button id="global_mono_bold" type="button" class="rounded-lg"><span
+                                class="material-symbols-outlined">
+                                format_bold
+                            </span></button>
+                        <button id="global_mono_ital" type="button" class="rounded-lg"><span
+                                class="material-symbols-outlined">
+                                format_italic
+                            </span></button>
+                    </div>
                 </div>
                 <br>
                 <div id="global-form-btns" class="flex w-full gap-2 tooltip"
