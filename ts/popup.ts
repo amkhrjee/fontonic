@@ -691,7 +691,22 @@ restoreButton.addEventListener("click", async () => {
     sans_serif: "Default",
     monospace: "Default",
   });
+
+  btnDeselect(serifBoldBtn);
+  btnDeselect(sansBoldBtn);
+  btnDeselect(monoBoldBtn);
+  btnDeselect(serifItalBtn);
+  btnDeselect(sansItalBtn);
+  btnDeselect(monoItalBtn);
+
+  isSerifBoldBtnOn = false;
+  isSerifItalBtnOn = false;
+  isSansBoldBtnOn = false;
+  isSansItalBtnOn = false;
+  isMonoBoldBtnOn = false;
+  isMonoItalBtnOn = false;
+
   (document.getElementById("restore_modal") as HTMLDialogElement).showModal();
-  chrome.storage.sync.remove(await getDomain());
+  chrome.storage.sync.remove(domain);
   restoreButton.remove();
 });
