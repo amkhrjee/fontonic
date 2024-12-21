@@ -15,12 +15,6 @@ const changeFontFamily = (
     const element = node as HTMLElement;
     const fontFamily = getComputedStyle(element).fontFamily.toLowerCase();
 
-    const applyFontStyles = (fontMeta: fontMetaData) => {
-        element.style.fontFamily = `'${fontMeta.font}'`;
-        element.style.fontStyle = fontMeta.ital ? "italic" : "";
-        element.style.fontWeight = fontMeta.bold ? "bold" : "";
-    };
-
     if (fontFamily) {
         const lowerFontFamily = fontFamily.toLowerCase();
         if (
