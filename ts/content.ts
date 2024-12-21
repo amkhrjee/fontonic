@@ -18,7 +18,8 @@ const changeFontFamily = (
     if (fontFamily) {
         const lowerFontFamily = fontFamily.toLowerCase();
         if (
-            lowerFontFamily.includes("sans") ||
+            (lowerFontFamily.includes("sans") &&
+                !lowerFontFamily.includes("mono")) ||
             lowerFontFamily.includes("spotify")
         ) {
             element.style.fontStyle = sansSerif.ital ? "italic" : "";
@@ -27,7 +28,8 @@ const changeFontFamily = (
                 element.style.fontFamily = `'${sansSerif.font}'`;
             }
         } else if (
-            lowerFontFamily.includes("serif") ||
+            (lowerFontFamily.includes("serif") &&
+                !lowerFontFamily.includes("mono")) ||
             lowerFontFamily.includes("times new roman")
         ) {
             element.style.fontStyle = serif.ital ? "italic" : "";
