@@ -20,7 +20,8 @@ const changeFontFamily = (
         if (
             (lowerFontFamily.includes("sans") &&
                 !lowerFontFamily.includes("mono")) ||
-            lowerFontFamily.includes("spotify")
+            lowerFontFamily.includes("spotify") ||
+            lowerFontFamily.includes("acumin")
         ) {
             element.style.fontStyle = sansSerif.ital ? "italic" : "";
             element.style.fontWeight = sansSerif.bold ? "bold" : "";
