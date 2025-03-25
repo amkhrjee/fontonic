@@ -20,7 +20,6 @@ const changeFontFamily = (
         if (
             (lowerFontFamily.includes("sans") &&
                 !lowerFontFamily.includes("mono")) ||
-            lowerFontFamily.includes("inter") ||
             lowerFontFamily.includes("spotify") ||
             lowerFontFamily.includes("acumin")
         ) {
