@@ -166,7 +166,7 @@ settingsButton.addEventListener("click", async () => {
         settingsButton.textContent = "Go back";
         if (supportButton.textContent.includes("<")) supportPage.remove();
         else homePage.remove();
-        supportButton.textContent = "❤ Support";
+        supportButton.textContent = "❤ Wanna help?";
         wrapper.appendChild(settingsPage);
 
         // Check for exisitng settings
@@ -279,7 +279,7 @@ supportButton.addEventListener("click", () => {
         settingsButton.textContent = "Settings";
         wrapper.appendChild(supportPage);
     } else {
-        supportButton.textContent = "❤ Support";
+        supportButton.textContent = "❤ Wanna help?";
         supportPage.remove();
         wrapper.appendChild(homePage);
     }
