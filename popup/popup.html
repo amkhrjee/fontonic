@@ -53,51 +53,112 @@
             <!-- Font Selection -->
             <div>
                 <form name="fonts">
-                    <div class="grid grid-cols-[30%_50%_20%] gap-2">
+                    <div class="grid grid-cols-[30%_50%_20%] gap-2 items-center">
                         <!-- Serif -->
                         <label id="serif_label" class="text-lg font-serif" for="serif">Serif</label>
-                        <select class="text-lg" id="serif" name="serif">
+                        <select class="select select-bordered" id="serif" name="serif">
                             <option id="serif_placeholder" value="">Default</option>
                         </select>
-                        <div>
-                            <button type="button" id="serif_bold" class="rounded-lg"><span
-                                    class="material-symbols-outlined">
-                                    format_bold
-                                </span></button>
-                            <button type="button" id="serif_ital" class="rounded-lg"><span
-                                    class="material-symbols-outlined">
-                                    format_italic
-                                </span></button>
+                        <div class="dropdown dropdown-top dropdown-end">
+                            <div tabindex="0" role="button" class="btn m-1 btn-secondary btn-ghost">
+                                <span class="material-symbols-outlined">
+                                    more_horiz </span>
+                            </div>
+
+                            <div tabindex="0" class="dropdown-content bg-base-300 rounded-box z-[1] w-64 p-2 shadow">
+                                <div class="flex justify-between">
+                                    <div>
+                                        <button type="button" id="serif_bold" class="rounded-lg"><span
+                                                class="material-symbols-outlined">
+                                                format_bold
+                                            </span></button>
+                                        <button type="button" id="serif_ital" class="rounded-lg"><span
+                                                class="material-symbols-outlined">
+                                                format_italic
+                                            </span></button>
+                                    </div>
+                                    <input class="rounded-sm" type="color" id="head" name="head" value="#e66465" />
+                                </div>
+                                <br />
+                                <input type="range" min="0" max="100" value="0" class="range range-sm" step="25" />
+                                <div class="flex w-full justify-between px-2 text-sm">
+                                    <span>1x</span>
+                                    <span>1.25x</span>
+                                    <span>1.5x</span>
+                                    <span>1.75x</span>
+                                    <span>2x</span>
+                                </div>
+                            </div>
                         </div>
+
                         <!-- Sans -->
                         <label id="sans_label" class="text-lg font-sans" for="sans_serif">Sans-serif</label>
-                        <select class="text-lg" id="sans_serif" name="sans_serif">
+                        <select class="select select-bordered" id="sans_serif" name="sans_serif">
                             <option id="sans_serif_placeholder" value="">Default</option>
                         </select>
-                        <div>
-                            <button id="sans_bold" type="button" class="rounded-lg"><span
-                                    class="material-symbols-outlined">
-                                    format_bold
-                                </span></button>
-                            <button id="sans_ital" type="button" class="rounded-lg"><span
-                                    class="material-symbols-outlined">
-                                    format_italic
-                                </span></button>
+                        <div class="dropdown dropdown-top dropdown-end">
+                            <div tabindex="0" role="button" class="btn m-1 btn-secondary btn-ghost">
+                                <span class="material-symbols-outlined">
+                                    more_horiz </span>
+                            </div>
+
+                            <div tabindex="0" class="dropdown-content bg-base-300 rounded-box z-[1] w-64 p-2 shadow">
+                                <div class="flex justify-between">
+                                    <div>
+                                        <button id="sans_bold" type="button" class="rounded-lg"><span
+                                                class="material-symbols-outlined">
+                                                format_bold
+                                            </span></button>
+                                        <button id="sans_ital" type="button" class="rounded-lg"><span
+                                                class="material-symbols-outlined">
+                                                format_italic
+                                            </span></button>
+                                    </div>
+                                    <input class="rounded-sm" type="color" id="head" name="head" value="#e66465" />
+                                </div>
+                                <br />
+                                <input type="range" min="0" max="100" value="0" class="range range-sm" step="25" />
+                                <div class="flex w-full justify-between px-2 text-sm">
+                                    <span>1x</span>
+                                    <span>1.25x</span>
+                                    <span>1.5x</span>
+                                    <span>1.75x</span>
+                                    <span>2x</span>
+                                </div>
+                            </div>
                         </div>
                         <!-- Mono -->
                         <label id="mono_label" class="text-lg font-mono" for="monospace">Monospace</label>
-                        <select class="text-lg" id="monospace" name="monospace">
+                        <select class="select select-bordered" id="monospace" name="monospace">
                             <option id="monospace_placeholder" value="">Default</option>
                         </select>
-                        <div>
-                            <button id="mono_bold" type="button" class="rounded-lg"><span
-                                    class="material-symbols-outlined">
-                                    format_bold
-                                </span></button>
-                            <button id="mono_ital" type="button" class="rounded-lg"><span
-                                    class="material-symbols-outlined">
-                                    format_italic
-                                </span></button>
+                        <div class="dropdown dropdown-top dropdown-end">
+                            <div tabindex="0" role="button" class="btn m-1 btn-secondary btn-ghost">
+                                <span class="material-symbols-outlined">
+                                    more_horiz </span>
+                            </div>
+
+                            <div tabindex="0" class="dropdown-content bg-base-300 rounded-box z-[1] w-64 p-2 shadow">
+                                <div>
+                                    <button id="mono_bold" type="button" class="rounded-lg"><span
+                                            class="material-symbols-outlined">
+                                            format_bold
+                                        </span></button>
+                                    <button id="mono_ital" type="button" class="rounded-lg"><span
+                                            class="material-symbols-outlined">
+                                            format_italic
+                                        </span></button>
+                                </div>
+                                <br />
+                                <input type="range" min="0" max="100" value="0" class="range range-sm" step="25" />
+                                <div class="flex w-full justify-between px-2 text-sm">
+                                    <span>1x</span>
+                                    <span>1.25x</span>
+                                    <span>1.5x</span>
+                                    <span>1.75x</span>
+                                    <span>2x</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -137,48 +198,109 @@
         </div>
         <div id="global_fonts_selection">
             <form name="global_fonts">
-                <div class="grid grid-cols-[30%_50%_20%] gap-2">
+                <div class="grid grid-cols-[30%_50%_20%] gap-2 items-center">
                     <label id="global_serif_label" class="text-lg font-serif" for="serif">Serif</label>
-                    <select class="text-lg" id="global_serif" name="serif">
+                    <select class="select select-bordered" id="global_serif" name="serif">
                         <option id="global_serif_placeholder" value="">Default</option>
                     </select>
-                    <div>
-                        <button type="button" id="global_serif_bold" class="rounded-lg"><span
-                                class="material-symbols-outlined">
-                                format_bold
-                            </span></button>
-                        <button type="button" id="global_serif_ital" class="rounded-lg"><span
-                                class="material-symbols-outlined">
-                                format_italic
-                            </span></button>
+                    <div class="dropdown dropdown-top dropdown-end">
+                        <div tabindex="0" role="button" class="btn m-1 btn-secondary btn-ghost">
+                            <span class="material-symbols-outlined">
+                                more_horiz </span>
+                        </div>
+
+                        <div tabindex="0" class="dropdown-content bg-base-300 rounded-box z-[1] w-64 p-2 shadow">
+                            <div class="flex justify-between">
+                                <div>
+                                    <button type="button" id="global_serif_bold" class="rounded-lg"><span
+                                            class="material-symbols-outlined">
+                                            format_bold
+                                        </span></button>
+                                    <button type="button" id="global_serif_ital" class="rounded-lg"><span
+                                            class="material-symbols-outlined">
+                                            format_italic
+                                        </span></button>
+                                </div>
+                                <input class="rounded-sm" type="color" id="head" name="head" value="#e66465" />
+                            </div>
+                            <br />
+                            <input type="range" min="0" max="100" value="0" class="range range-sm" step="25" />
+                            <div class="flex w-full justify-between px-2 text-sm">
+                                <span>1x</span>
+                                <span>1.25x</span>
+                                <span>1.5x</span>
+                                <span>1.75x</span>
+                                <span>2x</span>
+                            </div>
+                        </div>
                     </div>
                     <label id="global_sans_label" class="text-lg font-sans" for="sans_serif">Sans-serif</label>
-                    <select class="text-lg" id="global_sans_serif" name="sans_serif">
+                    <select class="select select-bordered" id="global_sans_serif" name="sans_serif">
                         <option id="global_sans_serif_placeholder" value="">Default</option>
                     </select>
-                    <div>
-                        <button id="global_sans_bold" type="button" class="rounded-lg"><span
-                                class="material-symbols-outlined">
-                                format_bold
-                            </span></button>
-                        <button id="global_sans_ital" type="button" class="rounded-lg"><span
-                                class="material-symbols-outlined">
-                                format_italic
-                            </span></button>
+                    <div class="dropdown dropdown-top dropdown-end">
+                        <div tabindex="0" role="button" class="btn m-1 btn-secondary btn-ghost">
+                            <span class="material-symbols-outlined">
+                                more_horiz </span>
+                        </div>
+                        <div tabindex="0" class="dropdown-content bg-base-300 rounded-box z-[1] w-64 p-2 shadow">
+                            <div class="flex justify-between">
+                                <div>
+                                    <button id="global_sans_bold" type="button" class="rounded-lg"><span
+                                            class="material-symbols-outlined">
+                                            format_bold
+                                        </span></button>
+                                    <button id="global_sans_ital" type="button" class="rounded-lg"><span
+                                            class="material-symbols-outlined">
+                                            format_italic
+                                        </span></button>
+                                </div>
+                                <input class="rounded-sm" type="color" id="head" name="head" value="#e66465" />
+                            </div>
+                            <br />
+                            <input type="range" min="0" max="100" value="0" class="range range-sm" step="25" />
+                            <div class="flex w-full justify-between px-2 text-sm">
+                                <span>1x</span>
+                                <span>1.25x</span>
+                                <span>1.5x</span>
+                                <span>1.75x</span>
+                                <span>2x</span>
+                            </div>
+                        </div>
                     </div>
                     <label id="global_mono_label" class="text-lg font-mono" for="monospace">Monospace</label>
-                    <select class="text-lg" id="global_monospace" name="monospace">
+                    <select class="select select-bordered" id="global_monospace" name="monospace">
                         <option id="global_monospace_placeholder" value="">Default</option>
                     </select>
-                    <div>
-                        <button id="global_mono_bold" type="button" class="rounded-lg"><span
-                                class="material-symbols-outlined">
-                                format_bold
-                            </span></button>
-                        <button id="global_mono_ital" type="button" class="rounded-lg"><span
-                                class="material-symbols-outlined">
-                                format_italic
-                            </span></button>
+                    <div class="dropdown dropdown-top dropdown-end">
+                        <div tabindex="0" role="button" class="btn m-1 btn-secondary btn-ghost">
+                            <span class="material-symbols-outlined">
+                                more_horiz </span>
+                        </div>
+                        <div tabindex="0" class="dropdown-content bg-base-300 rounded-box z-[1] w-64 p-2 shadow">
+                            <div class="flex justify-between">
+                                <div>
+                                    <button id="global_mono_bold" type="button" class="rounded-lg"><span
+                                            class="material-symbols-outlined">
+                                            format_bold
+                                        </span></button>
+                                    <button id="global_mono_ital" type="button" class="rounded-lg"><span
+                                            class="material-symbols-outlined">
+                                            format_italic
+                                        </span></button>
+                                </div>
+                                <input class="rounded-sm" type="color" id="head" name="head" value="#e66465" />
+                            </div>
+                            <br />
+                            <input type="range" min="0" max="100" value="0" class="range range-sm" step="25" />
+                            <div class="flex w-full justify-between px-2 text-sm">
+                                <span>1x</span>
+                                <span>1.25x</span>
+                                <span>1.5x</span>
+                                <span>1.75x</span>
+                                <span>2x</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <br>
