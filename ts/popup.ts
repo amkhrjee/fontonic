@@ -76,6 +76,11 @@ const globalMonoLabel = document.querySelector(
     "#global_mono_label",
 ) as HTMLElement;
 
+// Color buttons
+const serifColor = document.getElementById("serif_color") as HTMLInputElement;
+const sansColor = document.getElementById("sans_color") as HTMLInputElement;
+const monoColor = document.getElementById("mono_color") as HTMLInputElement;
+
 tipWhenOverrideOn.remove();
 tipWhenOverrideOff.remove();
 tipWhenSiteIsExempted.remove();
@@ -290,16 +295,22 @@ type fontData = {
         font: string;
         bold: boolean;
         ital: boolean;
+        color: string;
+        // sizeMultiplier: number;
     };
     sans_serif: {
         font: string;
         bold: boolean;
         ital: boolean;
+        color: string;
+        // sizeMultiplier: number;
     };
     monospace: {
         font: string;
         bold: boolean;
         ital: boolean;
+        color: string;
+        // sizeMultiplier: number;
     };
 };
 // For global
@@ -379,11 +390,15 @@ let isSansItalBtnOn = false;
 let isMonoBoldBtnOn = false;
 let isMonoItalBtnOn = false;
 
-// Update the Bold and Ital Buttons when popup loaded for a site
+// Update the Buttons when popup loaded for a site
 getDomain().then((domain) => {
     chrome.storage.sync.get([domain]).then((result) => {
         if (Object.keys(result).length != 0) {
             const fontData = result[domain] as fontData;
+            console.log("hello there");
+
+            console.log(fontData);
+
             updatePlaceholders({
                 serif: fontData.serif.font,
                 sans_serif: fontData.sans_serif.font,
@@ -415,6 +430,11 @@ getDomain().then((domain) => {
             if (isMonoItalBtnOn) {
                 btnSelect(monoItalBtn);
             }
+
+            // updating the colors
+            serifColor.value = fontData.serif.color;
+            sansColor.value = fontData.sans_serif.color;
+            monoColor.value = fontData.monospace.color;
         }
     });
 });
@@ -576,7 +596,10 @@ fontSelectionForm.addEventListener("submit", (e) => {
         !isSerifBoldBtnOn &&
         !isSerifItalBtnOn &&
         !isMonoBoldBtnOn &&
-        !isMonoItalBtnOn
+        !isMonoItalBtnOn &&
+        !serifColor.value &&
+        !sansColor.value &&
+        !monoColor.value
     )
         applyButton.innerHTML = "No Changes Made";
     else {
@@ -597,6 +620,7 @@ fontSelectionForm.addEventListener("submit", (e) => {
                         font: serifValue.length ? serifValue : "Default",
                         bold: isSerifBoldBtnOn,
                         ital: isSerifItalBtnOn,
+                        color: serifColor.value,
                     },
                     sans_serif: {
                         font: sansSerifValue.length
@@ -604,6 +628,7 @@ fontSelectionForm.addEventListener("submit", (e) => {
                             : "Default",
                         bold: isSansBoldBtnOn,
                         ital: isSansItalBtnOn,
+                        color: sansColor.value,
                     },
                     monospace: {
                         font: monospaceValue.length
@@ -611,6 +636,7 @@ fontSelectionForm.addEventListener("submit", (e) => {
                             : "Default",
                         bold: isMonoBoldBtnOn,
                         ital: isMonoItalBtnOn,
+                        color: monoColor.value,
                     },
                 };
 
@@ -631,7 +657,10 @@ fontSelectionForm.addEventListener("submit", (e) => {
                     isSerifBoldBtnOn ||
                     isSerifItalBtnOn ||
                     isMonoBoldBtnOn ||
-                    isMonoItalBtnOn
+                    isMonoItalBtnOn ||
+                    serifColor.value ||
+                    sansColor.value ||
+                    monoColor.value
                 ) {
                     await chrome.storage.sync.set({
                         [domain]: fontData,
@@ -687,6 +716,7 @@ globalFontSelectionForm.addEventListener("submit", async (e) => {
             font: globalSerifValue.length ? globalSerifValue : "Default",
             bold: isGlobalSerifBoldBtnOn,
             ital: isGlobalSerifItalBtnOn,
+            color: "",
         },
         sans_serif: {
             font: globalSansSerifValue.length
@@ -694,11 +724,13 @@ globalFontSelectionForm.addEventListener("submit", async (e) => {
                 : "Default",
             bold: isGlobalSansBoldBtnOn,
             ital: isGlobalSansItalBtnOn,
+            color: "",
         },
         monospace: {
             font: globaMonospaceValue.length ? globaMonospaceValue : "Default",
             bold: isGlobalMonoBoldBtnOn,
             ital: isGlobalMonoItalBtnOn,
+            color: "",
         },
     };
 
@@ -753,6 +785,10 @@ restoreButton.addEventListener("click", async () => {
     isSansItalBtnOn = false;
     isMonoBoldBtnOn = false;
     isMonoItalBtnOn = false;
+
+    serifColor.value = "";
+    sansColor.value = "";
+    monoColor.value = "";
 
     (document.getElementById("restore_modal") as HTMLDialogElement).showModal();
     chrome.storage.sync.remove(domain);
