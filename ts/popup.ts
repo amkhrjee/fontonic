@@ -1,3 +1,33 @@
+type fontData = {
+    serif: {
+        font: string;
+        bold: boolean;
+        ital: boolean;
+        color: string;
+        // sizeMultiplier: number;
+    };
+    sans_serif: {
+        font: string;
+        bold: boolean;
+        ital: boolean;
+        color: string;
+        // sizeMultiplier: number;
+    };
+    monospace: {
+        font: string;
+        bold: boolean;
+        ital: boolean;
+        color: string;
+        // sizeMultiplier: number;
+    };
+};
+
+type Placeholder = {
+    serif: string;
+    sans_serif: string;
+    monospace: string;
+};
+
 const settingsButton = document.getElementById("settings-btn");
 const supportButton = document.getElementById("support-btn");
 const homePage = document.getElementById("home-page");
@@ -80,6 +110,16 @@ const globalMonoLabel = document.querySelector(
 const serifColor = document.getElementById("serif_color") as HTMLInputElement;
 const sansColor = document.getElementById("sans_color") as HTMLInputElement;
 const monoColor = document.getElementById("mono_color") as HTMLInputElement;
+
+const globalSerifColor = document.getElementById(
+    "global_serif_color",
+) as HTMLInputElement;
+const globalSansColor = document.getElementById(
+    "global_sans_color",
+) as HTMLInputElement;
+const globalMonoColor = document.getElementById(
+    "global_mono_color",
+) as HTMLInputElement;
 
 tipWhenOverrideOn.remove();
 tipWhenOverrideOff.remove();
@@ -230,6 +270,37 @@ settingsButton.addEventListener("click", async () => {
                         global_fonts.monospace.font === "Default"
                             ? ""
                             : global_fonts.monospace.font;
+
+                    // Bold and Ital
+                    isGlobalSerifBoldBtnOn = global_fonts.serif.bold;
+                    if (isGlobalSerifBoldBtnOn) {
+                        btnSelect(globalSerifBoldBtn);
+                    }
+                    isGlobalSerifItalBtnOn = global_fonts.serif.ital;
+                    if (isGlobalSerifItalBtnOn) {
+                        btnSelect(globalSerifItalBtn);
+                    }
+                    isGlobalSansBoldBtnOn = global_fonts.sans_serif.bold;
+                    if (isGlobalSansBoldBtnOn) {
+                        btnSelect(globalSansBoldBtn);
+                    }
+                    isGlobalSansItalBtnOn = global_fonts.sans_serif.ital;
+                    if (isGlobalSansItalBtnOn) {
+                        btnSelect(globalSansItalBtn);
+                    }
+                    isGlobalMonoBoldBtnOn = global_fonts.monospace.bold;
+                    if (isGlobalMonoBoldBtnOn) {
+                        btnSelect(globalMonoBoldBtn);
+                    }
+                    isGlobalMonoItalBtnOn = global_fonts.monospace.ital;
+                    if (isGlobalMonoItalBtnOn) {
+                        btnSelect(globalMonoItalBtn);
+                    }
+
+                    // updating the colors
+                    globalSerifColor.value = global_fonts.serif.color;
+                    globalSansColor.value = global_fonts.sans_serif.color;
+                    globalMonoColor.value = global_fonts.monospace.color;
                 }
             } else {
                 showTip(tipText);
@@ -290,29 +361,6 @@ supportButton.addEventListener("click", () => {
     }
 });
 
-type fontData = {
-    serif: {
-        font: string;
-        bold: boolean;
-        ital: boolean;
-        color: string;
-        // sizeMultiplier: number;
-    };
-    sans_serif: {
-        font: string;
-        bold: boolean;
-        ital: boolean;
-        color: string;
-        // sizeMultiplier: number;
-    };
-    monospace: {
-        font: string;
-        bold: boolean;
-        ital: boolean;
-        color: string;
-        // sizeMultiplier: number;
-    };
-};
 // For global
 
 // For Domain specific
@@ -333,12 +381,6 @@ const sansSerifPlaceholder = document.querySelector(
 const monospacePlaceholder = document.querySelector(
     "#monospace_placeholder",
 ) as HTMLOptionElement;
-
-type Placeholder = {
-    serif: string;
-    sans_serif: string;
-    monospace: string;
-};
 
 // Populating placeholder values + checkbox
 const updatePlaceholders = (innerText: Placeholder) => {
@@ -513,6 +555,11 @@ chrome.storage.sync.get(["global_fonts"]).then((result) => {
         if (isGlobalMonoItalBtnOn) {
             btnSelect(globalMonoItalBtn);
         }
+
+        // updating the colors
+        globalSerifColor.value = fontData.serif.color;
+        globalSansColor.value = fontData.sans_serif.color;
+        globalMonoColor.value = fontData.monospace.color;
     }
 });
 
@@ -716,7 +763,7 @@ globalFontSelectionForm.addEventListener("submit", async (e) => {
             font: globalSerifValue.length ? globalSerifValue : "Default",
             bold: isGlobalSerifBoldBtnOn,
             ital: isGlobalSerifItalBtnOn,
-            color: "",
+            color: globalSerifColor.value,
         },
         sans_serif: {
             font: globalSansSerifValue.length
@@ -724,13 +771,13 @@ globalFontSelectionForm.addEventListener("submit", async (e) => {
                 : "Default",
             bold: isGlobalSansBoldBtnOn,
             ital: isGlobalSansItalBtnOn,
-            color: "",
+            color: globalSansColor.value,
         },
         monospace: {
             font: globaMonospaceValue.length ? globaMonospaceValue : "Default",
             bold: isGlobalMonoBoldBtnOn,
             ital: isGlobalMonoItalBtnOn,
-            color: "",
+            color: globalMonoColor.value,
         },
     };
 
