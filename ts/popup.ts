@@ -347,13 +347,15 @@ const updatePlaceholders = (innerText: Placeholder) => {
 
 // Bold and Italicizing
 const btnSelect = (node: HTMLElement) => {
-    node.style.backgroundColor = "oklch(var(--s))";
-    node.style.color = "oklch(var(--sc))";
+    // node.style.backgroundColor = "oklch(var(--s))";
+    // node.style.color = "oklch(var(--sc))";
+    node.classList.replace("btn-ghost", "btn-secondary");
 };
 
 const btnDeselect = (node: HTMLElement) => {
-    node.style.backgroundColor = "oklch(var(--n))";
-    node.style.color = "oklch(var(--nc))";
+    // node.style.backgroundColor = "oklch(var(--n))";
+    // node.style.color = "oklch(var(--nc))";
+    node.classList.replace("btn-secondary", "btn-ghost");
 };
 
 const serifBoldBtn = document.getElementById("serif_bold");

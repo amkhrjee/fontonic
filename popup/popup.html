@@ -66,13 +66,13 @@
                             </div>
 
                             <div tabindex="0" class="dropdown-content bg-base-300 rounded-box z-[1] w-64 p-2 shadow">
-                                <div class="flex justify-between">
+                                <div class="flex justify-between items-center">
                                     <div>
-                                        <button type="button" id="serif_bold" class="rounded-lg"><span
+                                        <button type="button" id="serif_bold" class="rounded-lg btn btn-ghost"><span
                                                 class="material-symbols-outlined">
                                                 format_bold
                                             </span></button>
-                                        <button type="button" id="serif_ital" class="rounded-lg"><span
+                                        <button type="button" id="serif_ital" class="rounded-lg btn btn-ghost"><span
                                                 class="material-symbols-outlined">
                                                 format_italic
                                             </span></button>
@@ -80,7 +80,8 @@
                                     <input class="rounded-sm" type="color" id="head" name="head" value="#e66465" />
                                 </div>
                                 <br />
-                                <input type="range" min="0" max="100" value="0" class="range range-sm" step="25" />
+                                <input type="range" min="0" max="100" value="0" class="range range-sm range-secondary"
+                                    step="25" />
                                 <div class="flex w-full justify-between px-2 text-sm">
                                     <span>1x</span>
                                     <span>1.25x</span>
@@ -103,13 +104,13 @@
                             </div>
 
                             <div tabindex="0" class="dropdown-content bg-base-300 rounded-box z-[1] w-64 p-2 shadow">
-                                <div class="flex justify-between">
+                                <div class="flex justify-between items-center">
                                     <div>
-                                        <button id="sans_bold" type="button" class="rounded-lg"><span
+                                        <button id="sans_bold" type="button" class="rounded-lg btn btn-ghost"><span
                                                 class="material-symbols-outlined">
                                                 format_bold
                                             </span></button>
-                                        <button id="sans_ital" type="button" class="rounded-lg"><span
+                                        <button id="sans_ital" type="button" class="rounded-lg btn btn-ghost"><span
                                                 class="material-symbols-outlined">
                                                 format_italic
                                             </span></button>
@@ -137,17 +138,20 @@
                                 <span class="material-symbols-outlined">
                                     more_horiz </span>
                             </div>
-
                             <div tabindex="0" class="dropdown-content bg-base-300 rounded-box z-[1] w-64 p-2 shadow">
-                                <div>
-                                    <button id="mono_bold" type="button" class="rounded-lg"><span
-                                            class="material-symbols-outlined">
-                                            format_bold
-                                        </span></button>
-                                    <button id="mono_ital" type="button" class="rounded-lg"><span
-                                            class="material-symbols-outlined">
-                                            format_italic
-                                        </span></button>
+                                <div class="flex justify-between items-center">
+
+                                    <div>
+                                        <button id="mono_bold" type="button" class="rounded-lg btn btn-ghost"><span
+                                                class="material-symbols-outlined">
+                                                format_bold
+                                            </span></button>
+                                        <button id="mono_ital" type="button" class="rounded-lg btn btn-ghost"><span
+                                                class="material-symbols-outlined">
+                                                format_italic
+                                            </span></button>
+                                    </div>
+                                    <input class="rounded-sm" type="color" id="head" name="head" value="#e66465" />
                                 </div>
                                 <br />
                                 <input type="range" min="0" max="100" value="0" class="range range-sm" step="25" />
@@ -210,13 +214,13 @@
                         </div>
 
                         <div tabindex="0" class="dropdown-content bg-base-300 rounded-box z-[1] w-64 p-2 shadow">
-                            <div class="flex justify-between">
+                            <div class="flex justify-between items-center">
                                 <div>
-                                    <button type="button" id="global_serif_bold" class="rounded-lg"><span
+                                    <button type="button" id="global_serif_bold" class="rounded-lg btn btn-ghost"><span
                                             class="material-symbols-outlined">
                                             format_bold
                                         </span></button>
-                                    <button type="button" id="global_serif_ital" class="rounded-lg"><span
+                                    <button type="button" id="global_serif_ital" class="rounded-lg btn btn-ghost"><span
                                             class="material-symbols-outlined">
                                             format_italic
                                         </span></button>
@@ -244,13 +248,13 @@
                                 more_horiz </span>
                         </div>
                         <div tabindex="0" class="dropdown-content bg-base-300 rounded-box z-[1] w-64 p-2 shadow">
-                            <div class="flex justify-between">
+                            <div class="flex justify-between items-center">
                                 <div>
-                                    <button id="global_sans_bold" type="button" class="rounded-lg"><span
+                                    <button id="global_sans_bold" type="button" class="rounded-lg btn btn-ghost"><span
                                             class="material-symbols-outlined">
                                             format_bold
                                         </span></button>
-                                    <button id="global_sans_ital" type="button" class="rounded-lg"><span
+                                    <button id="global_sans_ital" type="button" class="rounded-lg btn btn-ghost"><span
                                             class="material-symbols-outlined">
                                             format_italic
                                         </span></button>
@@ -278,13 +282,13 @@
                                 more_horiz </span>
                         </div>
                         <div tabindex="0" class="dropdown-content bg-base-300 rounded-box z-[1] w-64 p-2 shadow">
-                            <div class="flex justify-between">
+                            <div class="flex justify-between items-center">
                                 <div>
-                                    <button id="global_mono_bold" type="button" class="rounded-lg"><span
+                                    <button id="global_mono_bold" type="button" class="rounded-lg btn btn-ghost"><span
                                             class="material-symbols-outlined">
                                             format_bold
                                         </span></button>
-                                    <button id="global_mono_ital" type="button" class="rounded-lg"><span
+                                    <button id="global_mono_ital" type="button" class="rounded-lg btn btn-ghost"><span
                                             class="material-symbols-outlined">
                                             format_italic
                                         </span></button>
@@ -337,7 +341,7 @@
         <br>
         <div class="prose-sm text-center p-4 ">
             <p>
-                v1.7.7, June 2025
+                v1.7.8, June 2025
             </p>
             <p>Made by <a class="link link-primary" href="https://amkhrjee.in" target="_blank">amkhrjee↗</a> • View
                 <a class="link link-primary" href="https://github.com/amkhrjee/fontonic" target="_blank">source
