@@ -3,6 +3,7 @@ type fontMetaData = {
     bold: boolean;
     ital: boolean;
     color: string;
+    sizeMultiplier: string;
 };
 
 const changeFontFamily = (
@@ -26,6 +27,7 @@ const changeFontFamily = (
         ) {
             element.style.fontStyle = sansSerif.ital ? "italic" : "";
             element.style.fontWeight = sansSerif.bold ? "bold" : "";
+            element.style.fontSize = sansSerif.sizeMultiplier + "em";
             if (sansSerif.color != "#000000")
                 element.style.color = sansSerif.color;
             if (sansSerif.font !== "Default") {
@@ -39,12 +41,14 @@ const changeFontFamily = (
         ) {
             element.style.fontStyle = serif.ital ? "italic" : "";
             element.style.fontWeight = serif.bold ? "bold" : "";
+            element.style.fontSize = serif.sizeMultiplier + "em";
             if (serif.color != "#000000") element.style.color = serif.color;
             if (serif.font !== "Default")
                 element.style.fontFamily = `'${serif.font}'`;
         } else if (lowerFontFamily.includes("mono")) {
             element.style.fontStyle = monospace.ital ? "italic" : "";
             element.style.fontWeight = monospace.bold ? "bold" : "";
+            element.style.fontSize = monospace.sizeMultiplier + "em";
             if (monospace.color != "#000000")
                 element.style.color = monospace.color;
             if (monospace.font !== "Default")
