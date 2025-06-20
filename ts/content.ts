@@ -3,7 +3,7 @@ type fontMetaData = {
     bold: boolean;
     ital: boolean;
     color: string;
-    sizeMultiplier: string;
+    // sizeMultiplier: string;
 };
 
 const changeFontFamily = (
@@ -27,7 +27,14 @@ const changeFontFamily = (
         ) {
             element.style.fontStyle = sansSerif.ital ? "italic" : "";
             element.style.fontWeight = sansSerif.bold ? "bold" : "";
-            element.style.fontSize = sansSerif.sizeMultiplier + "em";
+            // if (sansSerif.sizeMultiplier != "1") {
+            //     const computedFontSize = getComputedStyle(element).fontSize;
+            //     element.style.fontSize =
+            //         String(
+            //             Number(computedFontSize.slice(0, -2)) *
+            //                 Number(sansSerif.sizeMultiplier),
+            //         ) + "px";
+            // }
             if (sansSerif.color != "#000000")
                 element.style.color = sansSerif.color;
             if (sansSerif.font !== "Default") {
@@ -41,18 +48,33 @@ const changeFontFamily = (
         ) {
             element.style.fontStyle = serif.ital ? "italic" : "";
             element.style.fontWeight = serif.bold ? "bold" : "";
-            element.style.fontSize = serif.sizeMultiplier + "em";
+            // if (serif.sizeMultiplier != "1") {
+            //     const computedFontSize = getComputedStyle(element).fontSize;
+            //     element.style.fontSize =
+            //         String(
+            //             Number(computedFontSize.slice(0, -2)) *
+            //                 Number(serif.sizeMultiplier),
+            //         ) + "px";
+            // }
             if (serif.color != "#000000") element.style.color = serif.color;
             if (serif.font !== "Default")
                 element.style.fontFamily = `'${serif.font}'`;
         } else if (lowerFontFamily.includes("mono")) {
             element.style.fontStyle = monospace.ital ? "italic" : "";
             element.style.fontWeight = monospace.bold ? "bold" : "";
-            element.style.fontSize = monospace.sizeMultiplier + "em";
+
             if (monospace.color != "#000000")
                 element.style.color = monospace.color;
             if (monospace.font !== "Default")
                 element.style.fontFamily = `'${monospace.font}'`;
+            // if (monospace.sizeMultiplier != "1") {
+            //     const computedFontSize = getComputedStyle(element).fontSize;
+            //     element.style.fontSize =
+            //         String(
+            //             Number(computedFontSize.slice(0, -2)) *
+            //                 Number(monospace.sizeMultiplier),
+            //         ) + "px";
+            // }
         }
     }
 
