@@ -1,10 +1,22 @@
 import re
 import os
 import sys
+import json
 import zipfile
 
-if len(sys.argv) < 2:
-    print("Usage: python build.py <version_string>")
+# Read version from manifest.json
+try:
+    with open("manifest.json", "r") as manifest_file:
+        manifest_data = json.load(manifest_file)
+        version = manifest_data["version"]
+except FileNotFoundError:
+    print("Error: manifest.json not found")
+    sys.exit(1)
+except KeyError:
+    print("Error: version not found in manifest.json")
+    sys.exit(1)
+except json.JSONDecodeError:
+    print("Error: manifest.json is not valid JSON")
     sys.exit(1)
 
 excluded_file_paths = [
@@ -25,8 +37,8 @@ def shouldBeAdded(file_path):
     return True
 
 
-print(f"Version string: {sys.argv[1]}")
-with zipfile.ZipFile(f"./build/fontonic-{sys.argv[1]}.zip", "w") as zip_file:
+print(f"Version string: {version}")
+with zipfile.ZipFile(f"./build/fontonic-v{version}.zip", "w") as zip_file:
     for root, _, files in os.walk("./"):
         for file in files:
             full_path = os.path.join(root, file)
