@@ -4,15 +4,15 @@
     "description": "Change fonts of any website with your locally installed fonts!",
     "version": "1.8.1",
     "icons": {
-        "16": "./res/icons/favicon-16x16.png",
-        "32": "./res/icons/favicon-32x32.png",
-        "96": "./res/icons/favicon-96x96.png"
+        "16": "res/icons/favicon-16x16.png",
+        "32": "res/icons/favicon-32x32.png",
+        "96": "res/icons/favicon-96x96.png"
     },
     "action": {
         "default_icon": {
-            "16": "./res/icons/favicon-16x16.png",
-            "32": "./res/icons/favicon-32x32.png",
-            "96": "./res/icons/favicon-96x96.png"
+            "16": "res/icons/favicon-16x16.png",
+            "32": "res/icons/favicon-32x32.png",
+            "96": "res/icons/favicon-96x96.png"
         },
         "default_title": "Click to customize fonts",
         "default_popup": "./popup/popup.html"
