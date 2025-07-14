@@ -20,10 +20,8 @@ const changeFontFamily = (
     if (fontFamily) {
         const lowerFontFamily = fontFamily.toLowerCase();
         if (
-            (lowerFontFamily.includes("sans") &&
-                !lowerFontFamily.includes("mono")) ||
-            lowerFontFamily.includes("spotify") ||
-            lowerFontFamily.includes("acumin")
+            lowerFontFamily.includes("sans") &&
+            !lowerFontFamily.includes("mono")
         ) {
             element.style.fontStyle = sansSerif.ital ? "italic" : "";
             element.style.fontWeight = sansSerif.bold ? "bold" : "";
@@ -75,6 +73,15 @@ const changeFontFamily = (
             //                 Number(monospace.sizeMultiplier),
             //         ) + "px";
             // }
+        } else {
+            element.style.fontStyle = sansSerif.ital ? "italic" : "";
+            element.style.fontWeight = sansSerif.bold ? "bold" : "";
+
+            if (sansSerif.color != "#000000")
+                element.style.color = sansSerif.color;
+            if (sansSerif.font !== "Default") {
+                element.style.fontFamily = `'${sansSerif.font}'`;
+            }
         }
     }
 
