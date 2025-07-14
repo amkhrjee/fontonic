@@ -6,6 +6,16 @@ type fontMetaData = {
     // sizeMultiplier: string;
 };
 
+const customizeFont = (element: HTMLElement, font: fontMetaData) => {
+    element.style.fontStyle = font.ital ? "italic" : "";
+    element.style.fontWeight = font.bold ? "bold" : "";
+
+    if (font.color != "#000000") element.style.color = font.color;
+    if (font.font !== "Default") {
+        element.style.fontFamily = `'${font.font}'`;
+    }
+};
+
 const changeFontFamily = (
     node: Node,
     serif: fontMetaData,
@@ -15,79 +25,27 @@ const changeFontFamily = (
     if (node.nodeType !== Node.ELEMENT_NODE) return;
 
     const element = node as HTMLElement;
+    if (element.matches("span.mw-page-title-main")) {
+        console.log("Element has class span.mw-page-title-main");
+    }
+
     const fontFamily = getComputedStyle(element).fontFamily.toLowerCase();
 
     if (fontFamily) {
         const lowerFontFamily = fontFamily.toLowerCase();
-        if (
-            lowerFontFamily.includes("sans") &&
-            !lowerFontFamily.includes("mono")
-        ) {
-            element.style.fontStyle = sansSerif.ital ? "italic" : "";
-            element.style.fontWeight = sansSerif.bold ? "bold" : "";
-            // if (sansSerif.sizeMultiplier != "1") {
-            //     const computedFontSize = getComputedStyle(element).fontSize;
-            //     element.style.fontSize =
-            //         String(
-            //             Number(computedFontSize.slice(0, -2)) *
-            //                 Number(sansSerif.sizeMultiplier),
-            //         ) + "px";
-            // }
-            if (sansSerif.color != "#000000")
-                element.style.color = sansSerif.color;
-            if (sansSerif.font !== "Default") {
-                element.style.fontFamily = `'${sansSerif.font}'`;
-            }
-        } else if (
-            (lowerFontFamily.includes("serif") &&
-                !lowerFontFamily.includes("sans") &&
-                !lowerFontFamily.includes("mono")) ||
-            lowerFontFamily.includes("times new roman")
-        ) {
-            element.style.fontStyle = serif.ital ? "italic" : "";
-            element.style.fontWeight = serif.bold ? "bold" : "";
-            // if (serif.sizeMultiplier != "1") {
-            //     const computedFontSize = getComputedStyle(element).fontSize;
-            //     element.style.fontSize =
-            //         String(
-            //             Number(computedFontSize.slice(0, -2)) *
-            //                 Number(serif.sizeMultiplier),
-            //         ) + "px";
-            // }
-            if (serif.color != "#000000") element.style.color = serif.color;
-            if (serif.font !== "Default")
-                element.style.fontFamily = `'${serif.font}'`;
-        } else if (lowerFontFamily.includes("mono")) {
-            element.style.fontStyle = monospace.ital ? "italic" : "";
-            element.style.fontWeight = monospace.bold ? "bold" : "";
 
-            if (monospace.color != "#000000")
-                element.style.color = monospace.color;
-            if (monospace.font !== "Default")
-                element.style.fontFamily = `'${monospace.font}'`;
-            // if (monospace.sizeMultiplier != "1") {
-            //     const computedFontSize = getComputedStyle(element).fontSize;
-            //     element.style.fontSize =
-            //         String(
-            //             Number(computedFontSize.slice(0, -2)) *
-            //                 Number(monospace.sizeMultiplier),
-            //         ) + "px";
-            // }
-        } else {
-            element.style.fontStyle = sansSerif.ital ? "italic" : "";
-            element.style.fontWeight = sansSerif.bold ? "bold" : "";
-
-            if (sansSerif.color != "#000000")
-                element.style.color = sansSerif.color;
-            if (sansSerif.font !== "Default") {
-                element.style.fontFamily = `'${sansSerif.font}'`;
-            }
+        if (lowerFontFamily.includes("mono")) {
+            customizeFont(element, monospace);
+        } else if (lowerFontFamily.includes("sans")) {
+            customizeFont(element, sansSerif);
+        } else if (lowerFontFamily.includes("serif")) {
+            customizeFont(element, serif);
         }
     }
 
-    for (let i = 0; i < element.children.length; i++) {
-        changeFontFamily(element.children[i], serif, sansSerif, monospace);
-    }
+    Array.from(element.children).forEach((child) => {
+        changeFontFamily(child, serif, sansSerif, monospace);
+    });
 };
 
 let message = {
@@ -114,7 +72,11 @@ chrome.runtime.sendMessage(message, undefined, (response) => {
                 }
             }
         });
-        observer.observe(document.body, { childList: true, subtree: true });
+        // observer.observe(document.body, { childList: true, subtree: true });
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+        });
     }
 });
 
