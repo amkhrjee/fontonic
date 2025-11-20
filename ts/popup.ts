@@ -229,9 +229,9 @@ chrome.storage.sync.get(["global"]).then(async (result) => {
 settingsButton.addEventListener("click", async () => {
     if (settingsButton.textContent.charAt(0) === "S") {
         settingsButton.textContent = "Go back";
-        if (supportButton.textContent.includes("<")) supportPage.remove();
+        if (supportButton.textContent.includes("G")) supportPage.remove();
         else homePage.remove();
-        supportButton.textContent = "🖤 Wanna help?";
+        supportButton.textContent = "💗 Wanna help?";
         wrapper.appendChild(settingsPage);
 
         // Check for exisitng settings
@@ -376,14 +376,14 @@ settingsButton.addEventListener("click", async () => {
 });
 
 supportButton.addEventListener("click", () => {
-    if (supportButton.textContent.includes("🖤")) {
-        supportButton.textContent = "<- Go back";
+    if (supportButton.textContent.includes("💗")) {
+        supportButton.textContent = "Go back";
         if (settingsButton.textContent.includes("G")) settingsPage.remove();
         else homePage.remove();
         settingsButton.textContent = "Settings";
         wrapper.appendChild(supportPage);
     } else {
-        supportButton.textContent = "🖤 Wanna help?";
+        supportButton.textContent = "💗 Wanna help?";
         supportPage.remove();
         wrapper.appendChild(homePage);
     }
