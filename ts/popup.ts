@@ -142,6 +142,90 @@ const globalMonoColor = document.getElementById(
     "global_mono_color",
 ) as HTMLInputElement;
 
+// Ligatures checkboxes
+const serifLigatures = document.getElementById(
+    "serif_ligatures",
+) as HTMLInputElement;
+const sansLigatures = document.getElementById(
+    "sans_ligatures",
+) as HTMLInputElement;
+const monoLigatures = document.getElementById(
+    "mono_ligatures",
+) as HTMLInputElement;
+
+const globalSerifLigatures = document.getElementById(
+    "global_serif_ligatures",
+) as HTMLInputElement;
+const globalSansLigatures = document.getElementById(
+    "global_sans_ligatures",
+) as HTMLInputElement;
+const globalMonoLigatures = document.getElementById(
+    "global_mono_ligatures",
+) as HTMLInputElement;
+
+// Line height inputs
+const serifLineHeight = document.getElementById(
+    "serif_line_height",
+) as HTMLInputElement;
+const sansLineHeight = document.getElementById(
+    "sans_line_height",
+) as HTMLInputElement;
+const monoLineHeight = document.getElementById(
+    "mono_line_height",
+) as HTMLInputElement;
+
+const globalSerifLineHeight = document.getElementById(
+    "global_serif_line_height",
+) as HTMLInputElement;
+const globalSansLineHeight = document.getElementById(
+    "global_sans_line_height",
+) as HTMLInputElement;
+const globalMonoLineHeight = document.getElementById(
+    "global_mono_line_height",
+) as HTMLInputElement;
+
+// Letter spacing inputs
+const serifLetterSpacing = document.getElementById(
+    "serif_letter_spacing",
+) as HTMLInputElement;
+const sansLetterSpacing = document.getElementById(
+    "sans_letter_spacing",
+) as HTMLInputElement;
+const monoLetterSpacing = document.getElementById(
+    "mono_letter_spacing",
+) as HTMLInputElement;
+
+const globalSerifLetterSpacing = document.getElementById(
+    "global_serif_letter_spacing",
+) as HTMLInputElement;
+const globalSansLetterSpacing = document.getElementById(
+    "global_sans_letter_spacing",
+) as HTMLInputElement;
+const globalMonoLetterSpacing = document.getElementById(
+    "global_mono_letter_spacing",
+) as HTMLInputElement;
+
+// Word spacing inputs
+const serifWordSpacing = document.getElementById(
+    "serif_word_spacing",
+) as HTMLInputElement;
+const sansWordSpacing = document.getElementById(
+    "sans_word_spacing",
+) as HTMLInputElement;
+const monoWordSpacing = document.getElementById(
+    "mono_word_spacing",
+) as HTMLInputElement;
+
+const globalSerifWordSpacing = document.getElementById(
+    "global_serif_word_spacing",
+) as HTMLInputElement;
+const globalSansWordSpacing = document.getElementById(
+    "global_sans_word_spacing",
+) as HTMLInputElement;
+const globalMonoWordSpacing = document.getElementById(
+    "global_mono_word_spacing",
+) as HTMLInputElement;
+
 tipWhenOverrideOn.remove();
 tipWhenOverrideOff.remove();
 tipWhenSiteIsExempted.remove();
@@ -322,6 +406,34 @@ settingsButton.addEventListener("click", async () => {
                     globalSerifColor.value = global_fonts.serif.color;
                     globalSansColor.value = global_fonts.sans_serif.color;
                     globalMonoColor.value = global_fonts.monospace.color;
+
+                    // updating ligatures, line height, letter spacing, word spacing
+                    globalSerifLigatures.checked =
+                        global_fonts.serif.ligatures ?? false;
+                    globalSerifLineHeight.value =
+                        global_fonts.serif.lineHeight ?? "";
+                    globalSerifLetterSpacing.value =
+                        global_fonts.serif.letterSpacing ?? "";
+                    globalSerifWordSpacing.value =
+                        global_fonts.serif.wordSpacing ?? "";
+
+                    globalSansLigatures.checked =
+                        global_fonts.sans_serif.ligatures ?? false;
+                    globalSansLineHeight.value =
+                        global_fonts.sans_serif.lineHeight ?? "";
+                    globalSansLetterSpacing.value =
+                        global_fonts.sans_serif.letterSpacing ?? "";
+                    globalSansWordSpacing.value =
+                        global_fonts.sans_serif.wordSpacing ?? "";
+
+                    globalMonoLigatures.checked =
+                        global_fonts.monospace.ligatures ?? false;
+                    globalMonoLineHeight.value =
+                        global_fonts.monospace.lineHeight ?? "";
+                    globalMonoLetterSpacing.value =
+                        global_fonts.monospace.letterSpacing ?? "";
+                    globalMonoWordSpacing.value =
+                        global_fonts.monospace.wordSpacing ?? "";
                 }
             } else {
                 showTip(tipText);
@@ -498,6 +610,22 @@ getDomain().then((domain) => {
             serifColor.value = fontData.serif.color;
             sansColor.value = fontData.sans_serif.color;
             monoColor.value = fontData.monospace.color;
+
+            // updating ligatures, line height, letter spacing, word spacing
+            serifLigatures.checked = fontData.serif.ligatures ?? false;
+            serifLineHeight.value = fontData.serif.lineHeight ?? "";
+            serifLetterSpacing.value = fontData.serif.letterSpacing ?? "";
+            serifWordSpacing.value = fontData.serif.wordSpacing ?? "";
+
+            sansLigatures.checked = fontData.sans_serif.ligatures ?? false;
+            sansLineHeight.value = fontData.sans_serif.lineHeight ?? "";
+            sansLetterSpacing.value = fontData.sans_serif.letterSpacing ?? "";
+            sansWordSpacing.value = fontData.sans_serif.wordSpacing ?? "";
+
+            monoLigatures.checked = fontData.monospace.ligatures ?? false;
+            monoLineHeight.value = fontData.monospace.lineHeight ?? "";
+            monoLetterSpacing.value = fontData.monospace.letterSpacing ?? "";
+            monoWordSpacing.value = fontData.monospace.wordSpacing ?? "";
         }
     });
 });
@@ -581,6 +709,22 @@ chrome.storage.sync.get(["global_fonts"]).then((result) => {
         globalSerifColor.value = fontData.serif.color;
         globalSansColor.value = fontData.sans_serif.color;
         globalMonoColor.value = fontData.monospace.color;
+
+        // updating ligatures, line height, letter spacing, word spacing
+        globalSerifLigatures.checked = fontData.serif.ligatures ?? false;
+        globalSerifLineHeight.value = fontData.serif.lineHeight ?? "";
+        globalSerifLetterSpacing.value = fontData.serif.letterSpacing ?? "";
+        globalSerifWordSpacing.value = fontData.serif.wordSpacing ?? "";
+
+        globalSansLigatures.checked = fontData.sans_serif.ligatures ?? false;
+        globalSansLineHeight.value = fontData.sans_serif.lineHeight ?? "";
+        globalSansLetterSpacing.value = fontData.sans_serif.letterSpacing ?? "";
+        globalSansWordSpacing.value = fontData.sans_serif.wordSpacing ?? "";
+
+        globalMonoLigatures.checked = fontData.monospace.ligatures ?? false;
+        globalMonoLineHeight.value = fontData.monospace.lineHeight ?? "";
+        globalMonoLetterSpacing.value = fontData.monospace.letterSpacing ?? "";
+        globalMonoWordSpacing.value = fontData.monospace.wordSpacing ?? "";
     }
 });
 
@@ -689,6 +833,10 @@ fontSelectionForm.addEventListener("submit", (e) => {
                         bold: isSerifBoldBtnOn,
                         ital: isSerifItalBtnOn,
                         color: serifColor.value,
+                        ligatures: serifLigatures.checked,
+                        lineHeight: serifLineHeight.value || "",
+                        letterSpacing: serifLetterSpacing.value || "",
+                        wordSpacing: serifWordSpacing.value || "",
                     },
                     sans_serif: {
                         font: sansSerifValue.length
@@ -697,6 +845,10 @@ fontSelectionForm.addEventListener("submit", (e) => {
                         bold: isSansBoldBtnOn,
                         ital: isSansItalBtnOn,
                         color: sansColor.value,
+                        ligatures: sansLigatures.checked,
+                        lineHeight: sansLineHeight.value || "",
+                        letterSpacing: sansLetterSpacing.value || "",
+                        wordSpacing: sansWordSpacing.value || "",
                     },
                     monospace: {
                         font: monospaceValue.length
@@ -705,6 +857,10 @@ fontSelectionForm.addEventListener("submit", (e) => {
                         bold: isMonoBoldBtnOn,
                         ital: isMonoItalBtnOn,
                         color: monoColor.value,
+                        ligatures: monoLigatures.checked,
+                        lineHeight: monoLineHeight.value || "",
+                        letterSpacing: monoLetterSpacing.value || "",
+                        wordSpacing: monoWordSpacing.value || "",
                     },
                 };
 
@@ -785,6 +941,10 @@ globalFontSelectionForm.addEventListener("submit", async (e) => {
             bold: isGlobalSerifBoldBtnOn,
             ital: isGlobalSerifItalBtnOn,
             color: globalSerifColor.value,
+            ligatures: globalSerifLigatures.checked,
+            lineHeight: globalSerifLineHeight.value || "",
+            letterSpacing: globalSerifLetterSpacing.value || "",
+            wordSpacing: globalSerifWordSpacing.value || "",
         },
         sans_serif: {
             font: globalSansSerifValue.length
@@ -793,12 +953,20 @@ globalFontSelectionForm.addEventListener("submit", async (e) => {
             bold: isGlobalSansBoldBtnOn,
             ital: isGlobalSansItalBtnOn,
             color: globalSansColor.value,
+            ligatures: globalSansLigatures.checked,
+            lineHeight: globalSansLineHeight.value || "",
+            letterSpacing: globalSansLetterSpacing.value || "",
+            wordSpacing: globalSansWordSpacing.value || "",
         },
         monospace: {
             font: globaMonospaceValue.length ? globaMonospaceValue : "Default",
             bold: isGlobalMonoBoldBtnOn,
             ital: isGlobalMonoItalBtnOn,
             color: globalMonoColor.value,
+            ligatures: globalMonoLigatures.checked,
+            lineHeight: globalMonoLineHeight.value || "",
+            letterSpacing: globalMonoLetterSpacing.value || "",
+            wordSpacing: globalMonoWordSpacing.value || "",
         },
     };
 
@@ -857,6 +1025,22 @@ restoreButton.addEventListener("click", async () => {
     serifColor.value = "#000000";
     sansColor.value = "#000000";
     monoColor.value = "#000000";
+
+    // Reset ligatures, line height, letter spacing, word spacing
+    serifLigatures.checked = false;
+    serifLineHeight.value = "";
+    serifLetterSpacing.value = "";
+    serifWordSpacing.value = "";
+
+    sansLigatures.checked = false;
+    sansLineHeight.value = "";
+    sansLetterSpacing.value = "";
+    sansWordSpacing.value = "";
+
+    monoLigatures.checked = false;
+    monoLineHeight.value = "";
+    monoLetterSpacing.value = "";
+    monoWordSpacing.value = "";
 
     (document.getElementById("restore_modal") as HTMLDialogElement).showModal();
     chrome.storage.sync.remove(domain);

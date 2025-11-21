@@ -3,6 +3,10 @@ type fontMetaData = {
     bold: boolean;
     ital: boolean;
     color: string;
+    ligatures: boolean;
+    lineHeight: string;
+    letterSpacing: string;
+    wordSpacing: string;
     // sizeMultiplier: string;
 };
 
@@ -13,6 +17,28 @@ const customizeFont = (element: HTMLElement, font: fontMetaData) => {
     if (font.color != "#000000") element.style.color = font.color;
     if (font.font !== "Default") {
         element.style.fontFamily = `'${font.font}'`;
+    }
+
+    // Apply ligatures
+    if (font.ligatures) {
+        element.style.fontVariantLigatures = "normal";
+    } else {
+        element.style.fontVariantLigatures = "none";
+    }
+
+    // Apply line height if set (not empty string)
+    if (font.lineHeight && font.lineHeight !== "") {
+        element.style.lineHeight = font.lineHeight;
+    }
+
+    // Apply letter spacing if set (not empty string)
+    if (font.letterSpacing && font.letterSpacing !== "") {
+        element.style.letterSpacing = font.letterSpacing;
+    }
+
+    // Apply word spacing if set (not empty string)
+    if (font.wordSpacing && font.wordSpacing !== "") {
+        element.style.wordSpacing = font.wordSpacing;
     }
 };
 
