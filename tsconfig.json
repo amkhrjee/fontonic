@@ -9,7 +9,7 @@
     ],
     "outDir": "./js",
     "rootDir": "./ts",
-    "noImplicitAny": false
+    "noImplicitAny": false,
   },
   "include": [
     "ts/**/*.ts",

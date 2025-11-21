@@ -26,7 +26,6 @@
   },
   "homepage": "https://github.com/amkhrjee/fontonic#readme",
   "dependencies": {
-    "@rive-app/canvas": "^2.32.1",
     "chrome-types": "^0.1.390"
   },
   "devDependencies": {
