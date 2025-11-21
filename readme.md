@@ -38,3 +38,9 @@ This saves the ZIP file to the `build` directory (create the directory if not al
 <div align="center" style="display:flex;justify-content:center;gap:2rem;"><img src="./screenshots/mobile_one.png" style="height: 45%; width: 45%"><img src="./screenshots/mobile_two.png" style="height: 45%; width: 45%"></div><br>
 
 Get it here: [https://addons.mozilla.org/en-US/firefox/addon/fontonic/](https://addons.mozilla.org/en-US/firefox/addon/fontonic/)
+
+## Acknowledgements
+
+-   Tree pot pixel art: https://in.pinterest.com/pin/47147127345572007/
+-   Sleeping cat pixel art: https://in.pinterest.com/pin/923378729851347061/
+-   Bonsai tree pixel art: https://in.pinterest.com/pin/22940279346068819/
