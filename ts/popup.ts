@@ -37,8 +37,8 @@ const supportText = document.getElementById("support-text");
 const texts = [
     "Fund a struggling grad student and his emotionally unstable side-project 🤓",
     "Powered by one overcaffeinated grad student and your generosity ☕️",
-    "Supporting this project = sponsoring one grad student's fragile sanity.",
-    "Every donation reduces my chances of dropping out to become a barista.",
+    "Supporting this project = sponsoring one grad student's fragile sanity",
+    "Every donation reduces my chances of dropping out to become a barista",
     "Support from donations keeps the project growing and evolving ❤️",
 ];
 
