@@ -224,13 +224,13 @@
                     <select class="select select-bordered" id="global_serif" name="serif">
                         <option id="global_serif_placeholder" value="">Default</option>
                     </select>
-                    <div class="dropdown dropdown-top dropdown-end">
+                    <div class="dropdown dropdown-left ">
                         <div tabindex="0" role="button" class="btn m-1 btn-secondary btn-ghost">
                             <span class="material-symbols-outlined">
                                 more_horiz </span>
                         </div>
 
-                        <div tabindex="0" class="dropdown-content bg-gray-800 rounded-box z-[1]  p-2 shadow">
+                        <div tabindex="0" class="dropdown-content bg-gray-800 rounded-box z-[1] p-2 shadow">
                             <div class="flex justify-between items-center gap-4">
                                 <button type="button" id="global_serif_bold" class="rounded-lg btn btn-ghost"><span
                                         class="material-symbols-outlined">
@@ -241,6 +241,24 @@
                                         format_italic
                                     </span></button>
                                 <input class="rounded-sm" type="color" id="global_serif_color" />
+                            </div>
+                            <div>
+                                <label class="label cursor-pointer" for="global_serif_ligatures">
+                                    <span class="label-text">Ligatures</span>
+                                    <input type="checkbox" id="global_serif_ligatures" class="toggle toggle-primary" />
+                                </label>
+                                <label class="label cursor-pointer" for="global_serif_line_height">
+                                    <span class="label-text">Line height</span>
+                                    <input type="text" id="global_serif_line_height" class="input text-sm w-20" />
+                                </label>
+                                <label class="label cursor-pointer" for="global_serif_letter_spacing">
+                                    <span class="label-text">Letter spacing</span>
+                                    <input type="text" id="global_serif_letter_spacing" class="input text-sm w-20" />
+                                </label>
+                                <label class="label cursor-pointer" for="global_serif_word_spacing">
+                                    <span class="label-text">Word spacing</span>
+                                    <input type="text" id="global_serif_word_spacing" class="input text-sm w-20" />
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -265,6 +283,24 @@
                                     </span></button>
                                 <input class="rounded-sm" type="color" id="global_sans_color" />
                             </div>
+                            <div>
+                                <label class="label cursor-pointer" for="global_sans_ligatures">
+                                    <span class="label-text">Ligatures</span>
+                                    <input type="checkbox" id="global_sans_ligatures" class="toggle toggle-primary" />
+                                </label>
+                                <label class="label cursor-pointer" for="global_sans_line_height">
+                                    <span class="label-text">Line height</span>
+                                    <input type="text" id="global_sans_line_height" class="input text-sm w-20" />
+                                </label>
+                                <label class="label cursor-pointer" for="global_sans_letter_spacing">
+                                    <span class="label-text">Letter spacing</span>
+                                    <input type="text" id="global_sans_letter_spacing" class="input text-sm w-20" />
+                                </label>
+                                <label class="label cursor-pointer" for="global_sans_word_spacing">
+                                    <span class="label-text">Word spacing</span>
+                                    <input type="text" id="global_sans_word_spacing" class="input text-sm w-20" />
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <label id="global_mono_label" class="text-lg font-mono" for="monospace">Monospace</label>
@@ -287,6 +323,24 @@
                                         format_italic
                                     </span></button>
                                 <input class="rounded-sm" type="color" id="global_mono_color" />
+                            </div>
+                            <div>
+                                <label class="label cursor-pointer" for="global_mono_ligatures">
+                                    <span class="label-text">Ligatures</span>
+                                    <input type="checkbox" id="global_mono_ligatures" class="toggle toggle-primary" />
+                                </label>
+                                <label class="label cursor-pointer" for="global_mono_line_height">
+                                    <span class="label-text">Line height</span>
+                                    <input type="text" id="global_mono_line_height" class="input text-sm w-20" />
+                                </label>
+                                <label class="label cursor-pointer" for="global_mono_letter_spacing">
+                                    <span class="label-text">Letter spacing</span>
+                                    <input type="text" id="global_mono_letter_spacing" class="input text-sm w-20" />
+                                </label>
+                                <label class="label cursor-pointer" for="global_mono_word_spacing">
+                                    <span class="label-text">Word spacing</span>
+                                    <input type="text" id="global_mono_word_spacing" class="input text-sm w-20" />
+                                </label>
                             </div>
                         </div>
                     </div>
