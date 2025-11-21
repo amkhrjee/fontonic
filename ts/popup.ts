@@ -4,27 +4,20 @@ type fontData = {
         bold: boolean;
         ital: boolean;
         color: string;
-        // sizeMultiplier?: string; // Optional, default to "1"
     };
     sans_serif: {
         font: string;
         bold: boolean;
         ital: boolean;
         color: string;
-        // sizeMultiplier?: string; // Optional, default to "1"
     };
     monospace: {
         font: string;
         bold: boolean;
         ital: boolean;
         color: string;
-        // sizeMultiplier?: string; // Optional, default to "1"
     };
 };
-
-function getSizeMultiplier(value?: string): string {
-    return value && value !== "" ? value : "1";
-}
 
 type Placeholder = {
     serif: string;
@@ -135,22 +128,6 @@ const globalSansColor = document.getElementById(
 ) as HTMLInputElement;
 const globalMonoColor = document.getElementById(
     "global_mono_color",
-) as HTMLInputElement;
-
-// size multipliers
-
-// const serifSizeMult = document.getElementById("serif_size") as HTMLInputElement;
-// const sansSizeMult = document.getElementById("sans_size") as HTMLInputElement;
-// const monoSizeMult = document.getElementById("mono_size") as HTMLInputElement;
-
-const globalSerifSizeMult = document.getElementById(
-    "global_serif_size",
-) as HTMLInputElement;
-const globalSansSizeMult = document.getElementById(
-    "global_sans_size",
-) as HTMLInputElement;
-const globalMonoSizeMult = document.getElementById(
-    "global_mono_size",
 ) as HTMLInputElement;
 
 tipWhenOverrideOn.remove();
@@ -333,14 +310,6 @@ settingsButton.addEventListener("click", async () => {
                     globalSerifColor.value = global_fonts.serif.color;
                     globalSansColor.value = global_fonts.sans_serif.color;
                     globalMonoColor.value = global_fonts.monospace.color;
-
-                    // updating the sizes
-                    // globalSerifSizeMult.value =
-                    //     global_fonts.serif.sizeMultiplier ?? "1";
-                    // globalSansSizeMult.value =
-                    //     global_fonts.sans_serif.sizeMultiplier ?? "1";
-                    // globalMonoSizeMult.value =
-                    //     global_fonts.monospace.sizeMultiplier ?? "1";
                 }
             } else {
                 showTip(tipText);
@@ -517,11 +486,6 @@ getDomain().then((domain) => {
             serifColor.value = fontData.serif.color;
             sansColor.value = fontData.sans_serif.color;
             monoColor.value = fontData.monospace.color;
-
-            // updating the sizes
-            // serifSizeMult.value = fontData.serif.sizeMultiplier ?? "1";
-            // sansSizeMult.value = fontData.sans_serif.sizeMultiplier ?? "1";
-            // monoSizeMult.value = fontData.monospace.sizeMultiplier ?? "1";
         }
     });
 });
@@ -692,9 +656,6 @@ fontSelectionForm.addEventListener("submit", (e) => {
         !serifColor.value &&
         !sansColor.value &&
         !monoColor.value
-        // serifSizeMult.value != "1" &&
-        // sansSizeMult.value != "1" &&
-        // monoSizeMult.value != "1"
     )
         applyButton.innerHTML = "No Changes Made";
     else {
@@ -716,7 +677,6 @@ fontSelectionForm.addEventListener("submit", (e) => {
                         bold: isSerifBoldBtnOn,
                         ital: isSerifItalBtnOn,
                         color: serifColor.value,
-                        // sizeMultiplier: serifSizeMult.value,
                     },
                     sans_serif: {
                         font: sansSerifValue.length
@@ -725,7 +685,6 @@ fontSelectionForm.addEventListener("submit", (e) => {
                         bold: isSansBoldBtnOn,
                         ital: isSansItalBtnOn,
                         color: sansColor.value,
-                        // sizeMultiplier: sansSizeMult.value,
                     },
                     monospace: {
                         font: monospaceValue.length
@@ -734,7 +693,6 @@ fontSelectionForm.addEventListener("submit", (e) => {
                         bold: isMonoBoldBtnOn,
                         ital: isMonoItalBtnOn,
                         color: monoColor.value,
-                        // sizeMultiplier: monoSizeMult.value,
                     },
                 };
 
@@ -759,9 +717,6 @@ fontSelectionForm.addEventListener("submit", (e) => {
                     serifColor.value ||
                     sansColor.value ||
                     monoColor.value
-                    // serifSizeMult.value != "1" ||
-                    // sansSizeMult.value != "1" ||
-                    // monoSizeMult.value != "1"
                 ) {
                     await chrome.storage.sync.set({
                         [domain]: fontData,
@@ -818,7 +773,6 @@ globalFontSelectionForm.addEventListener("submit", async (e) => {
             bold: isGlobalSerifBoldBtnOn,
             ital: isGlobalSerifItalBtnOn,
             color: globalSerifColor.value,
-            // sizeMultiplier: globalSerifSizeMult.value,
         },
         sans_serif: {
             font: globalSansSerifValue.length
@@ -827,14 +781,12 @@ globalFontSelectionForm.addEventListener("submit", async (e) => {
             bold: isGlobalSansBoldBtnOn,
             ital: isGlobalSansItalBtnOn,
             color: globalSansColor.value,
-            // sizeMultiplier: globalSansSizeMult.value,
         },
         monospace: {
             font: globaMonospaceValue.length ? globaMonospaceValue : "Default",
             bold: isGlobalMonoBoldBtnOn,
             ital: isGlobalMonoItalBtnOn,
             color: globalMonoColor.value,
-            // sizeMultiplier: globalMonoSizeMult.value,
         },
     };
 
@@ -893,10 +845,6 @@ restoreButton.addEventListener("click", async () => {
     serifColor.value = "#000000";
     sansColor.value = "#000000";
     monoColor.value = "#000000";
-
-    // sansSizeMult.value = "1";
-    // serifSizeMult.value = "1";
-    // monoSizeMult.value = "1";
 
     (document.getElementById("restore_modal") as HTMLDialogElement).showModal();
     chrome.storage.sync.remove(domain);
