@@ -23,11 +23,13 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
                                     .get([message.domain])
                                     .then((is_domain) => {
                                         if (message.domain in is_domain) {
+                                            // @ts-ignore
                                             sendResponse({
                                                 type: "apply_font",
                                                 data: is_domain[message.domain],
                                             });
                                         } else {
+                                            // @ts-ignore
                                             sendResponse({
                                                 type: "none",
                                             });
@@ -44,6 +46,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
                                     .get(["global_fonts"])
                                     .then((result) => {
                                         if ("global_fonts" in result) {
+                                            // @ts-ignore
                                             sendResponse({
                                                 type: "apply_font",
                                                 data: result["global_fonts"],
@@ -60,7 +63,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
                                             console.log(
                                                 "GLOBAL IS ON + OVERRIDE IS OFF + Domain has set fonts",
                                             );
-
+                                            // @ts-ignore
                                             sendResponse({
                                                 type: "apply_font",
                                                 data: is_domain[message.domain],
@@ -75,6 +78,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
                                                     if (
                                                         "global_fonts" in result
                                                     ) {
+                                                        // @ts-ignore
                                                         sendResponse({
                                                             type: "apply_font",
                                                             data: result[
@@ -91,11 +95,13 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
                                 .get([message.domain])
                                 .then((is_domain) => {
                                     if (message.domain in is_domain) {
+                                        // @ts-ignore
                                         sendResponse({
                                             type: "apply_font",
                                             data: is_domain[message.domain],
                                         });
                                     } else {
+                                        // @ts-ignore
                                         sendResponse({
                                             type: "none",
                                         });
