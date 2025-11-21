@@ -32,6 +32,18 @@ type Placeholder = {
     monospace: string;
 };
 
+// Some fun support texts :)
+const supportText = document.getElementById("support-text");
+const texts = [
+    "Fund a struggling grad student and his emotionally unstable side-project 🤓",
+    "Powered by one overcaffeinated grad student and your generosity ☕️",
+    "Supporting this project = sponsoring one grad student's fragile sanity.",
+    "Every donation reduces my chances of dropping out to become a barista.",
+    "Support from donations keeps the project growing and evolving ❤️",
+];
+
+supportText.innerText = texts[Math.floor(Math.random() * texts.length)];
+
 const settingsButton = document.getElementById("settings-btn");
 const supportButton = document.getElementById("support-btn");
 const homePage = document.getElementById("home-page");
