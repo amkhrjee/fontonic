@@ -4,18 +4,30 @@ type fontData = {
         bold: boolean;
         ital: boolean;
         color: string;
+        ligatures: boolean;
+        lineHeight: string;
+        letterSpacing: string;
+        wordSpacing: string;
     };
     sans_serif: {
         font: string;
         bold: boolean;
         ital: boolean;
         color: string;
+        ligatures: boolean;
+        lineHeight: string;
+        letterSpacing: string;
+        wordSpacing: string;
     };
     monospace: {
         font: string;
         bold: boolean;
         ital: boolean;
         color: string;
+        ligatures: boolean;
+        lineHeight: string;
+        letterSpacing: string;
+        wordSpacing: string;
     };
 };
 
