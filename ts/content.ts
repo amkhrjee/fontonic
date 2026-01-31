@@ -58,7 +58,7 @@ const changeFontFamily = (
     const fontFamily = getComputedStyle(element).fontFamily.toLowerCase();
 
     if (fontFamily) {
-        if (fontFamily.includes("mono") || fontFamily.includes("code")) {
+        if (fontFamily.includes("mono") || fontFamily.includes(" code")) {
             customizeFont(element, monospace);
         } else if (fontFamily.includes("sans")) {
             customizeFont(element, sansSerif);
