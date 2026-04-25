@@ -39,6 +39,9 @@ type Placeholder = {
 
 // Some fun support texts :)
 const supportText = document.getElementById("support-text");
+const fontlabBanner = document.getElementById(
+    "fontlab-banner",
+) as HTMLImageElement;
 const texts = [
     "Fund a struggling grad student and his emotionally unstable side-project 🤓",
     "Powered by one overcaffeinated grad student and your generosity ☕️",
@@ -46,11 +49,21 @@ const texts = [
     "Every donation reduces my chances of dropping out to become a barista",
     "Support from donations keeps the project growing and evolving ❤️",
 ];
+const fontlabBanners = [
+    "../res/fontlab_banners/01.webp",
+    "../res/fontlab_banners/02.webp",
+    "../res/fontlab_banners/03.webp",
+    "../res/fontlab_banners/04.webp",
+    "../res/fontlab_banners/05.webp",
+];
 
 supportText.innerText = texts[Math.floor(Math.random() * texts.length)];
+fontlabBanner.src =
+    fontlabBanners[Math.floor(Math.random() * fontlabBanners.length)];
 
 const settingsButton = document.getElementById("settings-btn");
 const supportButton = document.getElementById("support-btn");
+const homeButton = document.getElementById("home-btn");
 const homePage = document.getElementById("home-page");
 const settingsPage = document.getElementById("settings-page");
 const wrapper = document.getElementById("wrapper");
@@ -246,6 +259,17 @@ restoreButton.remove();
 
 const goToSettings = () => {
     settingsButton.click();
+};
+
+const goToHome = () => {
+    settingsButton.textContent = "Settings";
+    supportButton.textContent = "💗 Wanna help?";
+    settingsPage.remove();
+    supportPage.remove();
+
+    if (!wrapper.contains(homePage)) {
+        wrapper.appendChild(homePage);
+    }
 };
 
 // Check for configuration settings
@@ -479,6 +503,10 @@ supportButton.addEventListener("click", () => {
         supportPage.remove();
         wrapper.appendChild(homePage);
     }
+});
+
+homeButton.addEventListener("click", () => {
+    goToHome();
 });
 
 // For global
