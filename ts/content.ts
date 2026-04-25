@@ -58,12 +58,24 @@ const changeFontFamily = (
     const fontFamily = getComputedStyle(element).fontFamily.toLowerCase();
 
     if (fontFamily) {
-        if (fontFamily.includes("mono")) {
-            customizeFont(element, monospace);
-        } else if (fontFamily.includes("sans")) {
+        const lowerFontFamily = fontFamily.toLowerCase();
+
+        if (
+            (lowerFontFamily.includes("sans") &&
+                !lowerFontFamily.includes("mono")) ||
+            lowerFontFamily.includes("spotify") ||
+            lowerFontFamily.includes("acumin")
+        ) {
             customizeFont(element, sansSerif);
-        } else if (fontFamily.includes("serif")) {
+        } else if (
+            (lowerFontFamily.includes("serif") &&
+                !lowerFontFamily.includes("sans") &&
+                !lowerFontFamily.includes("mono")) ||
+            lowerFontFamily.includes("times new roman")
+        ) {
             customizeFont(element, serif);
+        } else if (lowerFontFamily.includes("mono")) {
+            customizeFont(element, monospace);
         } else {
             // Cache target fonts array to avoid recreating it
             if (!cachedTargetFonts) {
