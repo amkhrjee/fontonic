@@ -9,6 +9,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
             chrome.storage.sync.get(["override"]).then((is_override) => {
                 chrome.storage.sync
                     .get(["exempts"])
+                    // @ts-ignore
                     .then((exempts_list: { exempts: string[] }) => {
                         if ("global" in is_global && is_global["global"]) {
                             if (

@@ -142,26 +142,13 @@ const globalMonoColor = document.getElementById(
     "global_mono_color",
 ) as HTMLInputElement;
 
-// Ligatures checkboxes
-const serifLigatures = document.getElementById(
-    "serif_ligatures",
-) as HTMLInputElement;
-const sansLigatures = document.getElementById(
-    "sans_ligatures",
-) as HTMLInputElement;
-const monoLigatures = document.getElementById(
-    "mono_ligatures",
-) as HTMLInputElement;
+let serifLigaturesValue = false;
+let sansLigaturesValue = false;
+let monoLigaturesValue = false;
 
-const globalSerifLigatures = document.getElementById(
-    "global_serif_ligatures",
-) as HTMLInputElement;
-const globalSansLigatures = document.getElementById(
-    "global_sans_ligatures",
-) as HTMLInputElement;
-const globalMonoLigatures = document.getElementById(
-    "global_mono_ligatures",
-) as HTMLInputElement;
+let globalSerifLigaturesValue = false;
+let globalSansLigaturesValue = false;
+let globalMonoLigaturesValue = false;
 
 // Line height inputs
 const serifLineHeight = document.getElementById(
@@ -407,8 +394,8 @@ settingsButton.addEventListener("click", async () => {
                     globalSansColor.value = global_fonts.sans_serif.color;
                     globalMonoColor.value = global_fonts.monospace.color;
 
-                    // updating ligatures, line height, letter spacing, word spacing
-                    globalSerifLigatures.checked =
+                    // updating line height, letter spacing, word spacing
+                    globalSerifLigaturesValue =
                         global_fonts.serif.ligatures ?? false;
                     globalSerifLineHeight.value =
                         global_fonts.serif.lineHeight ?? "";
@@ -417,7 +404,7 @@ settingsButton.addEventListener("click", async () => {
                     globalSerifWordSpacing.value =
                         global_fonts.serif.wordSpacing ?? "";
 
-                    globalSansLigatures.checked =
+                    globalSansLigaturesValue =
                         global_fonts.sans_serif.ligatures ?? false;
                     globalSansLineHeight.value =
                         global_fonts.sans_serif.lineHeight ?? "";
@@ -426,7 +413,7 @@ settingsButton.addEventListener("click", async () => {
                     globalSansWordSpacing.value =
                         global_fonts.sans_serif.wordSpacing ?? "";
 
-                    globalMonoLigatures.checked =
+                    globalMonoLigaturesValue =
                         global_fonts.monospace.ligatures ?? false;
                     globalMonoLineHeight.value =
                         global_fonts.monospace.lineHeight ?? "";
@@ -611,18 +598,18 @@ getDomain().then((domain) => {
             sansColor.value = fontData.sans_serif.color;
             monoColor.value = fontData.monospace.color;
 
-            // updating ligatures, line height, letter spacing, word spacing
-            serifLigatures.checked = fontData.serif.ligatures ?? false;
+            // updating line height, letter spacing, word spacing
+            serifLigaturesValue = fontData.serif.ligatures ?? false;
             serifLineHeight.value = fontData.serif.lineHeight ?? "";
             serifLetterSpacing.value = fontData.serif.letterSpacing ?? "";
             serifWordSpacing.value = fontData.serif.wordSpacing ?? "";
 
-            sansLigatures.checked = fontData.sans_serif.ligatures ?? false;
+            sansLigaturesValue = fontData.sans_serif.ligatures ?? false;
             sansLineHeight.value = fontData.sans_serif.lineHeight ?? "";
             sansLetterSpacing.value = fontData.sans_serif.letterSpacing ?? "";
             sansWordSpacing.value = fontData.sans_serif.wordSpacing ?? "";
 
-            monoLigatures.checked = fontData.monospace.ligatures ?? false;
+            monoLigaturesValue = fontData.monospace.ligatures ?? false;
             monoLineHeight.value = fontData.monospace.lineHeight ?? "";
             monoLetterSpacing.value = fontData.monospace.letterSpacing ?? "";
             monoWordSpacing.value = fontData.monospace.wordSpacing ?? "";
@@ -710,18 +697,18 @@ chrome.storage.sync.get(["global_fonts"]).then((result) => {
         globalSansColor.value = fontData.sans_serif.color;
         globalMonoColor.value = fontData.monospace.color;
 
-        // updating ligatures, line height, letter spacing, word spacing
-        globalSerifLigatures.checked = fontData.serif.ligatures ?? false;
+        // updating line height, letter spacing, word spacing
+        globalSerifLigaturesValue = fontData.serif.ligatures ?? false;
         globalSerifLineHeight.value = fontData.serif.lineHeight ?? "";
         globalSerifLetterSpacing.value = fontData.serif.letterSpacing ?? "";
         globalSerifWordSpacing.value = fontData.serif.wordSpacing ?? "";
 
-        globalSansLigatures.checked = fontData.sans_serif.ligatures ?? false;
+        globalSansLigaturesValue = fontData.sans_serif.ligatures ?? false;
         globalSansLineHeight.value = fontData.sans_serif.lineHeight ?? "";
         globalSansLetterSpacing.value = fontData.sans_serif.letterSpacing ?? "";
         globalSansWordSpacing.value = fontData.sans_serif.wordSpacing ?? "";
 
-        globalMonoLigatures.checked = fontData.monospace.ligatures ?? false;
+        globalMonoLigaturesValue = fontData.monospace.ligatures ?? false;
         globalMonoLineHeight.value = fontData.monospace.lineHeight ?? "";
         globalMonoLetterSpacing.value = fontData.monospace.letterSpacing ?? "";
         globalMonoWordSpacing.value = fontData.monospace.wordSpacing ?? "";
@@ -833,7 +820,7 @@ fontSelectionForm.addEventListener("submit", (e) => {
                         bold: isSerifBoldBtnOn,
                         ital: isSerifItalBtnOn,
                         color: serifColor.value,
-                        ligatures: serifLigatures.checked,
+                        ligatures: serifLigaturesValue,
                         lineHeight: serifLineHeight.value || "",
                         letterSpacing: serifLetterSpacing.value || "",
                         wordSpacing: serifWordSpacing.value || "",
@@ -845,7 +832,7 @@ fontSelectionForm.addEventListener("submit", (e) => {
                         bold: isSansBoldBtnOn,
                         ital: isSansItalBtnOn,
                         color: sansColor.value,
-                        ligatures: sansLigatures.checked,
+                        ligatures: sansLigaturesValue,
                         lineHeight: sansLineHeight.value || "",
                         letterSpacing: sansLetterSpacing.value || "",
                         wordSpacing: sansWordSpacing.value || "",
@@ -857,7 +844,7 @@ fontSelectionForm.addEventListener("submit", (e) => {
                         bold: isMonoBoldBtnOn,
                         ital: isMonoItalBtnOn,
                         color: monoColor.value,
-                        ligatures: monoLigatures.checked,
+                        ligatures: monoLigaturesValue,
                         lineHeight: monoLineHeight.value || "",
                         letterSpacing: monoLetterSpacing.value || "",
                         wordSpacing: monoWordSpacing.value || "",
@@ -941,7 +928,7 @@ globalFontSelectionForm.addEventListener("submit", async (e) => {
             bold: isGlobalSerifBoldBtnOn,
             ital: isGlobalSerifItalBtnOn,
             color: globalSerifColor.value,
-            ligatures: globalSerifLigatures.checked,
+            ligatures: globalSerifLigaturesValue,
             lineHeight: globalSerifLineHeight.value || "",
             letterSpacing: globalSerifLetterSpacing.value || "",
             wordSpacing: globalSerifWordSpacing.value || "",
@@ -953,7 +940,7 @@ globalFontSelectionForm.addEventListener("submit", async (e) => {
             bold: isGlobalSansBoldBtnOn,
             ital: isGlobalSansItalBtnOn,
             color: globalSansColor.value,
-            ligatures: globalSansLigatures.checked,
+            ligatures: globalSansLigaturesValue,
             lineHeight: globalSansLineHeight.value || "",
             letterSpacing: globalSansLetterSpacing.value || "",
             wordSpacing: globalSansWordSpacing.value || "",
@@ -963,7 +950,7 @@ globalFontSelectionForm.addEventListener("submit", async (e) => {
             bold: isGlobalMonoBoldBtnOn,
             ital: isGlobalMonoItalBtnOn,
             color: globalMonoColor.value,
-            ligatures: globalMonoLigatures.checked,
+            ligatures: globalMonoLigaturesValue,
             lineHeight: globalMonoLineHeight.value || "",
             letterSpacing: globalMonoLetterSpacing.value || "",
             wordSpacing: globalMonoWordSpacing.value || "",
@@ -1026,18 +1013,18 @@ restoreButton.addEventListener("click", async () => {
     sansColor.value = "#000000";
     monoColor.value = "#000000";
 
-    // Reset ligatures, line height, letter spacing, word spacing
-    serifLigatures.checked = false;
+    // Reset line height, letter spacing, word spacing
+    serifLigaturesValue = false;
     serifLineHeight.value = "";
     serifLetterSpacing.value = "";
     serifWordSpacing.value = "";
 
-    sansLigatures.checked = false;
+    sansLigaturesValue = false;
     sansLineHeight.value = "";
     sansLetterSpacing.value = "";
     sansWordSpacing.value = "";
 
-    monoLigatures.checked = false;
+    monoLigaturesValue = false;
     monoLineHeight.value = "";
     monoLetterSpacing.value = "";
     monoWordSpacing.value = "";
