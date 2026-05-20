@@ -55,6 +55,7 @@ const fontlabBanners = [
     "../res/fontlab_banners/03.webp",
     "../res/fontlab_banners/04.webp",
     "../res/fontlab_banners/05.webp",
+    "../res/fontlab_banners/06.webp",
 ];
 
 supportText.innerText = texts[Math.floor(Math.random() * texts.length)];
