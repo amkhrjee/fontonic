@@ -42,8 +42,16 @@ const customizeFont = (element: HTMLElement, font: fontMetaData) => {
     }
 };
 
-// Cache target fonts to avoid recreating array on every call
-let cachedTargetFonts: string[] | null = null;
+const getFontFamilies = (fontFamily: string) =>
+    fontFamily.split(",").map((family) =>
+        family
+            .trim()
+            .replace(/^['"]|['"]$/g, "")
+            .toLowerCase(),
+    );
+
+const matchesSelectedFont = (fontFamilies: string[], font: fontMetaData) =>
+    font.font !== "Default" && fontFamilies.includes(font.font.toLowerCase());
 
 const changeFontFamily = (
     node: Node,
@@ -60,7 +68,15 @@ const changeFontFamily = (
     if (fontFamily) {
         const lowerFontFamily = fontFamily.toLowerCase();
 
-        if (
+        const fontFamilies = getFontFamilies(lowerFontFamily);
+
+        if (matchesSelectedFont(fontFamilies, monospace)) {
+            customizeFont(element, monospace);
+        } else if (matchesSelectedFont(fontFamilies, serif)) {
+            customizeFont(element, serif);
+        } else if (matchesSelectedFont(fontFamilies, sansSerif)) {
+            customizeFont(element, sansSerif);
+        } else if (
             (lowerFontFamily.includes("sans") &&
                 !lowerFontFamily.includes("mono")) ||
             lowerFontFamily.includes("spotify") ||
@@ -76,18 +92,6 @@ const changeFontFamily = (
             customizeFont(element, serif);
         } else if (lowerFontFamily.includes("mono")) {
             customizeFont(element, monospace);
-        } else {
-            // Cache target fonts array to avoid recreating it
-            if (!cachedTargetFonts) {
-                cachedTargetFonts = [
-                    monospace.font.toLowerCase(),
-                    serif.font.toLowerCase(),
-                    sansSerif.font.toLowerCase(),
-                ];
-            }
-            if (!cachedTargetFonts.includes(fontFamily)) {
-                customizeFont(element, sansSerif);
-            }
         }
     }
 
