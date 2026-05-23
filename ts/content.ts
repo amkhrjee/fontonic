@@ -53,54 +53,102 @@ const getFontFamilies = (fontFamily: string) =>
 const matchesSelectedFont = (fontFamilies: string[], font: fontMetaData) =>
     font.font !== "Default" && fontFamilies.includes(font.font.toLowerCase());
 
-const changeFontFamily = (
+type FontOperation = {
+    element: HTMLElement;
+    font: fontMetaData;
+};
+
+const collectFontOperations = (
     node: Node,
     serif: fontMetaData,
     sansSerif: fontMetaData,
     monospace: fontMetaData,
+    operations: FontOperation[],
 ) => {
     if (node.nodeType !== Node.ELEMENT_NODE) return;
 
     const element = node as HTMLElement;
+    const tagName = element.tagName.toUpperCase();
+
+    // Ignore elements that shouldn't matter or are heavy
+    if (
+        tagName === "SCRIPT" ||
+        tagName === "STYLE" ||
+        tagName === "SVG" ||
+        tagName === "PATH" ||
+        tagName === "G" ||
+        tagName === "CANVAS" ||
+        tagName === "NOSCRIPT" ||
+        tagName === "IFRAME"
+    ) {
+        return;
+    }
 
     const fontFamily = getComputedStyle(element).fontFamily.toLowerCase();
 
     if (fontFamily) {
         const lowerFontFamily = fontFamily.toLowerCase();
-
         const fontFamilies = getFontFamilies(lowerFontFamily);
 
+        let targetFont: fontMetaData | null = null;
+
         if (matchesSelectedFont(fontFamilies, monospace)) {
-            customizeFont(element, monospace);
+            targetFont = monospace;
         } else if (matchesSelectedFont(fontFamilies, serif)) {
-            customizeFont(element, serif);
+            targetFont = serif;
         } else if (matchesSelectedFont(fontFamilies, sansSerif)) {
-            customizeFont(element, sansSerif);
+            targetFont = sansSerif;
         } else if (
             (lowerFontFamily.includes("sans") &&
                 !lowerFontFamily.includes("mono")) ||
             lowerFontFamily.includes("spotify") ||
             lowerFontFamily.includes("acumin")
         ) {
-            customizeFont(element, sansSerif);
+            targetFont = sansSerif;
         } else if (
             (lowerFontFamily.includes("serif") &&
                 !lowerFontFamily.includes("sans") &&
                 !lowerFontFamily.includes("mono")) ||
             lowerFontFamily.includes("times new roman")
         ) {
-            customizeFont(element, serif);
+            targetFont = serif;
         } else if (lowerFontFamily.includes("mono")) {
-            customizeFont(element, monospace);
+            targetFont = monospace;
+        }
+
+        if (targetFont) {
+            operations.push({ element, font: targetFont });
         }
     }
 
-    // More efficient child iteration
     const children = element.children;
     for (let i = 0; i < children.length; i++) {
-        changeFontFamily(children[i], serif, sansSerif, monospace);
+        collectFontOperations(
+            children[i],
+            serif,
+            sansSerif,
+            monospace,
+            operations,
+        );
     }
 };
+
+const changeFontFamily = (
+    node: Node,
+    serif: fontMetaData,
+    sansSerif: fontMetaData,
+    monospace: fontMetaData,
+) => {
+    const operations: FontOperation[] = [];
+    collectFontOperations(node, serif, sansSerif, monospace, operations);
+
+    // Apply all gathered styles at once to avoid layout thrashing
+    for (let i = 0; i < operations.length; i++) {
+        customizeFont(operations[i].element, operations[i].font);
+    }
+};
+
+let currentObserver: MutationObserver | null = null;
 
 // Extract observer creation logic to avoid duplication
 const createFontObserver = (
@@ -108,14 +156,46 @@ const createFontObserver = (
     sans_serif: fontMetaData,
     monospace: fontMetaData,
 ) => {
-    return new MutationObserver((mutations) => {
+    if (currentObserver) {
+        currentObserver.disconnect();
+    }
+
+    let pendingNodes = new Set<Node>();
+    let rafId: number | null = null;
+
+    currentObserver = new MutationObserver((mutations) => {
         for (const mutation of mutations) {
             const addedNodes = mutation.addedNodes;
             for (let i = 0; i < addedNodes.length; i++) {
-                changeFontFamily(addedNodes[i], serif, sans_serif, monospace);
+                pendingNodes.add(addedNodes[i]);
             }
         }
+
+        if (rafId === null) {
+            rafId = requestAnimationFrame(() => {
+                const operations: FontOperation[] = [];
+                // Collect operations for all pending nodes
+                for (const node of pendingNodes) {
+                    collectFontOperations(
+                        node,
+                        serif,
+                        sans_serif,
+                        monospace,
+                        operations,
+                    );
+                }
+                pendingNodes.clear();
+                rafId = null;
+
+                // Execute all modifications after reads are complete
+                for (let i = 0; i < operations.length; i++) {
+                    customizeFont(operations[i].element, operations[i].font);
+                }
+            });
+        }
     });
+
+    return currentObserver;
 };
 
 let message = {
