@@ -90,6 +90,8 @@ const formControlTags = new Set(["INPUT", "TEXTAREA", "SELECT", "OPTION"]);
 
 const displaysOwnText = (element: HTMLElement) => {
     if (formControlTags.has(element.tagName.toUpperCase())) return true;
+    if (element.isContentEditable || element.getAttribute("role") === "textbox")
+        return true;
 
     for (let i = 0; i < element.childNodes.length; i++) {
         const child = element.childNodes[i];
