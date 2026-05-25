@@ -160,14 +160,35 @@ const createFontObserver = (
         currentObserver.disconnect();
     }
 
-    let pendingNodes = new Set<Node>();
+    const pendingNodes = new Set<HTMLElement>();
     let rafId: number | null = null;
 
     currentObserver = new MutationObserver((mutations) => {
         for (const mutation of mutations) {
             const addedNodes = mutation.addedNodes;
             for (let i = 0; i < addedNodes.length; i++) {
-                pendingNodes.add(addedNodes[i]);
+                const node = addedNodes[i];
+                if (node.nodeType !== Node.ELEMENT_NODE) continue;
+
+                const element = node as HTMLElement;
+                let isAlreadyCovered = false;
+
+                // Dynamic apps often report an inserted parent and its children
+                // in one frame. Only retain roots so each subtree is scanned once.
+                for (const pendingNode of pendingNodes) {
+                    if (pendingNode.contains(element)) {
+                        isAlreadyCovered = true;
+                        break;
+                    }
+
+                    if (element.contains(pendingNode)) {
+                        pendingNodes.delete(pendingNode);
+                    }
+                }
+
+                if (!isAlreadyCovered) {
+                    pendingNodes.add(element);
+                }
             }
         }
 
@@ -176,6 +197,8 @@ const createFontObserver = (
                 const operations: FontOperation[] = [];
                 // Collect operations for all pending nodes
                 for (const node of pendingNodes) {
+                    if (!node.isConnected) continue;
+
                     collectFontOperations(
                         node,
                         serif,
