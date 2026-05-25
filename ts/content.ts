@@ -10,9 +10,29 @@ type fontMetaData = {
     // sizeMultiplier: string;
 };
 
-const customizeFont = (element: HTMLElement, font: fontMetaData) => {
-    element.style.fontStyle = font.ital ? "italic" : "";
-    element.style.fontWeight = font.bold ? "bold" : "";
+type ActiveInheritedStyles = {
+    bold: boolean;
+    ital: boolean;
+    lineHeight: boolean;
+    letterSpacing: boolean;
+    wordSpacing: boolean;
+};
+
+const customizeFont = (
+    element: HTMLElement,
+    font: fontMetaData,
+    activeStyles: ActiveInheritedStyles,
+) => {
+    element.style.fontStyle = font.ital
+        ? "italic"
+        : activeStyles.ital
+          ? "normal"
+          : "";
+    element.style.fontWeight = font.bold
+        ? "bold"
+        : activeStyles.bold
+          ? "normal"
+          : "";
 
     if (font.color != "#000000") element.style.color = font.color;
     if (font.font !== "Default") {
@@ -26,20 +46,28 @@ const customizeFont = (element: HTMLElement, font: fontMetaData) => {
         element.style.fontVariantLigatures = "none";
     }
 
-    // Apply line height if set (not empty string)
-    if (font.lineHeight && font.lineHeight !== "") {
-        element.style.lineHeight = font.lineHeight;
-    }
+    element.style.lineHeight =
+        font.lineHeight || (activeStyles.lineHeight ? "normal" : "");
+    element.style.letterSpacing =
+        font.letterSpacing || (activeStyles.letterSpacing ? "normal" : "");
+    element.style.wordSpacing =
+        font.wordSpacing || (activeStyles.wordSpacing ? "normal" : "");
+};
 
-    // Apply letter spacing if set (not empty string)
-    if (font.letterSpacing && font.letterSpacing !== "") {
-        element.style.letterSpacing = font.letterSpacing;
-    }
+const getActiveInheritedStyles = (
+    serif: fontMetaData,
+    sansSerif: fontMetaData,
+    monospace: fontMetaData,
+): ActiveInheritedStyles => {
+    const fonts = [serif, sansSerif, monospace];
 
-    // Apply word spacing if set (not empty string)
-    if (font.wordSpacing && font.wordSpacing !== "") {
-        element.style.wordSpacing = font.wordSpacing;
-    }
+    return {
+        bold: fonts.some((font) => font.bold),
+        ital: fonts.some((font) => font.ital),
+        lineHeight: fonts.some((font) => font.lineHeight !== ""),
+        letterSpacing: fonts.some((font) => font.letterSpacing !== ""),
+        wordSpacing: fonts.some((font) => font.wordSpacing !== ""),
+    };
 };
 
 const getFontFamilies = (fontFamily: string) =>
@@ -56,6 +84,25 @@ const matchesSelectedFont = (fontFamilies: string[], font: fontMetaData) =>
 type FontOperation = {
     element: HTMLElement;
     font: fontMetaData;
+};
+
+const formControlTags = new Set(["INPUT", "TEXTAREA", "SELECT", "OPTION"]);
+
+const displaysOwnText = (element: HTMLElement) => {
+    if (formControlTags.has(element.tagName.toUpperCase())) return true;
+
+    for (let i = 0; i < element.childNodes.length; i++) {
+        const child = element.childNodes[i];
+        if (
+            child.nodeType === Node.TEXT_NODE &&
+            child.textContent &&
+            child.textContent.trim() !== ""
+        ) {
+            return true;
+        }
+    }
+
+    return false;
 };
 
 const collectFontOperations = (
@@ -116,7 +163,7 @@ const collectFontOperations = (
             targetFont = monospace;
         }
 
-        if (targetFont) {
+        if (targetFont && displaysOwnText(element)) {
             operations.push({ element, font: targetFont });
         }
     }
@@ -140,11 +187,20 @@ const changeFontFamily = (
     monospace: fontMetaData,
 ) => {
     const operations: FontOperation[] = [];
+    const activeStyles = getActiveInheritedStyles(
+        serif,
+        sansSerif,
+        monospace,
+    );
     collectFontOperations(node, serif, sansSerif, monospace, operations);
 
     // Apply all gathered styles at once to avoid layout thrashing
     for (let i = 0; i < operations.length; i++) {
-        customizeFont(operations[i].element, operations[i].font);
+        customizeFont(
+            operations[i].element,
+            operations[i].font,
+            activeStyles,
+        );
     }
 };
 
@@ -161,6 +217,11 @@ const createFontObserver = (
     }
 
     const pendingNodes = new Set<HTMLElement>();
+    const activeStyles = getActiveInheritedStyles(
+        serif,
+        sans_serif,
+        monospace,
+    );
     let rafId: number | null = null;
 
     currentObserver = new MutationObserver((mutations) => {
@@ -168,9 +229,13 @@ const createFontObserver = (
             const addedNodes = mutation.addedNodes;
             for (let i = 0; i < addedNodes.length; i++) {
                 const node = addedNodes[i];
-                if (node.nodeType !== Node.ELEMENT_NODE) continue;
-
-                const element = node as HTMLElement;
+                const element =
+                    node.nodeType === Node.TEXT_NODE
+                        ? node.parentElement
+                        : node instanceof HTMLElement
+                          ? node
+                          : null;
+                if (!element) continue;
                 let isAlreadyCovered = false;
 
                 // Dynamic apps often report an inserted parent and its children
@@ -212,7 +277,11 @@ const createFontObserver = (
 
                 // Execute all modifications after reads are complete
                 for (let i = 0; i < operations.length; i++) {
-                    customizeFont(operations[i].element, operations[i].font);
+                    customizeFont(
+                        operations[i].element,
+                        operations[i].font,
+                        activeStyles,
+                    );
                 }
             });
         }
