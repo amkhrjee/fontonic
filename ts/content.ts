@@ -180,6 +180,22 @@ const collectFontOperations = (
             operations,
         );
     }
+
+    // Web components (e.g. Reddit's sidebar) render text inside shadow roots,
+    // which element.children doesn't reach. Only open roots are accessible.
+    const shadowRoot = element.shadowRoot;
+    if (shadowRoot) {
+        currentObserver?.observe(shadowRoot, { childList: true, subtree: true });
+        for (let i = 0; i < shadowRoot.children.length; i++) {
+            collectFontOperations(
+                shadowRoot.children[i],
+                serif,
+                sansSerif,
+                monospace,
+                operations,
+            );
+        }
+    }
 };
 
 const changeFontFamily = (
@@ -304,13 +320,13 @@ chrome.runtime.sendMessage(message, undefined, (response) => {
         const sans_serif = response.data.sans_serif as fontMetaData;
         const monospace = response.data.monospace as fontMetaData;
 
-        changeFontFamily(document.body, serif, sans_serif, monospace);
-
+        // Observer must exist before the scan so shadow roots get observed.
         const observer = createFontObserver(serif, sans_serif, monospace);
         observer.observe(document.body, {
             childList: true,
             subtree: true,
         });
+        changeFontFamily(document.body, serif, sans_serif, monospace);
     }
 });
 
@@ -321,13 +337,13 @@ chrome.runtime.onConnect.addListener((port) => {
             const serif = message.data.serif as fontMetaData;
             const sans_serif = message.data.sans_serif as fontMetaData;
             const monospace = message.data.monospace as fontMetaData;
-            changeFontFamily(document.body, serif, sans_serif, monospace);
 
             const observer = createFontObserver(serif, sans_serif, monospace);
             observer.observe(document.body, {
                 childList: true,
                 subtree: true,
             });
+            changeFontFamily(document.body, serif, sans_serif, monospace);
         } else if (message.type === "restore") {
             location.reload();
         } else if (message.type === "redirect") {
